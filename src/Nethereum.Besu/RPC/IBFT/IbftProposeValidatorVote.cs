@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
@@ -12,9 +13,9 @@ namespace Nethereum.Besu.RPC.IBFT
         {
         }
 
-        public Task<bool> SendRequestAsync(string accountAddress, bool addValidator, object id = null)
+        public Task<bool> SendRequestAsync(string accountAddress, bool addValidator, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, accountAddress, addValidator);
+            return base.SendRequestAsync(id, cancellationToken, accountAddress, addValidator);
         }
 
         public RpcRequest BuildRequest(string accountAddress, bool addValidator, object id = null)

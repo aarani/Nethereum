@@ -1,6 +1,7 @@
 
 using Nethereum.JsonRpc.Client;
 using Nethereum.Quorum.RPC.DTOs;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Privacy
@@ -22,7 +23,7 @@ namespace Nethereum.Quorum.RPC.Privacy
     ///</Summary>
     public interface IEthGetContractPrivacyMetadata
     {
-        Task<ContractPrivacyMetadata> SendRequestAsync(string address, object id = null);
+        Task<ContractPrivacyMetadata> SendRequestAsync(string address, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string address, object id = null);
     }
 
@@ -45,9 +46,9 @@ namespace Nethereum.Quorum.RPC.Privacy
     {
         public EthGetContractPrivacyMetadata(IClient client) : base(client,ApiMethods.eth_getContractPrivacyMetadata.ToString()) { }
 
-        public Task<ContractPrivacyMetadata> SendRequestAsync(string address, object id = null)
+        public Task<ContractPrivacyMetadata> SendRequestAsync(string address, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address);
+            return base.SendRequestAsync(id, cancellationToken, address);
         }
         public RpcRequest BuildRequest(string address, object id = null)
         {

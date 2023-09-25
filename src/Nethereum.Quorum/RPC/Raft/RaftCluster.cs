@@ -1,4 +1,5 @@
 
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.Quorum.RPC.DTOs;
@@ -32,7 +33,7 @@ namespace Nethereum.Quorum.RPC.Raft
     ///</Summary>
     public interface IRaftCluster
     {
-        Task<RaftNodeInfo[]> SendRequestAsync(object id);
+        Task<RaftNodeInfo[]> SendRequestAsync(object id, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(object id = null);
     }
 

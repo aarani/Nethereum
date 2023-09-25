@@ -16,9 +16,9 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
 {
     public partial class MerkleERC20DropService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, MerkleERC20DropDeployment merkleERC20DropDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, MerkleERC20DropDeployment merkleERC20DropDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<MerkleERC20DropDeployment>().SendRequestAndWaitForReceiptAsync(merkleERC20DropDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<MerkleERC20DropDeployment>().SendRequestAndWaitForReceiptAsync(merkleERC20DropDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Nethereum.Web3.Web3 web3, MerkleERC20DropDeployment merkleERC20DropDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
             return web3.Eth.GetContractDeploymentHandler<MerkleERC20DropDeployment>().SendRequestAsync(merkleERC20DropDeployment);
         }
 
-        public static async Task<MerkleERC20DropService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, MerkleERC20DropDeployment merkleERC20DropDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<MerkleERC20DropService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, MerkleERC20DropDeployment merkleERC20DropDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, merkleERC20DropDeployment, cancellationTokenSource);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, merkleERC20DropDeployment, cancellationToken);
             return new MerkleERC20DropService(web3, receipt.ContractAddress);
         }
 
@@ -62,7 +62,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(approveFunction);
         }
 
-        public Task<TransactionReceipt> ApproveRequestAndWaitForReceiptAsync(ApproveFunction approveFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ApproveRequestAndWaitForReceiptAsync(ApproveFunction approveFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(approveFunction, cancellationToken);
         }
@@ -76,7 +76,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(approveFunction);
         }
 
-        public Task<TransactionReceipt> ApproveRequestAndWaitForReceiptAsync(string spender, BigInteger value, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ApproveRequestAndWaitForReceiptAsync(string spender, BigInteger value, CancellationToken cancellationToken = default(CancellationToken))
         {
             var approveFunction = new ApproveFunction();
                 approveFunction.Spender = spender;
@@ -104,7 +104,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(claimFunction);
         }
 
-        public Task<TransactionReceipt> ClaimRequestAndWaitForReceiptAsync(ClaimFunction claimFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ClaimRequestAndWaitForReceiptAsync(ClaimFunction claimFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(claimFunction, cancellationToken);
         }
@@ -119,7 +119,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(claimFunction);
         }
 
-        public Task<TransactionReceipt> ClaimRequestAndWaitForReceiptAsync(string claimAddress, BigInteger balance, List<byte[]> merkleProof, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ClaimRequestAndWaitForReceiptAsync(string claimAddress, BigInteger balance, List<byte[]> merkleProof, CancellationToken cancellationToken = default(CancellationToken))
         {
             var claimFunction = new ClaimFunction();
                 claimFunction.ClaimAddress = claimAddress;
@@ -134,7 +134,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(claimSenderFunction);
         }
 
-        public Task<TransactionReceipt> ClaimSenderRequestAndWaitForReceiptAsync(ClaimSenderFunction claimSenderFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ClaimSenderRequestAndWaitForReceiptAsync(ClaimSenderFunction claimSenderFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(claimSenderFunction, cancellationToken);
         }
@@ -148,7 +148,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(claimSenderFunction);
         }
 
-        public Task<TransactionReceipt> ClaimSenderRequestAndWaitForReceiptAsync(BigInteger balance, List<byte[]> merkleProof, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ClaimSenderRequestAndWaitForReceiptAsync(BigInteger balance, List<byte[]> merkleProof, CancellationToken cancellationToken = default(CancellationToken))
         {
             var claimSenderFunction = new ClaimSenderFunction();
                 claimSenderFunction.Balance = balance;
@@ -287,7 +287,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(transferFunction);
         }
 
-        public Task<TransactionReceipt> TransferRequestAndWaitForReceiptAsync(TransferFunction transferFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferRequestAndWaitForReceiptAsync(TransferFunction transferFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(transferFunction, cancellationToken);
         }
@@ -301,7 +301,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(transferFunction);
         }
 
-        public Task<TransactionReceipt> TransferRequestAndWaitForReceiptAsync(string to, BigInteger value, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferRequestAndWaitForReceiptAsync(string to, BigInteger value, CancellationToken cancellationToken = default(CancellationToken))
         {
             var transferFunction = new TransferFunction();
                 transferFunction.To = to;
@@ -315,7 +315,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(transferFromFunction);
         }
 
-        public Task<TransactionReceipt> TransferFromRequestAndWaitForReceiptAsync(TransferFromFunction transferFromFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferFromRequestAndWaitForReceiptAsync(TransferFromFunction transferFromFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(transferFromFunction, cancellationToken);
         }
@@ -330,7 +330,7 @@ namespace Nethereum.Mekle.Contracts.MerkleERC20Drop
              return ContractHandler.SendRequestAsync(transferFromFunction);
         }
 
-        public Task<TransactionReceipt> TransferFromRequestAndWaitForReceiptAsync(string from, string to, BigInteger value, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferFromRequestAndWaitForReceiptAsync(string from, string to, BigInteger value, CancellationToken cancellationToken = default(CancellationToken))
         {
             var transferFromFunction = new TransferFromFunction();
                 transferFromFunction.From = from;

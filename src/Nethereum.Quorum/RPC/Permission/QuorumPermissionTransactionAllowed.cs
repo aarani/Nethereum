@@ -1,6 +1,7 @@
 
 using Nethereum.JsonRpc.Client;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Permission
@@ -15,7 +16,7 @@ namespace Nethereum.Quorum.RPC.Permission
     ///</Summary>
     public interface IQuorumPermissionTransactionAllowed
     {
-        Task<bool> SendRequestAsync(JObject transactionArguments, object id = null);
+        Task<bool> SendRequestAsync(JObject transactionArguments, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(JObject transactionArguments, object id = null);
     }
 
@@ -31,9 +32,9 @@ namespace Nethereum.Quorum.RPC.Permission
     {
         public QuorumPermissionTransactionAllowed(IClient client) : base(client,ApiMethods.quorumPermission_transactionAllowed.ToString()) { }
 
-        public Task<bool> SendRequestAsync(JObject transactionArguments, object id = null)
+        public Task<bool> SendRequestAsync(JObject transactionArguments, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, transactionArguments);
+            return base.SendRequestAsync(id, cancellationToken, transactionArguments);
         }
         public RpcRequest BuildRequest(JObject transactionArguments, object id = null)
         {

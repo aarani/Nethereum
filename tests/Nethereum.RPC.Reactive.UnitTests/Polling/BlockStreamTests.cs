@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reactive;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Reactive.Testing;
 using Moq;
@@ -39,7 +40,7 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 blockService.Object);
 
             blockService
-                .Setup(x => x.GetBlockNumber.SendRequestAsync(null))
+                .Setup(x => x.GetBlockNumber.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(new HexBigInteger(2)));
 
             // Setup old blocks.
@@ -51,7 +52,7 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
             };
 
             blockService
-                .Setup(x => x.GetBlockWithTransactionsByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(1)), null))
+                .Setup(x => x.GetBlockWithTransactionsByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(1)), null, CancellationToken.None))
                 .Returns(Task.FromResult(oldBlock));
 
             // Setup new blocks.
@@ -115,12 +116,12 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 });
 
                 blockService
-                    .Setup(x => x.GetBlockWithTransactionsByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(i)), null))
+                    .Setup(x => x.GetBlockWithTransactionsByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(i)), null, CancellationToken.None))
                     .Returns(Task.FromResult(oldBlocks[i]));
             }
 
             blockService
-                .Setup(x => x.GetBlockNumber.SendRequestAsync(null))
+                .Setup(x => x.GetBlockNumber.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(new HexBigInteger(oldBlocks.Last().Number)));
 
             // Setup new blocks (last one should be ignored).
@@ -188,12 +189,12 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 });
 
                 blockService
-                    .Setup(x => x.GetBlockWithTransactionsByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(i)), null))
+                    .Setup(x => x.GetBlockWithTransactionsByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(i)), null, CancellationToken.None))
                     .Returns(Task.FromResult(oldBlocks[i]));
             }
 
             blockService
-                .Setup(x => x.GetBlockNumber.SendRequestAsync(null))
+                .Setup(x => x.GetBlockNumber.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(new HexBigInteger(oldBlocks.Last().Number)));
 
             // Setup new blocks (should all be ignored).
@@ -253,11 +254,11 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
             var filterId = new HexBigInteger(1337);
 
             filterService
-                .Setup(x => x.NewBlockFilter.SendRequestAsync(null))
+                .Setup(x => x.NewBlockFilter.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(filterId));
 
             filterService
-                .Setup(x => x.UninstallFilter.SendRequestAsync(filterId, null))
+                .Setup(x => x.UninstallFilter.SendRequestAsync(filterId, null, CancellationToken.None))
                 .Returns(Task.FromResult(true));
 
             // Setup incoming blocks.
@@ -283,7 +284,7 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 }
             };
 
-            filterService.SetupSequence(x => x.GetFilterChangesForBlockOrTransaction.SendRequestAsync(filterId, null))
+            filterService.SetupSequence(x => x.GetFilterChangesForBlockOrTransaction.SendRequestAsync(filterId, null, CancellationToken.None))
                 .Returns(Task.FromResult(new[]
                 {
                     expectedBlocks[0][0].BlockHash
@@ -293,11 +294,11 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                     expectedBlocks[1][0].BlockHash, expectedBlocks[1][1].BlockHash
                 }));
 
-            blockService.Setup(x => x.GetBlockWithTransactionsHashesByHash.SendRequestAsync(expectedBlocks[0][0].BlockHash, null))
+            blockService.Setup(x => x.GetBlockWithTransactionsHashesByHash.SendRequestAsync(expectedBlocks[0][0].BlockHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedBlocks[0][0]));
-            blockService.Setup(x => x.GetBlockWithTransactionsHashesByHash.SendRequestAsync(expectedBlocks[1][0].BlockHash, null))
+            blockService.Setup(x => x.GetBlockWithTransactionsHashesByHash.SendRequestAsync(expectedBlocks[1][0].BlockHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedBlocks[1][0]));
-            blockService.Setup(x => x.GetBlockWithTransactionsHashesByHash.SendRequestAsync(expectedBlocks[1][1].BlockHash, null))
+            blockService.Setup(x => x.GetBlockWithTransactionsHashesByHash.SendRequestAsync(expectedBlocks[1][1].BlockHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedBlocks[1][1]));
 
             // Record incoming data.
@@ -308,8 +309,8 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 OnNext(200 + Subscribed, expectedBlocks[1][0]),
                 OnNext(200 + Subscribed, expectedBlocks[1][1]));
 
-            filterService.Verify(x => x.NewBlockFilter.SendRequestAsync(null), Times.Once);
-            filterService.Verify(x => x.UninstallFilter.SendRequestAsync(filterId, null), Times.Once);
+            filterService.Verify(x => x.NewBlockFilter.SendRequestAsync(null, CancellationToken.None), Times.Once);
+            filterService.Verify(x => x.UninstallFilter.SendRequestAsync(filterId, null, CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -335,7 +336,7 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 blockService.Object);
 
             blockService
-                .Setup(x => x.GetBlockNumber.SendRequestAsync(null))
+                .Setup(x => x.GetBlockNumber.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(new HexBigInteger(2)));
 
             // Setup old blocks.
@@ -346,7 +347,7 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
             };
 
             blockService
-                .Setup(x => x.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(1)), null))
+                .Setup(x => x.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(1)), null, CancellationToken.None))
                 .Returns(Task.FromResult(oldBlock));
 
             // Setup new blocks.
@@ -407,12 +408,12 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 });
 
                 blockService
-                    .Setup(x => x.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(i)), null))
+                    .Setup(x => x.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(i)), null, CancellationToken.None))
                     .Returns(Task.FromResult(oldBlocks[i]));
             }
 
             blockService
-                .Setup(x => x.GetBlockNumber.SendRequestAsync(null))
+                .Setup(x => x.GetBlockNumber.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(new HexBigInteger(oldBlocks.Last().Number)));
 
             // Setup new blocks (last one should be ignored).
@@ -477,12 +478,12 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 });
 
                 blockService
-                    .Setup(x => x.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(i)), null))
+                    .Setup(x => x.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(new HexBigInteger(new BigInteger(i)), null, CancellationToken.None))
                     .Returns(Task.FromResult(oldBlocks[i]));
             }
 
             blockService
-                .Setup(x => x.GetBlockNumber.SendRequestAsync(null))
+                .Setup(x => x.GetBlockNumber.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(new HexBigInteger(oldBlocks.Last().Number)));
 
             // Setup new blocks (should all be ignored).
@@ -540,11 +541,11 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
             var filterId = new HexBigInteger(1337);
 
             filterService
-                .Setup(x => x.NewBlockFilter.SendRequestAsync(null))
+                .Setup(x => x.NewBlockFilter.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(filterId));
 
             filterService
-                .Setup(x => x.UninstallFilter.SendRequestAsync(filterId, null))
+                .Setup(x => x.UninstallFilter.SendRequestAsync(filterId, null, CancellationToken.None))
                 .Returns(Task.FromResult(true));
 
             // Setup incoming blocks.
@@ -573,7 +574,7 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 }
             };
 
-            filterService.SetupSequence(x => x.GetFilterChangesForBlockOrTransaction.SendRequestAsync(filterId, null))
+            filterService.SetupSequence(x => x.GetFilterChangesForBlockOrTransaction.SendRequestAsync(filterId, null, CancellationToken.None))
                 .Returns(Task.FromResult(new[]
                 {
                     expectedBlocks[0][0].BlockHash
@@ -583,11 +584,11 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                     expectedBlocks[1][0].BlockHash, expectedBlocks[1][1].BlockHash
                 }));
 
-            blockService.Setup(x => x.GetBlockWithTransactionsByHash.SendRequestAsync(expectedBlocks[0][0].BlockHash, null))
+            blockService.Setup(x => x.GetBlockWithTransactionsByHash.SendRequestAsync(expectedBlocks[0][0].BlockHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedBlocks[0][0]));
-            blockService.Setup(x => x.GetBlockWithTransactionsByHash.SendRequestAsync(expectedBlocks[1][0].BlockHash, null))
+            blockService.Setup(x => x.GetBlockWithTransactionsByHash.SendRequestAsync(expectedBlocks[1][0].BlockHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedBlocks[1][0]));
-            blockService.Setup(x => x.GetBlockWithTransactionsByHash.SendRequestAsync(expectedBlocks[1][1].BlockHash, null))
+            blockService.Setup(x => x.GetBlockWithTransactionsByHash.SendRequestAsync(expectedBlocks[1][1].BlockHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedBlocks[1][1]));
 
             // Record incoming data.
@@ -598,8 +599,8 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 OnNext(200 + Subscribed, expectedBlocks[1][0]),
                 OnNext(200 + Subscribed, expectedBlocks[1][1]));
 
-            filterService.Verify(x => x.NewBlockFilter.SendRequestAsync(null), Times.Once);
-            filterService.Verify(x => x.UninstallFilter.SendRequestAsync(filterId, null), Times.Once);
+            filterService.Verify(x => x.NewBlockFilter.SendRequestAsync(null, CancellationToken.None), Times.Once);
+            filterService.Verify(x => x.UninstallFilter.SendRequestAsync(filterId, null, CancellationToken.None), Times.Once);
         }
     }
 }

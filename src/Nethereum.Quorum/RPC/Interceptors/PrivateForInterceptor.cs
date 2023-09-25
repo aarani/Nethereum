@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.Quorum.RPC.DTOs;
@@ -19,8 +20,9 @@ namespace Nethereum.Quorum.RPC.Interceptors
         }
 
         public override async Task<object> InterceptSendRequestAsync<T>(
-            Func<RpcRequest, string, Task<T>> interceptedSendRequestAsync, RpcRequest request,
-            string route = null)
+            Func<RpcRequest, string, CancellationToken, Task<T>> interceptedSendRequestAsync, RpcRequest request,
+            string route = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (_privateFor != null && _privateFor.Count > 0)
             {
@@ -30,7 +32,7 @@ namespace Nethereum.Quorum.RPC.Interceptors
                     var privateTransaction =
                         new PrivateTransactionInput(transaction, _privateFor.ToArray(), _privateFrom);
                     return await interceptedSendRequestAsync(
-                        new RpcRequest(request.Id, request.Method, privateTransaction), route).ConfigureAwait(false);
+                        new RpcRequest(request.Id, request.Method, privateTransaction), route, cancellationToken).ConfigureAwait(false);
                 }
 
                 if (request.Method == "eth_sendRawTransaction")
@@ -39,16 +41,18 @@ namespace Nethereum.Quorum.RPC.Interceptors
 
                     return await interceptedSendRequestAsync(
                         new RpcRequest(request.Id, "eth_sendRawPrivateTransaction", rawTrasaction,
-                            new PrivateRawTransaction(_privateFor.ToArray())), route).ConfigureAwait(false);
+                            new PrivateRawTransaction(_privateFor.ToArray())), route, cancellationToken).ConfigureAwait(false);
                 }
             }
 
-            return await interceptedSendRequestAsync(request, route).ConfigureAwait(false);
+            return await interceptedSendRequestAsync(request, route, cancellationToken).ConfigureAwait(false);
         }
 
         public override async Task<object> InterceptSendRequestAsync<T>(
-            Func<string, string, object[], Task<T>> interceptedSendRequestAsync, string method,
-            string route = null, params object[] paramList)
+            Func<string, string, CancellationToken, object[], Task<T>> interceptedSendRequestAsync, string method,
+            string route = null,
+            CancellationToken cancellationToken = default(CancellationToken),
+            params object[] paramList)
         {
             if (_privateFor != null && _privateFor.Count > 0)
             {
@@ -58,19 +62,20 @@ namespace Nethereum.Quorum.RPC.Interceptors
                     var privateTransaction =
                         new PrivateTransactionInput(transaction, _privateFor.ToArray(), _privateFrom);
                     paramList[0] = privateTransaction;
-                    return await interceptedSendRequestAsync(method, route, paramList).ConfigureAwait(false);
+                    return await interceptedSendRequestAsync(method, route, cancellationToken, paramList).ConfigureAwait(false);
                 }
 
                 if (method == "eth_sendRawTransaction")
                 {
                     var rawTrasaction = paramList[0];
-                    return await interceptedSendRequestAsync("eth_sendRawPrivateTransaction", route,
+                    return await interceptedSendRequestAsync("eth_sendRawPrivateTransaction", route, cancellationToken,
                             new object[] {rawTrasaction, new PrivateRawTransaction(_privateFor.ToArray())})
                         .ConfigureAwait(false);
                 }
             }
 
-            return await interceptedSendRequestAsync(method, route, paramList).ConfigureAwait(false);
+            return await interceptedSendRequestAsync(method, route, cancellationToken, paramList)
+                .ConfigureAwait(false);
         }
 
     }

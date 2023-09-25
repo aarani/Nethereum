@@ -1,6 +1,7 @@
 ﻿using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 
 namespace Nethereum.RPC.HostWallet
 {
@@ -16,14 +17,14 @@ namespace Nethereum.RPC.HostWallet
         }
 
 
-        public  Task<bool> SendRequestAsync(WatchAssetParameter watchAssetParameter, object id = null)
+        public  Task<bool> SendRequestAsync(WatchAssetParameter watchAssetParameter, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (watchAssetParameter == null) throw new ArgumentNullException(nameof(watchAssetParameter));
             if (watchAssetParameter.Type == null) throw new ArgumentNullException(nameof(watchAssetParameter.Type));
             if (watchAssetParameter.Options == null) throw new ArgumentNullException(nameof(watchAssetParameter.Options));
             if (watchAssetParameter.Options.Address == null) throw new ArgumentNullException(nameof(watchAssetParameter.Options.Address));
 
-            return  base.SendRequestAsync(id, watchAssetParameter);
+            return  base.SendRequestAsync(id, cancellationToken, watchAssetParameter);
 
             
         }

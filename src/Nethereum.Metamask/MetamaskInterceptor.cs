@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.RpcMessages;
@@ -35,8 +36,8 @@ namespace Nethereum.Metamask
         }
 
         public override async Task<object> InterceptSendRequestAsync<T>(
-            Func<RpcRequest, string, Task<T>> interceptedSendRequestAsync, RpcRequest request,
-            string route = null)
+            Func<RpcRequest, string, CancellationToken, Task<T>> interceptedSendRequestAsync, RpcRequest request,
+            string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
 
             if (_useOnlySigningWalletTransactionMethods == false || (_useOnlySigningWalletTransactionMethods && SigningWalletTransactionsMethods.Contains(request.Method)))
@@ -98,8 +99,8 @@ namespace Nethereum.Metamask
         }
 
         public override async Task<object> InterceptSendRequestAsync<T>(
-            Func<string, string, object[], Task<T>> interceptedSendRequestAsync, string method,
-            string route = null, params object[] paramList)
+            Func<string, string, CancellationToken, object[], Task<T>> interceptedSendRequestAsync, string method,
+            string route = null, CancellationToken cancellationToken = default(CancellationToken), params object[] paramList)
         {
             if (_useOnlySigningWalletTransactionMethods == false || (_useOnlySigningWalletTransactionMethods && SigningWalletTransactionsMethods.Contains(method)))
             {
@@ -143,7 +144,7 @@ namespace Nethereum.Metamask
             }
             else
             {
-                return await base.InterceptSendRequestAsync(interceptedSendRequestAsync, method, route, paramList).ConfigureAwait(false);
+                return await base.InterceptSendRequestAsync(interceptedSendRequestAsync, method, route, cancellationToken, paramList).ConfigureAwait(false);
             }
           
         }

@@ -18,14 +18,14 @@ namespace Nethereum.BlockchainProcessing.UnitTests.BlockProcessing
         public BlockProcessingRpcMock(Web3Mock web3Mock) : base(web3Mock)
         {
 
-            web3Mock.GetBlockWithTransactionsByNumberMock.Setup(s => s.SendRequestAsync(It.IsAny<HexBigInteger>(), null))
+            web3Mock.GetBlockWithTransactionsByNumberMock.Setup(s => s.SendRequestAsync(It.IsAny<HexBigInteger>(), null, CancellationToken.None))
                 .Returns<HexBigInteger, object>((n, id) =>
                 {
                     BlockRequestCount++;
                     return Task.FromResult(Blocks.FirstOrDefault(b => b.Number.Value == n.Value));
                 });
 
-            web3Mock.GetTransactionReceiptMock.Setup(s => s.SendRequestAsync(It.IsAny<string>(), null))
+            web3Mock.GetTransactionReceiptMock.Setup(s => s.SendRequestAsync(It.IsAny<string>(), null, CancellationToken.None))
                 .Returns<string, object>((hash, id) =>
                 {
                     ReceiptRequestCount++;

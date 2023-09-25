@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Permission
@@ -20,7 +21,7 @@ namespace Nethereum.Quorum.RPC.Permission
     ///</Summary>
     public interface IQuorumPermissionAddNewRole
     {
-        Task<string> SendRequestAsync(string orgId, string roleId, int accountAccess, bool isVoter, bool isAdminRole, object id = null);
+        Task<string> SendRequestAsync(string orgId, string roleId, int accountAccess, bool isVoter, bool isAdminRole, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string orgId, string roleId, int accountAccess, bool isVoter, bool isAdminRole, object id = null);
     }
 
@@ -42,9 +43,9 @@ namespace Nethereum.Quorum.RPC.Permission
     {
         public QuorumPermissionAddNewRole(IClient client) : base(client,ApiMethods.quorumPermission_addNewRole.ToString()) { }
 
-        public Task<string> SendRequestAsync(string orgId, string roleId, int accountAccess, bool isVoter, bool isAdminRole, object id = null)
+        public Task<string> SendRequestAsync(string orgId, string roleId, int accountAccess, bool isVoter, bool isAdminRole, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, orgId, roleId, accountAccess, isVoter, isAdminRole);
+            return base.SendRequestAsync(id, cancellationToken, orgId, roleId, accountAccess, isVoter, isAdminRole);
         }
         public RpcRequest BuildRequest(string orgId, string roleId, int accountAccess, bool isVoter, bool isAdminRole, object id = null)
         {

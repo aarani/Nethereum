@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
@@ -30,13 +31,13 @@ namespace Nethereum.RPC.Reactive.Polling.Streams
         public IObservable<BlockWithTransactionHashes> GetBlocksWithTransactionHashes() => GetBlocks(_blockService.GetBlockWithTransactionsHashesByHash.SendRequestAsync);
         public IObservable<BlockWithTransactions> GetBlocksWithTransactions() => GetBlocks(_blockService.GetBlockWithTransactionsByHash.SendRequestAsync);
 
-        private IObservable<TBlock> GetBlocks<TBlock>(Func<string, object, Task<TBlock>> blockProvider) where TBlock : Block => ObservableExtensions
+        private IObservable<TBlock> GetBlocks<TBlock>(Func<string, object, CancellationToken, Task<TBlock>> blockProvider) where TBlock : Block => ObservableExtensions
             .Using(
                 async () => new DisposableFilter(await _filterService.NewBlockFilter.SendRequestAsync().ConfigureAwait(false), _filterService.UninstallFilter),
                 filter => Observable
                     .FromAsync(ct => _filterService.GetFilterChangesForBlockOrTransaction.SendRequestAsync(filter.ID))
                     .SelectMany(blockHashes => blockHashes
-                        .Select(hash => Observable.FromAsync(ct => blockProvider(hash, null)))
+                        .Select(hash => Observable.FromAsync(ct => blockProvider(hash, null, CancellationToken.None)))
                         .ToObservable())
                     .SelectMany(x => x)
                     .Poll(_poller))
@@ -47,7 +48,7 @@ namespace Nethereum.RPC.Reactive.Polling.Streams
             BlockParameter start,
             BlockParameter end,
             IObservable<TBlock> blockSource,
-            Func<HexBigInteger, object, Task<TBlock>> blockProvider) where TBlock : Block =>
+            Func<HexBigInteger, object, CancellationToken, Task<TBlock>> blockProvider) where TBlock : Block =>
             Observable
                 .Create<TBlock>(async o =>
                 {
@@ -64,7 +65,7 @@ namespace Nethereum.RPC.Reactive.Polling.Streams
                         EnumerableExtensions
                             .Range(start.BlockNumber, latestBlock.Value - start.BlockNumber)
                             .Select(block => Observable
-                                .FromAsync(ct => blockProvider(new HexBigInteger(block), null)))
+                                .FromAsync(ct => blockProvider(new HexBigInteger(block), null, CancellationToken.None)))
                             .Merge());
 
                     // If we were given an 'end' parameter that is smaller or equal to the latest

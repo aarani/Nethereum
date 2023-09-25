@@ -24,7 +24,7 @@ namespace Nethereum.JsonRpc.Client
             _httpClient.BaseAddress = baseUrl;
         }
 
-        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null)
+        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
@@ -58,7 +58,7 @@ namespace Nethereum.JsonRpc.Client
             }
         }
 
-        protected override async Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests)
+        protected override async Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {

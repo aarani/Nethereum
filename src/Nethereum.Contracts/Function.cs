@@ -217,39 +217,6 @@ namespace Nethereum.Contracts
                 receiptRequestCancellationToken);
         }
 
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(string from,
-           CancellationTokenSource receiptRequestCancellationToken = null, params object[] functionInput)
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(from, functionInput),
-                receiptRequestCancellationToken);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(string from, HexBigInteger gas,
-            HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null,
-            params object[] functionInput)
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(from, gas, value, functionInput),
-                receiptRequestCancellationToken);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(string from, HexBigInteger gas,
-            HexBigInteger gasPrice,
-            HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null,
-            params object[] functionInput)
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(
-                CreateTransactionInput(from, gas, gasPrice, value, functionInput), receiptRequestCancellationToken);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TransactionInput input,
-            CancellationTokenSource receiptRequestCancellationToken = null, params object[] functionInput)
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(input, functionInput),
-                receiptRequestCancellationToken);
-        }
-
-
         public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(HexBigInteger type, string from, HexBigInteger gas,
             HexBigInteger value, HexBigInteger maxFeePerGas, HexBigInteger maxPriorityFeePerGas, params object[] functionInput)
         {

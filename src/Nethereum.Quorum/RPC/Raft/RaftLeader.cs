@@ -1,5 +1,6 @@
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Infrastructure;
@@ -21,7 +22,7 @@ namespace Nethereum.Quorum.RPC.Raft
     ///</Summary>
     public interface IRaftLeader
     {
-        Task<String> SendRequestAsync(object id);
+        Task<String> SendRequestAsync(object id, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(object id = null);
     }
 

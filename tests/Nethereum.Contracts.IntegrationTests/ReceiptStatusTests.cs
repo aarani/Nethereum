@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.XUnitEthereumClients;
@@ -38,7 +39,7 @@ namespace Nethereum.Contracts.IntegrationTests
                     smartContractByteCode,
                     accountAddresss,
                     new HexBigInteger(900000),
-                    null,
+                    CancellationToken.None,
                     multiplier).ConfigureAwait(false);
 
             var contractAddress = receipt.ContractAddress;
@@ -50,7 +51,7 @@ namespace Nethereum.Contracts.IntegrationTests
             var estimatedGas = await multiplyFunction.EstimateGasAsync(7).ConfigureAwait(false);
 
             var receipt1 = await multiplyFunction.SendTransactionAndWaitForReceiptAsync(accountAddresss,
-                new HexBigInteger(estimatedGas.Value), null, null, 5).ConfigureAwait(false);
+                new HexBigInteger(estimatedGas.Value), null, CancellationToken.None, 5).ConfigureAwait(false);
 
             Assert.Equal(1, receipt1.Status.Value);
 
@@ -79,7 +80,7 @@ namespace Nethereum.Contracts.IntegrationTests
                     smartContractByteCode,
                     accountAddresss,
                     new HexBigInteger(900000),
-                    null,
+                    CancellationToken.None,
                     multiplier).ConfigureAwait(false);
 
             var contractAddress = receipt.ContractAddress;
@@ -92,7 +93,7 @@ namespace Nethereum.Contracts.IntegrationTests
             var estimatedGas = await multiplyFunction.EstimateGasAsync().ConfigureAwait(false);
 
             var receipt1 = await multiplyFunction.SendTransactionAndWaitForReceiptAsync(accountAddresss,
-                new HexBigInteger(estimatedGas.Value), null, null, 5).ConfigureAwait(false);
+                new HexBigInteger(estimatedGas.Value), null, CancellationToken.None, 5).ConfigureAwait(false);
 
             Assert.Equal(0, receipt1.Status.Value);
 

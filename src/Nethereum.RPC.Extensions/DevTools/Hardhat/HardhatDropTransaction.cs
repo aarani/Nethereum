@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Hardhat
@@ -14,9 +15,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Hardhat
         public HardhatDropTransaction(IClient client, ApiMethods apiMethod) : base(client, apiMethod.ToString()) { }
         public HardhatDropTransaction(IClient client) : base(client, ApiMethods.hardhat_dropTransaction.ToString()) { }
 
-        public Task<bool> SendRequestAsync(string txnHash, object id = null)
+        public Task<bool> SendRequestAsync(string txnHash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, txnHash);
+            return base.SendRequestAsync(id, cancellationToken, txnHash);
         }
         public RpcRequest BuildRequest(string txnHash, object id = null)
         {

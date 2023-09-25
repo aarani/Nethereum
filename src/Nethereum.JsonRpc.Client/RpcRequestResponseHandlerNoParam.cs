@@ -1,5 +1,6 @@
 ﻿using Nethereum.JsonRpc.Client.RpcMessages;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.JsonRpc.Client
@@ -17,7 +18,7 @@ namespace Nethereum.JsonRpc.Client
         public string MethodName  => RpcRequestBuilder.MethodName;
         public IClient Client { get; }
 
-        public virtual Task<TResponse> SendRequestAsync(object id)
+        public virtual Task<TResponse> SendRequestAsync(object id, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client == null) throw new NullReferenceException("RpcRequestHandler Client is null");
             return Client.SendRequestAsync<TResponse>(BuildRequest(id));

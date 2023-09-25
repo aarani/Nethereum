@@ -3,6 +3,7 @@ using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace Nethereum.Quorum.RPC.Debug
 {
@@ -19,7 +20,7 @@ namespace Nethereum.Quorum.RPC.Debug
     ///</Summary>
     public interface IDebugDumpAddress
     {
-        Task<JObject> SendRequestAsync(string address, BlockParameter blockNumber, object id = null);
+        Task<JObject> SendRequestAsync(string address, BlockParameter blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string address, BlockParameter blockNumber, object id = null);
     }
 
@@ -38,9 +39,9 @@ namespace Nethereum.Quorum.RPC.Debug
     {
         public DebugDumpAddress(IClient client) : base(client,ApiMethods.debug_dumpAddress.ToString()) { }
 
-        public Task<JObject> SendRequestAsync(string address, BlockParameter blockNumber, object id = null)
+        public Task<JObject> SendRequestAsync(string address, BlockParameter blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, blockNumber.GetRPCParamAsNumber());
+            return base.SendRequestAsync(id, cancellationToken, address, blockNumber.GetRPCParamAsNumber());
         }
         public RpcRequest BuildRequest(string address, BlockParameter blockNumber, object id = null)
         {

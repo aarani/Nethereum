@@ -16,9 +16,9 @@ namespace Nethereum.Optimism.L2StandardERC20
 {
     public partial class L2StandardERC20Service
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, L2StandardERC20Deployment l2StandardERC20Deployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, L2StandardERC20Deployment l2StandardERC20Deployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<L2StandardERC20Deployment>().SendRequestAndWaitForReceiptAsync(l2StandardERC20Deployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<L2StandardERC20Deployment>().SendRequestAndWaitForReceiptAsync(l2StandardERC20Deployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Web3.Web3 web3, L2StandardERC20Deployment l2StandardERC20Deployment)
@@ -26,9 +26,9 @@ namespace Nethereum.Optimism.L2StandardERC20
             return web3.Eth.GetContractDeploymentHandler<L2StandardERC20Deployment>().SendRequestAsync(l2StandardERC20Deployment);
         }
 
-        public static async Task<L2StandardERC20Service> DeployContractAndGetServiceAsync(Web3.Web3 web3, L2StandardERC20Deployment l2StandardERC20Deployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<L2StandardERC20Service> DeployContractAndGetServiceAsync(Web3.Web3 web3, L2StandardERC20Deployment l2StandardERC20Deployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, l2StandardERC20Deployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, l2StandardERC20Deployment, cancellationToken).ConfigureAwait(false);
             return new L2StandardERC20Service(web3, receipt.ContractAddress);
         }
 
@@ -62,7 +62,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(approveFunction);
         }
 
-        public Task<TransactionReceipt> ApproveRequestAndWaitForReceiptAsync(ApproveFunction approveFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ApproveRequestAndWaitForReceiptAsync(ApproveFunction approveFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(approveFunction, cancellationToken);
         }
@@ -76,7 +76,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(approveFunction);
         }
 
-        public Task<TransactionReceipt> ApproveRequestAndWaitForReceiptAsync(string spender, BigInteger amount, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ApproveRequestAndWaitForReceiptAsync(string spender, BigInteger amount, CancellationToken cancellationToken = default(CancellationToken))
         {
             var approveFunction = new ApproveFunction();
             approveFunction.Spender = spender;
@@ -104,7 +104,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(burnFunction);
         }
 
-        public Task<TransactionReceipt> BurnRequestAndWaitForReceiptAsync(BurnFunction burnFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> BurnRequestAndWaitForReceiptAsync(BurnFunction burnFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(burnFunction, cancellationToken);
         }
@@ -118,7 +118,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(burnFunction);
         }
 
-        public Task<TransactionReceipt> BurnRequestAndWaitForReceiptAsync(string from, BigInteger amount, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> BurnRequestAndWaitForReceiptAsync(string from, BigInteger amount, CancellationToken cancellationToken = default(CancellationToken))
         {
             var burnFunction = new BurnFunction();
             burnFunction.From = from;
@@ -143,7 +143,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(decreaseAllowanceFunction);
         }
 
-        public Task<TransactionReceipt> DecreaseAllowanceRequestAndWaitForReceiptAsync(DecreaseAllowanceFunction decreaseAllowanceFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> DecreaseAllowanceRequestAndWaitForReceiptAsync(DecreaseAllowanceFunction decreaseAllowanceFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(decreaseAllowanceFunction, cancellationToken);
         }
@@ -157,7 +157,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(decreaseAllowanceFunction);
         }
 
-        public Task<TransactionReceipt> DecreaseAllowanceRequestAndWaitForReceiptAsync(string spender, BigInteger subtractedValue, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> DecreaseAllowanceRequestAndWaitForReceiptAsync(string spender, BigInteger subtractedValue, CancellationToken cancellationToken = default(CancellationToken))
         {
             var decreaseAllowanceFunction = new DecreaseAllowanceFunction();
             decreaseAllowanceFunction.Spender = spender;
@@ -171,7 +171,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(increaseAllowanceFunction);
         }
 
-        public Task<TransactionReceipt> IncreaseAllowanceRequestAndWaitForReceiptAsync(IncreaseAllowanceFunction increaseAllowanceFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> IncreaseAllowanceRequestAndWaitForReceiptAsync(IncreaseAllowanceFunction increaseAllowanceFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(increaseAllowanceFunction, cancellationToken);
         }
@@ -185,7 +185,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(increaseAllowanceFunction);
         }
 
-        public Task<TransactionReceipt> IncreaseAllowanceRequestAndWaitForReceiptAsync(string spender, BigInteger addedValue, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> IncreaseAllowanceRequestAndWaitForReceiptAsync(string spender, BigInteger addedValue, CancellationToken cancellationToken = default(CancellationToken))
         {
             var increaseAllowanceFunction = new IncreaseAllowanceFunction();
             increaseAllowanceFunction.Spender = spender;
@@ -221,7 +221,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(mintFunction);
         }
 
-        public Task<TransactionReceipt> MintRequestAndWaitForReceiptAsync(MintFunction mintFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> MintRequestAndWaitForReceiptAsync(MintFunction mintFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(mintFunction, cancellationToken);
         }
@@ -235,7 +235,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(mintFunction);
         }
 
-        public Task<TransactionReceipt> MintRequestAndWaitForReceiptAsync(string to, BigInteger amount, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> MintRequestAndWaitForReceiptAsync(string to, BigInteger amount, CancellationToken cancellationToken = default(CancellationToken))
         {
             var mintFunction = new MintFunction();
             mintFunction.To = to;
@@ -296,7 +296,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(transferFunction);
         }
 
-        public Task<TransactionReceipt> TransferRequestAndWaitForReceiptAsync(TransferFunction transferFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferRequestAndWaitForReceiptAsync(TransferFunction transferFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(transferFunction, cancellationToken);
         }
@@ -310,7 +310,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(transferFunction);
         }
 
-        public Task<TransactionReceipt> TransferRequestAndWaitForReceiptAsync(string recipient, BigInteger amount, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferRequestAndWaitForReceiptAsync(string recipient, BigInteger amount, CancellationToken cancellationToken = default(CancellationToken))
         {
             var transferFunction = new TransferFunction();
             transferFunction.Recipient = recipient;
@@ -324,7 +324,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(transferFromFunction);
         }
 
-        public Task<TransactionReceipt> TransferFromRequestAndWaitForReceiptAsync(TransferFromFunction transferFromFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferFromRequestAndWaitForReceiptAsync(TransferFromFunction transferFromFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(transferFromFunction, cancellationToken);
         }
@@ -339,7 +339,7 @@ namespace Nethereum.Optimism.L2StandardERC20
             return ContractHandler.SendRequestAsync(transferFromFunction);
         }
 
-        public Task<TransactionReceipt> TransferFromRequestAndWaitForReceiptAsync(string sender, string recipient, BigInteger amount, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferFromRequestAndWaitForReceiptAsync(string sender, string recipient, BigInteger amount, CancellationToken cancellationToken = default(CancellationToken))
         {
             var transferFromFunction = new TransferFromFunction();
             transferFromFunction.Sender = sender;

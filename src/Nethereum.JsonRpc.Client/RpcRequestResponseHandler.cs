@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.JsonRpc.Client
@@ -21,11 +22,11 @@ namespace Nethereum.JsonRpc.Client
 
         public IClient Client { get; }
 
-        protected Task<TResponse> SendRequestAsync(object id, params object[] paramList)
+        protected Task<TResponse> SendRequestAsync(object id, CancellationToken cancellationToken = default(CancellationToken), params object[] paramList)
         {
             var request = BuildRequest(id, paramList);
             if(Client == null) throw new NullReferenceException("RpcRequestHandler Client is null");
-            return Client.SendRequestAsync<TResponse>(request);
+            return Client.SendRequestAsync<TResponse>(request, cancellationToken: cancellationToken);
         }
 
         public RpcRequest BuildRequest(object id, params object[] paramList)

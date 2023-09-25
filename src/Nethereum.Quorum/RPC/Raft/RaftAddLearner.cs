@@ -1,4 +1,5 @@
 ﻿using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Raft
@@ -8,7 +9,7 @@ namespace Nethereum.Quorum.RPC.Raft
     /// </summary>
     public interface IRaftAddLearner
     {
-        Task<string> SendRequestAsync(string enodeId, object id = null);
+        Task<string> SendRequestAsync(string enodeId, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string enodeId, object id = null);
     }
 
@@ -21,9 +22,9 @@ namespace Nethereum.Quorum.RPC.Raft
         {
         }
 
-        public Task<string> SendRequestAsync(string enodeId, object id = null)
+        public Task<string> SendRequestAsync(string enodeId, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, enodeId);
+            return base.SendRequestAsync(id, cancellationToken, enodeId);
         }
 
         public RpcRequest BuildRequest(string enodeId, object id = null)

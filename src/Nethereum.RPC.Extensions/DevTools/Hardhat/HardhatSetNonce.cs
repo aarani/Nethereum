@@ -1,6 +1,7 @@
 
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Hardhat
@@ -14,9 +15,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Hardhat
         public HardhatSetNonce(IClient client, ApiMethods apiMethod) : base(client, apiMethod.ToString()) { }
         public HardhatSetNonce(IClient client) : base(client,ApiMethods.hardhat_setNonce.ToString()) { }
 
-        public Task SendRequestAsync(string address, HexBigInteger nonce, object id = null)
+        public Task SendRequestAsync(string address, HexBigInteger nonce, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, nonce);
+            return base.SendRequestAsync(id, cancellationToken, address, nonce);
         }
         public RpcRequest BuildRequest(string address, HexBigInteger nonce, object id = null)
         {

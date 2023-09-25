@@ -4,6 +4,7 @@ using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
 using System.Threading.Tasks;
 using Nethereum.Geth.RPC.DTOs;
+using System.Threading;
 
 namespace Nethereum.Geth.RPC.GethEth
 {
@@ -118,9 +119,9 @@ namespace Nethereum.Geth.RPC.GethEth
     {
         public EthCall(IClient client) : base(client,ApiMethods.eth_call.ToString()) { }
 
-        public Task<string> SendRequestAsync(TransactionInput transaction, BlockParameter blockParameter, Dictionary<string, StateChange> stateChanges, object id = null)
+        public Task<string> SendRequestAsync(TransactionInput transaction, BlockParameter blockParameter, Dictionary<string, StateChange> stateChanges, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, transaction, blockParameter, stateChanges);
+            return base.SendRequestAsync(id, cancellationToken, transaction, blockParameter, stateChanges);
         }
         public RpcRequest BuildRequest(TransactionInput transaction, BlockParameter blockParameter, Dictionary<string, StateChange> stateChanges, object id = null)
         {

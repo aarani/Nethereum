@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding;
 using Nethereum.Hex.HexTypes;
@@ -20,7 +21,9 @@ namespace Nethereum.Contracts.TransactionHandlers
 
         }
 
-        public async Task<HexBigInteger> EstimateGasAsync(string contractAddress, TFunctionMessage functionMessage = null)
+        public async Task<HexBigInteger> EstimateGasAsync(string contractAddress,
+                                                          TFunctionMessage functionMessage = null,
+                                                          CancellationToken cancellationToken = default(CancellationToken))
         {
             if (functionMessage == null) functionMessage = new TFunctionMessage();
             SetEncoderContractAddress(contractAddress);
@@ -29,7 +32,7 @@ namespace Nethereum.Contracts.TransactionHandlers
             {
                 if (TransactionManager.EstimateOrSetDefaultGasIfNotSet)
                 {
-                    return await TransactionManager.EstimateGasAsync(callInput).ConfigureAwait(false);
+                    return await TransactionManager.EstimateGasAsync(callInput, cancellationToken).ConfigureAwait(false);
                 }
 
                 return null;
@@ -42,7 +45,8 @@ namespace Nethereum.Contracts.TransactionHandlers
             catch(Exception)
             {
                 var ethCall = new EthCall(TransactionManager.Client);
-                var result = await ethCall.SendRequestAsync(callInput).ConfigureAwait(false);
+                //FIXME: test (AFSHIN)
+                var result = await ethCall.SendRequestAsync(callInput, cancellationToken).ConfigureAwait(false);
                 new FunctionCallDecoder().ThrowIfErrorOnOutput(result);
                 throw;
             }

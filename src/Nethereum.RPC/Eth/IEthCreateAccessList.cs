@@ -1,5 +1,6 @@
 ﻿using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Eth
@@ -9,7 +10,7 @@ namespace Nethereum.RPC.Eth
         BlockParameter DefaultBlock { get; set; }
 
         RpcRequest BuildRequest(TransactionInput transactionInput, BlockParameter block, object id = null);
-        Task<AccessListGasUsed> SendRequestAsync(TransactionInput transactionInput, object id = null);
-        Task<AccessListGasUsed> SendRequestAsync(TransactionInput transactionInput, BlockParameter block, object id = null);
+        Task<AccessListGasUsed> SendRequestAsync(TransactionInput transactionInput, object id = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AccessListGasUsed> SendRequestAsync(TransactionInput transactionInput, BlockParameter block, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

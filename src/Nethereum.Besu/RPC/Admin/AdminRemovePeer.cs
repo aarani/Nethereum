@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
@@ -12,9 +13,9 @@ namespace Nethereum.Besu.RPC.Admin
         {
         }
 
-        public Task<bool> SendRequestAsync(string enodeUrl, object id = null)
+        public Task<bool> SendRequestAsync(string enodeUrl, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, enodeUrl);
+            return base.SendRequestAsync(id, cancellationToken, enodeUrl);
         }
 
         public RpcRequest BuildRequest(string enodeUrl, object id = null)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Nethereum.Hex.HexConvertors.Extensions;
@@ -49,20 +50,23 @@ namespace Nethereum.RPC.Eth
         public BlockParameter DefaultBlock { get; set; }
 
         public Task<string> SendRequestAsync(string address, HexBigInteger position, BlockParameter block,
-            object id = null)
+            object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
 
             if (address == null) throw new ArgumentNullException(nameof(address));
             if (position == null) throw new ArgumentNullException(nameof(position));
             if (block == null) block = DefaultBlock;
-            return base.SendRequestAsync(id, address.EnsureHexPrefix(), position, block);
+            return base.SendRequestAsync(id, cancellationToken, address.EnsureHexPrefix(), position, block);
         }
 
-        public Task<string> SendRequestAsync(string address, HexBigInteger position, object id = null)
+        public Task<string> SendRequestAsync(string address,
+                                             HexBigInteger position,
+                                             object id = null,
+                                             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (address == null) throw new ArgumentNullException(nameof(address));
             if (position == null) throw new ArgumentNullException(nameof(position));
-            return base.SendRequestAsync(id, address.EnsureHexPrefix(), position, DefaultBlock);
+            return base.SendRequestAsync(id, cancellationToken, address.EnsureHexPrefix(), position, DefaultBlock);
         }
 
         public RpcRequest BuildRequest(string address, HexBigInteger position, BlockParameter block, object id = null)

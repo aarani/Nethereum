@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
@@ -17,7 +18,7 @@ namespace Nethereum.RPC.Eth
         Task<List<HexBigInteger>> SendBatchRequestAsync(string[] addresses, BlockParameter block);
         Task<List<HexBigInteger>> SendBatchRequestAsync(params string[] addresses);
 #endif
-        Task<HexBigInteger> SendRequestAsync(string address, object id = null);
-        Task<HexBigInteger> SendRequestAsync(string address, BlockParameter block, object id = null);
+        Task<HexBigInteger> SendRequestAsync(string address, object id = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HexBigInteger> SendRequestAsync(string address, BlockParameter block, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

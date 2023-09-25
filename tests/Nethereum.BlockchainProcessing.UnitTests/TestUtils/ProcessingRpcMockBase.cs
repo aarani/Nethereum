@@ -1,6 +1,7 @@
 ﻿using Nethereum.Hex.HexTypes;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.BlockchainProcessing.UnitTests.TestUtils
@@ -17,7 +18,7 @@ namespace Nethereum.BlockchainProcessing.UnitTests.TestUtils
 
             web3Mock
                 .BlockNumberMock
-                .Setup(m => m.SendRequestAsync(null))
+                .Setup(m => m.SendRequestAsync(null, CancellationToken.None))
                 .Returns(() => {
                     BlockNumberRequestCount++;
                     var blockNumberToReturn = currentBlockNumber ?? blockNumberQueue.Dequeue();

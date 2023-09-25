@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
  
 using Nethereum.Hex.HexTypes;
@@ -34,10 +35,12 @@ namespace Nethereum.RPC.Eth.Uncles
         {
         }
 
-        public Task<HexBigInteger> SendRequestAsync(HexBigInteger blockNumber, object id = null)
+        public Task<HexBigInteger> SendRequestAsync(HexBigInteger blockNumber,
+                                                    object id = null,
+                                                    CancellationToken cancellationToken = default(CancellationToken))
         {
             if (blockNumber == null) throw new ArgumentNullException(nameof(blockNumber));
-            return base.SendRequestAsync(id, blockNumber);
+            return base.SendRequestAsync(id, cancellationToken, blockNumber);
         }
 
         public RpcRequest BuildRequest(HexBigInteger blockNumber, object id = null)

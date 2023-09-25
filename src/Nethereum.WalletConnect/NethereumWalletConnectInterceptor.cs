@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WalletConnectSharp.Sign;
 
@@ -34,8 +35,8 @@ namespace Nethereum.WalletConnect
         }
 
         public override async Task<object> InterceptSendRequestAsync<T>(
-            Func<RpcRequest, string, Task<T>> interceptedSendRequestAsync, RpcRequest request,
-            string route = null)
+            Func<RpcRequest, string, CancellationToken, Task<T>> interceptedSendRequestAsync, RpcRequest request,
+            string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
 
             if (SigningWalletTransactionsMethods.Contains(request.Method))
@@ -74,15 +75,15 @@ namespace Nethereum.WalletConnect
             }
             else
             {
-                return await base.InterceptSendRequestAsync(interceptedSendRequestAsync, request, route)
+                return await base.InterceptSendRequestAsync(interceptedSendRequestAsync, request, route, cancellationToken)
                 .ConfigureAwait(false);
             }
 
         }
 
         public override async Task<object> InterceptSendRequestAsync<T>(
-            Func<string, string, object[], Task<T>> interceptedSendRequestAsync, string method,
-            string route = null, params object[] paramList)
+            Func<string, string, CancellationToken, object[], Task<T>> interceptedSendRequestAsync, string method,
+            string route = null, CancellationToken cancellationToken = default(CancellationToken), params object[] paramList)
         {
             if (SigningWalletTransactionsMethods.Contains(method))
             {
@@ -120,7 +121,7 @@ namespace Nethereum.WalletConnect
             }
             else
             {
-                return await base.InterceptSendRequestAsync(interceptedSendRequestAsync, method, route, paramList).ConfigureAwait(false);
+                return await base.InterceptSendRequestAsync(interceptedSendRequestAsync, method, route, cancellationToken, paramList).ConfigureAwait(false);
             }
 
         }

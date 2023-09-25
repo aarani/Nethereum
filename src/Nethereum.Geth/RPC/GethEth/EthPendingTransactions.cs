@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
 
@@ -40,9 +41,9 @@ namespace Nethereum.Geth.RPC.GethEth
         {
         }
 
-        public Task<Transaction[]> SendRequestAsync(object id = null)
+        public Task<Transaction[]> SendRequestAsync(object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id);
+            return base.SendRequestAsync(id, cancellationToken);
         }
 
         public RpcRequest BuildRequest(object id = null)

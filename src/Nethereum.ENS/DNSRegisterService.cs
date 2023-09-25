@@ -16,9 +16,9 @@ namespace Nethereum.ENS
 {
     public partial class DNSRegisterService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, DNSRegisterDeployment dNSRegisterDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, DNSRegisterDeployment dNSRegisterDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<DNSRegisterDeployment>().SendRequestAndWaitForReceiptAsync(dNSRegisterDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<DNSRegisterDeployment>().SendRequestAndWaitForReceiptAsync(dNSRegisterDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Nethereum.Web3.Web3 web3, DNSRegisterDeployment dNSRegisterDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.ENS
             return web3.Eth.GetContractDeploymentHandler<DNSRegisterDeployment>().SendRequestAsync(dNSRegisterDeployment);
         }
 
-        public static async Task<DNSRegisterService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, DNSRegisterDeployment dNSRegisterDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<DNSRegisterService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, DNSRegisterDeployment dNSRegisterDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, dNSRegisterDeployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, dNSRegisterDeployment, cancellationToken).ConfigureAwait(false);
             return new DNSRegisterService(web3, receipt.ContractAddress);
         }
 
@@ -47,7 +47,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(claimFunction);
         }
 
-        public Task<TransactionReceipt> ClaimRequestAndWaitForReceiptAsync(ClaimFunction claimFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ClaimRequestAndWaitForReceiptAsync(ClaimFunction claimFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(claimFunction, cancellationToken);
         }
@@ -61,7 +61,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(claimFunction);
         }
 
-        public Task<TransactionReceipt> ClaimRequestAndWaitForReceiptAsync(byte[] name, byte[] proof, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ClaimRequestAndWaitForReceiptAsync(byte[] name, byte[] proof, CancellationToken cancellationToken = default(CancellationToken))
         {
             var claimFunction = new ClaimFunction();
                 claimFunction.Name = name;
@@ -97,7 +97,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(proveAndClaimFunction);
         }
 
-        public Task<TransactionReceipt> ProveAndClaimRequestAndWaitForReceiptAsync(ProveAndClaimFunction proveAndClaimFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ProveAndClaimRequestAndWaitForReceiptAsync(ProveAndClaimFunction proveAndClaimFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(proveAndClaimFunction, cancellationToken);
         }
@@ -112,7 +112,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(proveAndClaimFunction);
         }
 
-        public Task<TransactionReceipt> ProveAndClaimRequestAndWaitForReceiptAsync(byte[] name, byte[] input, byte[] proof, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ProveAndClaimRequestAndWaitForReceiptAsync(byte[] name, byte[] input, byte[] proof, CancellationToken cancellationToken = default(CancellationToken))
         {
             var proveAndClaimFunction = new ProveAndClaimFunction();
                 proveAndClaimFunction.Name = name;

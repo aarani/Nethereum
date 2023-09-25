@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
@@ -8,8 +9,8 @@ namespace Nethereum.Rsk.RPC.RskEth
 {
     public interface IRskEthGetBlockWithTransactionsHashesByNumber
     {
-        Task<RskBlockWithTransactionHashes> SendRequestAsync(HexBigInteger number, object id = null);
-        Task<RskBlockWithTransactionHashes> SendRequestAsync(BlockParameter blockParameter, object id = null);
+        Task<RskBlockWithTransactionHashes> SendRequestAsync(HexBigInteger number, object id = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<RskBlockWithTransactionHashes> SendRequestAsync(BlockParameter blockParameter, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(HexBigInteger number, object id = null);
         RpcRequest BuildRequest(BlockParameter blockParameter, object id = null);
     }

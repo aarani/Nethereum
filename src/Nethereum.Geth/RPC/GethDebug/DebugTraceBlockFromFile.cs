@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Geth.RPC.Debug.DTOs;
 using Nethereum.JsonRpc.Client;
@@ -19,9 +20,9 @@ namespace Nethereum.Geth.RPC.Debug
             return base.BuildRequest(id, filePath, options);
         }
 
-        public Task<JArray> SendRequestAsync(string filePath, TraceTransactionOptions options, object id = null)
+        public Task<JArray> SendRequestAsync(string filePath, TraceTransactionOptions options, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, filePath, options);
+            return base.SendRequestAsync(id, cancellationToken, filePath, options);
         }
     }
 }

@@ -16,6 +16,7 @@ using System;
 using Newtonsoft.Json.Linq;
 using Nethereum.Hex.HexTypes;
 using System.Linq;
+using System.Threading;
 
 
 namespace Nethereum.Accounts.IntegrationTests
@@ -256,7 +257,7 @@ contract StructsSample2
             var receiptSending = await functionPurchaseOrder.
                                            SendTransactionAndWaitForReceiptAsync(
                                                EthereumClientIntegrationFixture.AccountAddress,
-                                               new HexBigInteger(900000), null, null,
+                                               new HexBigInteger(900000), null, null, CancellationToken.None,
                                                 values.ToArray()).ConfigureAwait(false);
 
 
@@ -343,7 +344,7 @@ contract StructsSample2
             var receiptSending = await functionPurchaseOrder.
                                             SendTransactionAndWaitForReceiptAsync(
                                                 EthereumClientIntegrationFixture.AccountAddress, 
-                                                new HexBigInteger(900000), null, null,
+                                                new HexBigInteger(900000), null, null, CancellationToken.None,
                                                 new object[] { purchaseOrder.ToArray() }).ConfigureAwait(false);
 
 
@@ -383,7 +384,7 @@ contract StructsSample2
             purchaseOrder.LineItem.Add(new LineItem() { Id = 2, ProductId = 200, Quantity = 3, Description = "hello2" });
 
             var functionPurchaseOrder = contract.GetFunction("SetPurchaseOrder");
-            var receiptSending = await functionPurchaseOrder.SendTransactionAndWaitForReceiptAsync(EthereumClientIntegrationFixture.AccountAddress, new HexBigInteger(900000), null, null,
+            var receiptSending = await functionPurchaseOrder.SendTransactionAndWaitForReceiptAsync(EthereumClientIntegrationFixture.AccountAddress, new HexBigInteger(900000), null, null, CancellationToken.None,
                 purchaseOrder).ConfigureAwait(false);
             
             
@@ -410,7 +411,7 @@ contract StructsSample2
             var addLineItemsUntypedFunction = contract.GetFunction("AddLineItems");
             
             receiptSending = await addLineItemsUntypedFunction.SendTransactionAndWaitForReceiptAsync(EthereumClientIntegrationFixture.AccountAddress, new HexBigInteger(900000), null,
-                null, 1, lineItems);
+                null, CancellationToken.None, 1, lineItems);
 
             var eventLineItemsAdded = contract.GetEvent("LineItemsAdded");
 
@@ -487,7 +488,7 @@ contract StructsSample2
             var setPurchaseOrdersFunction = contract.GetFunction("SetPurchaseOrders");
 
             receiptSending = await setPurchaseOrdersFunction.SendTransactionAndWaitForReceiptAsync(EthereumClientIntegrationFixture.AccountAddress, new HexBigInteger(900000), null,
-                null, listPurchaseOrder);
+                null, CancellationToken.None, listPurchaseOrder);
             
 
             var eventPurchaseOrders = contract.GetEvent("PurchaseOrdersChanged");

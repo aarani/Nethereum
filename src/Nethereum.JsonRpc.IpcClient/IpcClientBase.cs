@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Newtonsoft.Json;
 using System.Text;
 using System.IO;
 using Nethereum.JsonRpc.Client.RpcMessages;
-
-
 
 namespace Nethereum.JsonRpc.IpcClient
 {
@@ -98,7 +97,7 @@ namespace Nethereum.JsonRpc.IpcClient
             throw new NotImplementedException();
         }
 
-        protected override Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests)
+        protected override Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }

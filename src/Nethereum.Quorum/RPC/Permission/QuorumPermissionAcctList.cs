@@ -1,4 +1,5 @@
 
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.Quorum.RPC.DTOs;
@@ -28,7 +29,7 @@ namespace Nethereum.Quorum.RPC.Permission
     ///</Summary>
     public interface IQuorumPermissionAcctList
     {
-        Task<PermissionAccount> SendRequestAsync(object id);
+        Task<PermissionAccount> SendRequestAsync(object id, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(object id = null);
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
@@ -21,10 +22,10 @@ namespace Nethereum.Geth.RPC.Admin
             return base.BuildRequest(id, enodeUrl);
         }
 
-        public Task<bool> SendRequestAsync(string enodeUrl, object id = null)
+        public Task<bool> SendRequestAsync(string enodeUrl, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (enodeUrl == null) throw new ArgumentNullException(nameof(enodeUrl));
-            return base.SendRequestAsync(id, enodeUrl);
+            return base.SendRequestAsync(id, cancellationToken, enodeUrl);
         }
     }
 }

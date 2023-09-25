@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
@@ -15,9 +16,10 @@ namespace Nethereum.Parity.RPC.Trace
         }
 
         public Task<JObject> SendRequestAsync(CallInput callInput, TraceType[] typeOfTrace, BlockParameter block,
-            object id = null)
+            object id = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, callInput, typeOfTrace.ConvertToStringArray(), block);
+            return base.SendRequestAsync(id, cancellationToken, callInput, typeOfTrace.ConvertToStringArray(), block);
         }
 
         public RpcRequest BuildRequest(CallInput callInput, TraceType[] typeOfTrace, BlockParameter block,

@@ -3,6 +3,7 @@ using Nethereum.RPC.AccountSigning;
 using Nethereum.Signer;
 using Nethereum.Signer.EIP712;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Accounts.AccountMessageSigning
@@ -20,7 +21,7 @@ namespace Nethereum.Accounts.AccountMessageSigning
 
        
 
-        public Task<string> SendRequestAsync(string jsonMessage, object id = null)
+        public Task<string> SendRequestAsync(string jsonMessage, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.FromResult(_typedDataSigner.SignTypedDataV4(jsonMessage, _ethECKey));
         }

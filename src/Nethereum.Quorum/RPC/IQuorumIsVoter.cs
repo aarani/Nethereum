@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
 namespace Nethereum.Quorum.RPC
@@ -6,6 +7,6 @@ namespace Nethereum.Quorum.RPC
     public interface IQuorumIsVoter
     {
         RpcRequest BuildRequest(string address, object id = null);
-        Task<bool> SendRequestAsync(string address, object id = null);
+        Task<bool> SendRequestAsync(string address, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

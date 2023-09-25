@@ -1,5 +1,6 @@
 #if !DOTNET35
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.JsonRpc.Client
@@ -7,31 +8,37 @@ namespace Nethereum.JsonRpc.Client
     public abstract class RequestInterceptor
     {
         public virtual async Task<object> InterceptSendRequestAsync<T>(
-            Func<RpcRequest, string, Task<T>> interceptedSendRequestAsync, RpcRequest request,
-            string route = null)
+            Func<RpcRequest, string, CancellationToken, Task<T>> interceptedSendRequestAsync, RpcRequest request,
+            string route = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await interceptedSendRequestAsync(request, route).ConfigureAwait(false);
+            return await interceptedSendRequestAsync(request, route, cancellationToken).ConfigureAwait(false);
         }
 
         public virtual async Task InterceptSendRequestAsync(
-            Func<RpcRequest, string, Task> interceptedSendRequestAsync, RpcRequest request,
-            string route = null)
+            Func<RpcRequest, string, CancellationToken, Task> interceptedSendRequestAsync, RpcRequest request,
+            string route = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            await interceptedSendRequestAsync(request, route).ConfigureAwait(false);
+            await interceptedSendRequestAsync(request, route, cancellationToken).ConfigureAwait(false);
         }
 
         public virtual async Task<object> InterceptSendRequestAsync<T>(
-            Func<string, string, object[], Task<T>> interceptedSendRequestAsync, string method,
-            string route = null, params object[] paramList)
+            Func<string, string, CancellationToken, object[], Task<T>> interceptedSendRequestAsync, string method,
+            string route = null,
+            CancellationToken cancellationToken = default(CancellationToken),
+            params object[] paramList)
         {
-            return await interceptedSendRequestAsync(method, route, paramList).ConfigureAwait(false);
+            return await interceptedSendRequestAsync(method, route, cancellationToken, paramList).ConfigureAwait(false);
         }
 
         public virtual Task InterceptSendRequestAsync(
-            Func<string, string, object[], Task> interceptedSendRequestAsync, string method,
-            string route = null, params object[] paramList)
+            Func<string, string, CancellationToken, object[], Task> interceptedSendRequestAsync, string method,
+            string route = null,
+            CancellationToken cancellationToken = default(CancellationToken),
+            params object[] paramList)
         {
-             return interceptedSendRequestAsync(method, route, paramList);
+             return interceptedSendRequestAsync(method, route, cancellationToken, paramList);
         }
     }
 }

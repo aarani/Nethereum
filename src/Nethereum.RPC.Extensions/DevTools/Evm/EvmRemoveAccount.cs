@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
+using System.Threading;
 
 namespace Nethereum.RPC.Extensions.DevTools.Evm
 {
@@ -15,9 +16,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Evm
     {
         public EvmRemoveAccount(IClient client) : base(client,ApiMethods.evm_removeAccount.ToString()) { }
 
-        public Task<bool> SendRequestAsync(string address, string passphrase, object id = null)
+        public Task<bool> SendRequestAsync(string address, string passphrase, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, passphrase);
+            return base.SendRequestAsync(id, cancellationToken, address, passphrase);
         }
         public RpcRequest BuildRequest(string address, string passphrase, object id = null)
         {

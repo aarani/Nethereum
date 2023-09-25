@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
  
 using Nethereum.Hex.HexConvertors.Extensions;
@@ -32,10 +33,12 @@ namespace Nethereum.RPC.Eth.Transactions
         {
         }
 
-        public Task<string> SendRequestAsync(string signedTransactionData, object id = null)
+        public Task<string> SendRequestAsync(string signedTransactionData,
+                                             object id = null,
+                                             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (signedTransactionData == null) throw new ArgumentNullException(nameof(signedTransactionData));
-            return base.SendRequestAsync(id, signedTransactionData.EnsureHexPrefix());
+            return base.SendRequestAsync(id, cancellationToken, signedTransactionData.EnsureHexPrefix());
         }
 
         public RpcRequest BuildRequest(string signedTransactionData, object id = null)

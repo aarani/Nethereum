@@ -1,5 +1,6 @@
 ﻿using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.AccountSigning
@@ -15,9 +16,9 @@ namespace Nethereum.RPC.AccountSigning
 
         }
 
-        public Task<string> SendRequestAsync(string jsonMessage, object id = null)
+        public Task<string> SendRequestAsync(string jsonMessage, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return SendRequestAsync(id, jsonMessage);
+            return SendRequestAsync(id, cancellationToken, jsonMessage);
         }
 
         public RpcRequest BuildRequest(string message, object id = null)

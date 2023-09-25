@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
  
 using Nethereum.Hex.HexTypes;
@@ -27,10 +28,12 @@ namespace Nethereum.RPC.Eth.Filters
         {
         }
 
-        public Task<string[]> SendRequestAsync(HexBigInteger filterId, object id = null)
+        public Task<string[]> SendRequestAsync(HexBigInteger filterId,
+                                               object id = null,
+                                               CancellationToken cancellationToken = default(CancellationToken))
         {
             if (filterId == null) throw new ArgumentNullException(nameof(filterId));
-            return base.SendRequestAsync(id, filterId);
+            return base.SendRequestAsync(id, cancellationToken, filterId);
         }
 
         public RpcRequest BuildRequest(HexBigInteger filterId, object id = null)

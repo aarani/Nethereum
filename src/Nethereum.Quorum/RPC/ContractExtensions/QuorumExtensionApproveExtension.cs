@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using Nethereum.Quorum.RPC.DTOs;
+using System.Threading;
 
 namespace Nethereum.Quorum.RPC.ContractExtensions
 {
@@ -20,7 +21,7 @@ namespace Nethereum.Quorum.RPC.ContractExtensions
     ///</Summary>
     public interface IQuorumExtensionApproveExtension
     {
-        Task<string> SendRequestAsync(string addressToVoteOn, bool vote, PrivateTransactionInput privateTrasnsactionINput, object id = null);
+        Task<string> SendRequestAsync(string addressToVoteOn, bool vote, PrivateTransactionInput privateTrasnsactionINput, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string addressToVoteOn, bool vote, PrivateTransactionInput privateTrasnsactionINput, object id = null);
     }
 
@@ -41,9 +42,9 @@ namespace Nethereum.Quorum.RPC.ContractExtensions
     {
         public QuorumExtensionApproveExtension(IClient client) : base(client,ApiMethods.quorumExtension_approveExtension.ToString()) { }
 
-        public Task<string> SendRequestAsync(string addressToVoteOn, bool vote, PrivateTransactionInput privateTrasnsactionINput, object id = null)
+        public Task<string> SendRequestAsync(string addressToVoteOn, bool vote, PrivateTransactionInput privateTrasnsactionINput, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, addressToVoteOn, vote, privateTrasnsactionINput);
+            return base.SendRequestAsync(id, cancellationToken, addressToVoteOn, vote, privateTrasnsactionINput);
         }
         public RpcRequest BuildRequest(string addressToVoteOn, bool vote, PrivateTransactionInput privateTrasnsactionINput, object id = null)
         {

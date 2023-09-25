@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
@@ -15,7 +16,7 @@ namespace Nethereum.RPC.Eth.Blocks
 #if !DOTNET35
         Task<List<BlockWithTransactionHashes>> SendBatchRequestAsync(params HexBigInteger[] numbers);
 #endif
-        Task<BlockWithTransactionHashes> SendRequestAsync(BlockParameter blockParameter, object id = null);
-        Task<BlockWithTransactionHashes> SendRequestAsync(HexBigInteger number, object id = null);
+        Task<BlockWithTransactionHashes> SendRequestAsync(BlockParameter blockParameter, object id = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<BlockWithTransactionHashes> SendRequestAsync(HexBigInteger number, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -20,10 +20,14 @@ namespace Nethereum.RPC.TransactionManagers
 #if !DOTNET35
         IFee1559SuggestionStrategy Fee1559SuggestionStrategy { get; set; }
 
-        Task<string> SendTransactionAsync(TransactionInput transactionInput);
-        Task<HexBigInteger> EstimateGasAsync(CallInput callInput);
-        Task<string> SendTransactionAsync(string from, string to, HexBigInteger amount);
-        Task<string> SignTransactionAsync(TransactionInput transaction);
+        Task<string> SendTransactionAsync(TransactionInput transactionInput,
+                                          CancellationToken cancellationToken = default(CancellationToken));
+        Task<HexBigInteger> EstimateGasAsync(CallInput callInput,
+                                             CancellationToken cancellationToken = default(CancellationToken));
+        Task<string> SendTransactionAsync(string from, string to, HexBigInteger amount,
+                                          CancellationToken cancellationToken = default(CancellationToken));
+        Task<string> SignTransactionAsync(TransactionInput transaction,
+                                          CancellationToken cancellationToken = default(CancellationToken));
         ITransactionReceiptService TransactionReceiptService { get; set; }
         bool CalculateOrSetDefaultGasPriceFeesIfNotSet { get; set; }
         bool EstimateOrSetDefaultGasIfNotSet { get; set; }

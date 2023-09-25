@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
+using System.Threading;
 
 namespace Nethereum.RPC.Eth.Blocks
 {
@@ -86,16 +87,20 @@ namespace Nethereum.RPC.Eth.Blocks
         {
         }
 
-        public Task<BlockWithTransactionHashes> SendRequestAsync(HexBigInteger number, object id = null)
+        public Task<BlockWithTransactionHashes> SendRequestAsync(HexBigInteger number,
+                                                                 object id = null,
+                                                                 CancellationToken cancellationToken = default(CancellationToken))
         {
             if (number == null) throw new ArgumentNullException(nameof(number));
-            return base.SendRequestAsync(id, number, false);
+            return base.SendRequestAsync(id, cancellationToken, number, false);
         }
 
-        public Task<BlockWithTransactionHashes> SendRequestAsync(BlockParameter blockParameter, object id = null)
+        public Task<BlockWithTransactionHashes> SendRequestAsync(BlockParameter blockParameter,
+                                                                 object id = null,
+                                                                 CancellationToken cancellationToken = default(CancellationToken))
         {
             if (blockParameter == null) throw new ArgumentNullException(nameof(blockParameter));
-            return base.SendRequestAsync(id, blockParameter, false);
+            return base.SendRequestAsync(id, cancellationToken, blockParameter, false);
         }
 
         public RpcRequestResponseBatchItem<EthGetBlockWithTransactionsHashesByNumber, BlockWithTransactionHashes> CreateBatchItem(HexBigInteger number, object id)

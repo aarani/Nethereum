@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Contracts.QueryHandlers
@@ -41,10 +42,10 @@ namespace Nethereum.Contracts.QueryHandlers
             }
         }
 #if !DOTNET35
-        protected Task<string> CallAsync(CallInput callInput, BlockParameter block = null)
+        protected Task<string> CallAsync(CallInput callInput, BlockParameter block = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (block == null) block = DefaultBlockParameter;
-            return _contractCall.CallAsync(callInput, block);
+            return _contractCall.CallAsync(callInput, block, cancellationToken);
         }
 #endif
     }

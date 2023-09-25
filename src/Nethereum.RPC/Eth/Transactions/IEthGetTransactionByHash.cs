@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
@@ -12,6 +13,6 @@ namespace Nethereum.RPC.Eth.Transactions
 #if !DOTNET35
         Task<List<Transaction>> SendBatchRequestAsync(string[] transactionHashes);
 #endif
-        Task<Transaction> SendRequestAsync(string hashTransaction, object id = null);
+        Task<Transaction> SendRequestAsync(string hashTransaction, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -24,7 +24,7 @@ namespace Nethereum.RPC.NonceServices
             _account = account;
         }
 
-        public async Task<HexBigInteger> GetNextNonceAsync()
+        public async Task<HexBigInteger> GetNextNonceAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
 
             if (Client == null) throw new NullReferenceException("Client not configured");
@@ -32,7 +32,10 @@ namespace Nethereum.RPC.NonceServices
             await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
             try
             {
-                var nonce = await ethGetTransactionCount.SendRequestAsync(_account, BlockParameter.CreatePending())
+                var nonce = await ethGetTransactionCount.SendRequestAsync(_account,
+                                                                          BlockParameter.CreatePending(),
+                                                                          null,
+                                                                          cancellationToken)
                     .ConfigureAwait(false);
                 if (nonce.Value <= CurrentNonce)
                 {

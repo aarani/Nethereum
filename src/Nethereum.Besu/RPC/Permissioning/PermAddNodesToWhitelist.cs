@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
@@ -12,9 +13,9 @@ namespace Nethereum.Besu.RPC.Permissioning
         {
         }
 
-        public Task<string> SendRequestAsync(string[] addresses, object id = null)
+        public Task<string> SendRequestAsync(string[] addresses, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, new object[] {addresses});
+            return base.SendRequestAsync(id, cancellationToken, new object[] {addresses});
         }
 
         public RpcRequest BuildRequest(string[] addresses, object id = null)

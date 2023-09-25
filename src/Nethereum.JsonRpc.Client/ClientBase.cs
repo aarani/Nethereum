@@ -1,5 +1,6 @@
 #if !DOTNET35
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client.RpcMessages;
 
@@ -12,14 +13,14 @@ namespace Nethereum.JsonRpc.Client
 
         public RequestInterceptor OverridingRequestInterceptor { get; set; }
 
-        public async Task<T> SendRequestAsync<T>(RpcRequest request, string route = null)
+        public async Task<T> SendRequestAsync<T>(RpcRequest request, string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (OverridingRequestInterceptor != null)
                 return
                     (T)
                     await OverridingRequestInterceptor.InterceptSendRequestAsync(SendInnerRequestAsync<T>, request, route)
                         .ConfigureAwait(false);
-            return await SendInnerRequestAsync<T>(request, route).ConfigureAwait(false);
+            return await SendInnerRequestAsync<T>(request, route, cancellationToken).ConfigureAwait(false);
         }
 
         public virtual async Task<RpcRequestResponseBatch> SendBatchRequestAsync(RpcRequestResponseBatch rpcRequestResponseBatch)
@@ -29,14 +30,15 @@ namespace Nethereum.JsonRpc.Client
             return rpcRequestResponseBatch;
         }
 
-        public async Task<T> SendRequestAsync<T>(string method, string route = null, params object[] paramList)
+        public async Task<T> SendRequestAsync<T>(string method, string route = null, CancellationToken cancellationToken = default(CancellationToken), params object[] paramList)
         {
             if (OverridingRequestInterceptor != null)
                 return
                     (T)
                     await OverridingRequestInterceptor.InterceptSendRequestAsync(SendInnerRequestAsync<T>, method, route,
+                        cancellationToken,
                         paramList).ConfigureAwait(false);
-            return await SendInnerRequestAsync<T>(method, route, paramList).ConfigureAwait(false);
+            return await SendInnerRequestAsync<T>(method, route, cancellationToken, paramList).ConfigureAwait(false);
         }
 
         protected void HandleRpcError(RpcResponseMessage response, string reqMsg)
@@ -47,9 +49,10 @@ namespace Nethereum.JsonRpc.Client
         }
 
         private async Task<T> SendInnerRequestAsync<T>(RpcRequestMessage reqMsg,
-                                                       string route = null)
+                                                       string route = null,
+                                                       CancellationToken cancellationToken = default(CancellationToken))
         {
-            var response = await SendAsync(reqMsg, route).ConfigureAwait(false);
+            var response = await SendAsync(reqMsg, route, cancellationToken).ConfigureAwait(false);
             HandleRpcError(response, reqMsg.Method);
             try
             {
@@ -61,36 +64,37 @@ namespace Nethereum.JsonRpc.Client
             }
         }
 
-        protected virtual Task<T> SendInnerRequestAsync<T>(RpcRequest request, string route = null)
+        protected virtual Task<T> SendInnerRequestAsync<T>(RpcRequest request, string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var reqMsg = new RpcRequestMessage(request.Id,
                                                request.Method,
                                                request.RawParameters);
-            return SendInnerRequestAsync<T>(reqMsg, route);
+            return SendInnerRequestAsync<T>(reqMsg, route, cancellationToken);
         }
 
         protected virtual Task<T> SendInnerRequestAsync<T>(string method, string route = null,
+            CancellationToken cancellationToken = default(CancellationToken),
             params object[] paramList)
         {
             var request = new RpcRequestMessage(Guid.NewGuid().ToString(), method, paramList);
-            return SendInnerRequestAsync<T>(request, route);
+            return SendInnerRequestAsync<T>(request, route, cancellationToken);
         }
 
-        public virtual async Task SendRequestAsync(RpcRequest request, string route = null)
+        public virtual async Task SendRequestAsync(RpcRequest request, string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var response =
                 await SendAsync(
-                        new RpcRequestMessage(request.Id, request.Method, request.RawParameters), route)
+                        new RpcRequestMessage(request.Id, request.Method, request.RawParameters), route, cancellationToken)
                     .ConfigureAwait(false);
             HandleRpcError(response, request.Method);
         }
 
-        protected abstract Task<RpcResponseMessage> SendAsync(RpcRequestMessage rpcRequestMessage, string route = null);
-        protected abstract Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests);
-        public virtual async Task SendRequestAsync(string method, string route = null, params object[] paramList)
+        protected abstract Task<RpcResponseMessage> SendAsync(RpcRequestMessage rpcRequestMessage, string route = null, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests, CancellationToken cancellationToken = default(CancellationToken));
+        public virtual async Task SendRequestAsync(string method, string route = null, CancellationToken cancellationToken = default(CancellationToken), params object[] paramList)
         {
             var request = new RpcRequestMessage(Guid.NewGuid().ToString(), method, paramList);
-            var response = await SendAsync(request, route).ConfigureAwait(false);
+            var response = await SendAsync(request, route, cancellationToken).ConfigureAwait(false);
             HandleRpcError(response, method);
         }
     }

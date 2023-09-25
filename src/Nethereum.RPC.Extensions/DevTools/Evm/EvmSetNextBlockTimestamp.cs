@@ -1,5 +1,6 @@
 ﻿using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Evm
@@ -10,9 +11,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Evm
         {
         }
 
-        public Task SendRequestAsync(HexBigInteger targetTimeStamp, object id = null)
+        public Task SendRequestAsync(HexBigInteger targetTimeStamp, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-           return SendRequestAsync(id, targetTimeStamp);
+           return SendRequestAsync(id, cancellationToken, targetTimeStamp);
         }
 
         public RpcRequest BuildRequest(HexBigInteger targetTimeStamp, object id = null)

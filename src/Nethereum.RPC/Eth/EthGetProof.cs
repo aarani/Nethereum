@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Nethereum.Hex.HexConvertors.Extensions;
@@ -17,19 +18,19 @@ namespace Nethereum.RPC.Eth
         public BlockParameter DefaultBlock { get; set; }
 
         public Task<AccountProof> SendRequestAsync(string address, string[] storageKeys, BlockParameter block,
-            object id = null)
+            object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (address == null) throw new ArgumentNullException(nameof(address));
             if (storageKeys == null) throw new ArgumentNullException(nameof(storageKeys));
             if (block == null) throw new ArgumentNullException(nameof(block));
-            return base.SendRequestAsync(id, address.EnsureHexPrefix(), storageKeys, block);
+            return base.SendRequestAsync(id, cancellationToken, address.EnsureHexPrefix(), storageKeys, block);
         }
 
-        public Task<AccountProof> SendRequestAsync(string address, string[] storageKeys, object id = null)
+        public Task<AccountProof> SendRequestAsync(string address, string[] storageKeys, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (address == null) throw new ArgumentNullException(nameof(address));
             if (storageKeys == null) throw new ArgumentNullException(nameof(storageKeys));
-            return base.SendRequestAsync(id, address.EnsureHexPrefix(), storageKeys, DefaultBlock);
+            return base.SendRequestAsync(id, cancellationToken, address.EnsureHexPrefix(), storageKeys, DefaultBlock);
         }
 
         public RpcRequest BuildRequest(string address, string[] storageKeys, BlockParameter block, object id = null)

@@ -16,9 +16,9 @@ namespace Nethereum.Optimism.L2StandardBridge
 {
     public partial class L2StandardBridgeService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, L2StandardBridgeDeployment l2StandardBridgeDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, L2StandardBridgeDeployment l2StandardBridgeDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<L2StandardBridgeDeployment>().SendRequestAndWaitForReceiptAsync(l2StandardBridgeDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<L2StandardBridgeDeployment>().SendRequestAndWaitForReceiptAsync(l2StandardBridgeDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Web3.Web3 web3, L2StandardBridgeDeployment l2StandardBridgeDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.Optimism.L2StandardBridge
             return web3.Eth.GetContractDeploymentHandler<L2StandardBridgeDeployment>().SendRequestAsync(l2StandardBridgeDeployment);
         }
 
-        public static async Task<L2StandardBridgeService> DeployContractAndGetServiceAsync(Web3.Web3 web3, L2StandardBridgeDeployment l2StandardBridgeDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<L2StandardBridgeService> DeployContractAndGetServiceAsync(Web3.Web3 web3, L2StandardBridgeDeployment l2StandardBridgeDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, l2StandardBridgeDeployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, l2StandardBridgeDeployment, cancellationToken).ConfigureAwait(false);
             return new L2StandardBridgeService(web3, receipt.ContractAddress);
         }
 
@@ -47,7 +47,7 @@ namespace Nethereum.Optimism.L2StandardBridge
             return ContractHandler.SendRequestAsync(finalizeDepositFunction);
         }
 
-        public Task<TransactionReceipt> FinalizeDepositRequestAndWaitForReceiptAsync(FinalizeDepositFunction finalizeDepositFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FinalizeDepositRequestAndWaitForReceiptAsync(FinalizeDepositFunction finalizeDepositFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(finalizeDepositFunction, cancellationToken);
         }
@@ -65,7 +65,7 @@ namespace Nethereum.Optimism.L2StandardBridge
             return ContractHandler.SendRequestAsync(finalizeDepositFunction);
         }
 
-        public Task<TransactionReceipt> FinalizeDepositRequestAndWaitForReceiptAsync(string l1Token, string l2Token, string from, string to, BigInteger amount, byte[] data, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FinalizeDepositRequestAndWaitForReceiptAsync(string l1Token, string l2Token, string from, string to, BigInteger amount, byte[] data, CancellationToken cancellationToken = default(CancellationToken))
         {
             var finalizeDepositFunction = new FinalizeDepositFunction();
             finalizeDepositFunction.L1Token = l1Token;
@@ -105,7 +105,7 @@ namespace Nethereum.Optimism.L2StandardBridge
             return ContractHandler.SendRequestAsync(withdrawFunction);
         }
 
-        public Task<TransactionReceipt> WithdrawRequestAndWaitForReceiptAsync(WithdrawFunction withdrawFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> WithdrawRequestAndWaitForReceiptAsync(WithdrawFunction withdrawFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(withdrawFunction, cancellationToken);
         }
@@ -121,7 +121,7 @@ namespace Nethereum.Optimism.L2StandardBridge
             return ContractHandler.SendRequestAsync(withdrawFunction);
         }
 
-        public Task<TransactionReceipt> WithdrawRequestAndWaitForReceiptAsync(string l2Token, BigInteger amount, uint l1Gas, byte[] data, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> WithdrawRequestAndWaitForReceiptAsync(string l2Token, BigInteger amount, uint l1Gas, byte[] data, CancellationToken cancellationToken = default(CancellationToken))
         {
             var withdrawFunction = new WithdrawFunction();
             withdrawFunction.L2Token = l2Token;
@@ -137,7 +137,7 @@ namespace Nethereum.Optimism.L2StandardBridge
             return ContractHandler.SendRequestAsync(withdrawToFunction);
         }
 
-        public Task<TransactionReceipt> WithdrawToRequestAndWaitForReceiptAsync(WithdrawToFunction withdrawToFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> WithdrawToRequestAndWaitForReceiptAsync(WithdrawToFunction withdrawToFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(withdrawToFunction, cancellationToken);
         }
@@ -154,7 +154,7 @@ namespace Nethereum.Optimism.L2StandardBridge
             return ContractHandler.SendRequestAsync(withdrawToFunction);
         }
 
-        public Task<TransactionReceipt> WithdrawToRequestAndWaitForReceiptAsync(string l2Token, string to, BigInteger amount, uint l1Gas, byte[] data, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> WithdrawToRequestAndWaitForReceiptAsync(string l2Token, string to, BigInteger amount, uint l1Gas, byte[] data, CancellationToken cancellationToken = default(CancellationToken))
         {
             var withdrawToFunction = new WithdrawToFunction();
             withdrawToFunction.L2Token = l2Token;

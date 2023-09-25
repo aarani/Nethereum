@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.ContractExtensions
@@ -15,7 +16,7 @@ namespace Nethereum.Quorum.RPC.ContractExtensions
     ///</Summary>
     public interface IQuorumExtensionGetExtensionStatus
     {
-        Task<string> SendRequestAsync(string managementContractAddress, object id = null);
+        Task<string> SendRequestAsync(string managementContractAddress, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string managementContractAddress, object id = null);
     }
 
@@ -32,9 +33,9 @@ namespace Nethereum.Quorum.RPC.ContractExtensions
     {
         public QuorumExtensionGetExtensionStatus(IClient client) : base(client,ApiMethods.quorumExtension_getExtensionStatus.ToString()) { }
 
-        public Task<string> SendRequestAsync(string managementContractAddress, object id = null)
+        public Task<string> SendRequestAsync(string managementContractAddress, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, managementContractAddress);
+            return base.SendRequestAsync(id, cancellationToken, managementContractAddress);
         }
         public RpcRequest BuildRequest(string managementContractAddress, object id = null)
         {

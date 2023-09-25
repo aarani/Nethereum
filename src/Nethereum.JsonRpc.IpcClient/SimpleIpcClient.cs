@@ -47,7 +47,7 @@ namespace Nethereum.JsonRpc.IpcClient
             return memoryStream;
         }
 
-        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null)
+        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             RpcLogger rpcLogger = new RpcLogger(_log);
             RpcResponseMessage rpcResponseMessage;
@@ -56,14 +56,16 @@ namespace Nethereum.JsonRpc.IpcClient
                 var cancellationTokenSource = new CancellationTokenSource();
                 cancellationTokenSource.CancelAfter(ConnectionTimeout);
 
+                var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cancellationTokenSource.Token);
+
                 using (var pipeStream = new NamedPipeClientStream(IpcPath))
                 {
-                    await pipeStream.ConnectAsync(cancellationTokenSource.Token).ConfigureAwait(false);
+                    await pipeStream.ConnectAsync(linkedCts.Token).ConfigureAwait(false);
                     string str = JsonConvert.SerializeObject(request, JsonSerializerSettings);
                     byte[] bytes = Encoding.UTF8.GetBytes(str);
                     rpcLogger.LogRequest(str);
-                    await pipeStream.WriteAsync(bytes, 0, bytes.Length, cancellationTokenSource.Token).ConfigureAwait(false);
-                    using (MemoryStream fullResponse = await ReceiveFullResponseAsync(pipeStream, cancellationTokenSource.Token).ConfigureAwait(false))
+                    await pipeStream.WriteAsync(bytes, 0, bytes.Length, linkedCts.Token).ConfigureAwait(false);
+                    using (MemoryStream fullResponse = await ReceiveFullResponseAsync(pipeStream, linkedCts.Token).ConfigureAwait(false))
                     {
                         fullResponse.Position = 0L;
                         using (StreamReader streamReader = new StreamReader(fullResponse))
@@ -98,7 +100,7 @@ namespace Nethereum.JsonRpc.IpcClient
             throw new NotImplementedException();
         }
 
-        protected override Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests)
+        protected override Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
 ﻿using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.HostWallet
@@ -12,7 +13,7 @@ namespace Nethereum.RPC.HostWallet
         RpcRequest BuildRequest(AddEthereumChainParameter addEthereumChainParameter, object id = null);
 
 #if !DOTNET35
-        Task<string> SendRequestAsync(AddEthereumChainParameter addEthereumChainParameter, object id = null);
+        Task<string> SendRequestAsync(AddEthereumChainParameter addEthereumChainParameter, object id = null, CancellationToken cancellationToken = default(CancellationToken));
 #endif
     }
 
@@ -33,9 +34,9 @@ namespace Nethereum.RPC.HostWallet
         }
 
 #if !DOTNET35
-        public async Task<string> SendRequestAsync(AddEthereumChainParameter addEthereumChainParameter, object id = null)
+        public async Task<string> SendRequestAsync(AddEthereumChainParameter addEthereumChainParameter, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await base.SendRequestAsync(id, addEthereumChainParameter).ConfigureAwait(false);
+            await base.SendRequestAsync(id, cancellationToken, addEthereumChainParameter).ConfigureAwait(false);
 
             return null;
         }

@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
+using System.Threading;
 
 namespace Nethereum.RPC.Extensions.DevTools.Evm
 {
@@ -15,9 +16,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Evm
     {
         public EvmSetAccountStorageAt(IClient client) : base(client,ApiMethods.evm_setAccountStorageAt.ToString()) { }
 
-        public Task<bool> SendRequestAsync(string address, HexBigInteger slot, string hexData, object id = null)
+        public Task<bool> SendRequestAsync(string address, HexBigInteger slot, string hexData, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, slot, hexData);
+            return base.SendRequestAsync(id, cancellationToken, address, slot, hexData);
         }
         public RpcRequest BuildRequest(string address, HexBigInteger slot, string hexData, object id = null)
         {

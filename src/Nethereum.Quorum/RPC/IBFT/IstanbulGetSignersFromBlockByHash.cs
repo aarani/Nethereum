@@ -1,6 +1,7 @@
 
 using Nethereum.JsonRpc.Client;
 using Nethereum.Quorum.RPC.DTOs;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.IBFT
@@ -24,7 +25,7 @@ namespace Nethereum.Quorum.RPC.IBFT
     ///</Summary>
     public interface IIstanbulGetSignersFromBlockByHash
     {
-        Task<IstanbulSignersFromBlock> SendRequestAsync(string blockHash, object id = null);
+        Task<IstanbulSignersFromBlock> SendRequestAsync(string blockHash, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string blockHash, object id = null);
     }
 
@@ -49,9 +50,9 @@ namespace Nethereum.Quorum.RPC.IBFT
     {
         public IstanbulGetSignersFromBlockByHash(IClient client) : base(client,ApiMethods.istanbul_getSignersFromBlockByHash.ToString()) { }
 
-        public Task<IstanbulSignersFromBlock> SendRequestAsync(string blockHash, object id = null)
+        public Task<IstanbulSignersFromBlock> SendRequestAsync(string blockHash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, blockHash);
+            return base.SendRequestAsync(id, cancellationToken, blockHash);
         }
         public RpcRequest BuildRequest(string blockHash, object id = null)
         {

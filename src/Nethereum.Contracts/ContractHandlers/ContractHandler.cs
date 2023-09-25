@@ -44,17 +44,7 @@ namespace Nethereum.Contracts.ContractHandlers
 #if !DOTNET35
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TEthereumContractFunctionMessage>(
-            TEthereumContractFunctionMessage transactionMessage = null, CancellationTokenSource tokenSource = null)
-            where TEthereumContractFunctionMessage : FunctionMessage, new()
-        {
-            if (transactionMessage == null) transactionMessage = new TEthereumContractFunctionMessage();
-            var command = EthApiContractService.GetContractTransactionHandler<TEthereumContractFunctionMessage>();
-            SetAddressFrom(transactionMessage);
-            return command.SendRequestAndWaitForReceiptAsync(ContractAddress, transactionMessage, tokenSource);
-        }
-
-        public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TEthereumContractFunctionMessage>(
-            TEthereumContractFunctionMessage transactionMessage, CancellationToken cancellationToken)
+            TEthereumContractFunctionMessage transactionMessage = null, CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
         {
             if (transactionMessage == null) transactionMessage = new TEthereumContractFunctionMessage();
@@ -64,38 +54,42 @@ namespace Nethereum.Contracts.ContractHandlers
         }
 
         public Task<string> SendRequestAsync<TEthereumContractFunctionMessage>(
-            TEthereumContractFunctionMessage transactionMessage = null)
+            TEthereumContractFunctionMessage transactionMessage = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
         {
             if(transactionMessage == null) transactionMessage = new TEthereumContractFunctionMessage();
             var command = EthApiContractService.GetContractTransactionHandler<TEthereumContractFunctionMessage>();
             SetAddressFrom(transactionMessage);
-            return command.SendRequestAsync(ContractAddress, transactionMessage);
+            return command.SendRequestAsync(ContractAddress, transactionMessage, cancellationToken);
         }
 
         public Task<string> SignTransactionAsync<TEthereumContractFunctionMessage>(
-            TEthereumContractFunctionMessage transactionMessage = null)
+            TEthereumContractFunctionMessage transactionMessage = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
         {
             if (transactionMessage == null) transactionMessage = new TEthereumContractFunctionMessage();
             var command = EthApiContractService.GetContractTransactionHandler<TEthereumContractFunctionMessage>();
             SetAddressFrom(transactionMessage);
-            return command.SignTransactionAsync(ContractAddress, transactionMessage);
+            return command.SignTransactionAsync(ContractAddress, transactionMessage, cancellationToken);
         }
 
         public Task<HexBigInteger> EstimateGasAsync<TEthereumContractFunctionMessage>(
-            TEthereumContractFunctionMessage transactionMessage = null)
+            TEthereumContractFunctionMessage transactionMessage = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
         {
             if (transactionMessage == null) transactionMessage = new TEthereumContractFunctionMessage();
             var command = EthApiContractService.GetContractTransactionHandler<TEthereumContractFunctionMessage>();
             SetAddressFrom(transactionMessage);
-            return command.EstimateGasAsync(ContractAddress, transactionMessage);
+            return command.EstimateGasAsync(ContractAddress, transactionMessage, cancellationToken);
         }
 
         public Task<TEthereumFunctionReturn> QueryDeserializingToObjectAsync<TEthereumContractFunctionMessage,
             TEthereumFunctionReturn>(TEthereumContractFunctionMessage ethereumContractFunctionMessage = null,
-            BlockParameter blockParameter = null)
+            BlockParameter blockParameter = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
             where TEthereumFunctionReturn : IFunctionOutputDTO, new()
         {
@@ -104,45 +98,54 @@ namespace Nethereum.Contracts.ContractHandlers
             var queryHandler = EthApiContractService.GetContractQueryHandler<TEthereumContractFunctionMessage>();
             return queryHandler.QueryDeserializingToObjectAsync<TEthereumFunctionReturn>(
                 ethereumContractFunctionMessage,
-                ContractAddress, blockParameter);
+                ContractAddress, blockParameter,
+                cancellationToken);
         }
 
         public Task<TReturn> QueryAsync<TEthereumContractFunctionMessage, TReturn>(
-            TEthereumContractFunctionMessage ethereumContractFunctionMessage = null, BlockParameter blockParameter = null)
+            TEthereumContractFunctionMessage ethereumContractFunctionMessage = null, BlockParameter blockParameter = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
         {
             if(ethereumContractFunctionMessage == null) ethereumContractFunctionMessage = new TEthereumContractFunctionMessage();
             SetAddressFrom(ethereumContractFunctionMessage);
             var queryHandler = EthApiContractService.GetContractQueryHandler<TEthereumContractFunctionMessage>();
             return queryHandler.QueryAsync<TReturn>(
-                ContractAddress, ethereumContractFunctionMessage, blockParameter);
+                ContractAddress, ethereumContractFunctionMessage, blockParameter, cancellationToken);
         }
 
-        public Task<byte[]> QueryRawAsync<TEthereumContractFunctionMessage>(TEthereumContractFunctionMessage ethereumContractFunctionMessage = null, BlockParameter blockParameter = null)
+        public Task<byte[]> QueryRawAsync<TEthereumContractFunctionMessage>(TEthereumContractFunctionMessage ethereumContractFunctionMessage = null,
+                                                                            BlockParameter blockParameter = null,
+                                                                            CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
         {
             if (ethereumContractFunctionMessage == null) ethereumContractFunctionMessage = new TEthereumContractFunctionMessage();
             SetAddressFrom(ethereumContractFunctionMessage);
             var queryHandler = EthApiContractService.GetContractQueryHandler<TEthereumContractFunctionMessage>();
             return queryHandler.QueryRawAsBytesAsync(
-                ContractAddress, ethereumContractFunctionMessage, blockParameter);
+                ContractAddress, ethereumContractFunctionMessage, blockParameter, cancellationToken);
         }
         
-        public Task<TReturn> QueryRawAsync<TEthereumContractFunctionMessage, TCustomDecoder, TReturn>(BlockParameter blockParameter = null)
+        public Task<TReturn> QueryRawAsync<TEthereumContractFunctionMessage, TCustomDecoder, TReturn>(BlockParameter blockParameter = null,
+                                                                                                      CancellationToken cancellationToken = default(CancellationToken))
            where TEthereumContractFunctionMessage : FunctionMessage, new()
            where TCustomDecoder : ICustomRawDecoder<TReturn>, new()
         {
             var ethereumContractFunctionMessage = new TEthereumContractFunctionMessage();
-            return QueryRawAsync<TEthereumContractFunctionMessage, TCustomDecoder, TReturn>(ethereumContractFunctionMessage, blockParameter);
+            return QueryRawAsync<TEthereumContractFunctionMessage, TCustomDecoder, TReturn>(ethereumContractFunctionMessage,
+                                                                                            blockParameter,
+                                                                                            cancellationToken);
         }
 
-        public async Task<TReturn> QueryRawAsync<TEthereumContractFunctionMessage, TCustomDecoder, TReturn>(TEthereumContractFunctionMessage ethereumContractFunctionMessage, BlockParameter blockParameter = null)
+        public async Task<TReturn> QueryRawAsync<TEthereumContractFunctionMessage, TCustomDecoder, TReturn>(TEthereumContractFunctionMessage ethereumContractFunctionMessage,
+                                                                                                            BlockParameter blockParameter = null,
+                                                                                                            CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
             where TCustomDecoder : ICustomRawDecoder<TReturn>, new()
         {
           
             var result = await QueryRawAsync<TEthereumContractFunctionMessage>(ethereumContractFunctionMessage,
-                blockParameter).ConfigureAwait(false);
+                blockParameter, cancellationToken).ConfigureAwait(false);
             var decoder = new TCustomDecoder();
             return decoder.Decode(result);
         }

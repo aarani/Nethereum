@@ -27,57 +27,65 @@ namespace Nethereum.Contracts.ContractHandlers
         }
 
         public Task<string> SignTransactionAsync(
-            string contractAddress, TContractMessage functionMessage = null)
+            string contractAddress,
+            TContractMessage functionMessage = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _transactionSigner.SignTransactionAsync(contractAddress, functionMessage);
+            return _transactionSigner.SignTransactionAsync(contractAddress,
+                                                           functionMessage,
+                                                           cancellationToken);
         }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(
-            string contractAddress, TContractMessage functionMessage = null, CancellationTokenSource tokenSource = null)
-        {
-            return _receiptPollHandler.SendTransactionAsync(contractAddress, functionMessage, tokenSource);
-        }
-
+        
         public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(
             string contractAddress, TContractMessage functionMessage, CancellationToken cancellationToken)
         {
             return _receiptPollHandler.SendTransactionAsync(contractAddress, functionMessage, cancellationToken);
         }
 
-        public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractAddress, TContractMessage functionMessage, CancellationToken cancellationToken)
+        public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractAddress, TContractMessage functionMessage, CancellationToken cancellationToken = default(CancellationToken))
         {
             return SendTransactionAndWaitForReceiptAsync(contractAddress, functionMessage, cancellationToken);
         }
-
-        [Obsolete("Use " + nameof(SendTransactionAndWaitForReceiptAsync) + " instead")]
-        public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(
-            string contractAddress, TContractMessage functionMessage = null, CancellationTokenSource tokenSource = null)
+        
+        public Task<string> SendTransactionAsync(string contractAddress,
+                                                 TContractMessage functionMessage = null,
+                                                 CancellationToken cancellationToken = default(CancellationToken))
         {
-            return SendTransactionAndWaitForReceiptAsync(contractAddress, functionMessage, tokenSource);
-        }
-
-        public Task<string> SendTransactionAsync(string contractAddress, TContractMessage functionMessage = null)
-        {
-            return _transactionSenderHandler.SendTransactionAsync(contractAddress, functionMessage);
+            return _transactionSenderHandler.SendTransactionAsync(contractAddress,
+                                                                  functionMessage,
+                                                                  cancellationToken);
         }
 
         [Obsolete("Use " + nameof(SendTransactionAsync) + " instead")]
-        public Task<string> SendRequestAsync(string contractAddress, TContractMessage functionMessage = null)
+        public Task<string> SendRequestAsync(string contractAddress,
+                                             TContractMessage functionMessage = null,
+                                             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return SendTransactionAsync(contractAddress, functionMessage);
+            return SendTransactionAsync(contractAddress,
+                                        functionMessage,
+                                        cancellationToken);
         }
 
         public async Task<TransactionInput> CreateTransactionInputEstimatingGasAsync(
-            string contractAddress, TContractMessage functionMessage = null)
+            string contractAddress,
+            TContractMessage functionMessage = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            var gasEstimate = await EstimateGasAsync(contractAddress, functionMessage).ConfigureAwait(false);
+            var gasEstimate = await EstimateGasAsync(contractAddress,
+                                                     functionMessage,
+                                                     cancellationToken)
+                                                     .ConfigureAwait(false);
             functionMessage.Gas = gasEstimate;
             return functionMessage.CreateTransactionInput(contractAddress);
         }
 
-        public Task<HexBigInteger> EstimateGasAsync(string contractAddress, TContractMessage functionMessage = null)
+        public Task<HexBigInteger> EstimateGasAsync(string contractAddress,
+                                                    TContractMessage functionMessage = null,
+                                                    CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _estimatorHandler.EstimateGasAsync(contractAddress, functionMessage);
+            return _estimatorHandler.EstimateGasAsync(contractAddress,
+                                                      functionMessage,
+                                                      cancellationToken);
         }
 
        

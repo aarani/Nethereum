@@ -240,37 +240,6 @@ namespace Nethereum.Contracts
             input.Data = encodedInput;
             return base.SendTransactionAndWaitForReceiptAsync(input, receiptRequestCancellationToken);
         }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
-           CancellationTokenSource receiptRequestCancellationTokenSource = null)
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(functionInput, from),
-                receiptRequestCancellationTokenSource);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
-            HexBigInteger gas,
-            HexBigInteger value, CancellationTokenSource receiptRequestCancellationTokenSource = null)
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(functionInput, from, gas, value),
-                receiptRequestCancellationTokenSource);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
-            HexBigInteger gas, HexBigInteger gasPrice,
-            HexBigInteger value, CancellationTokenSource receiptRequestCancellationTokenSource = null)
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(
-                CreateTransactionInput(functionInput, from, gas, gasPrice, value), receiptRequestCancellationTokenSource);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput,
-            TransactionInput input, CancellationTokenSource receiptRequestCancellationTokenSource = null)
-        {
-            var encodedInput = GetData(functionInput);
-            input.Data = encodedInput;
-            return base.SendTransactionAndWaitForReceiptAsync(input, receiptRequestCancellationTokenSource);
-        }
 #endif
     }
 }

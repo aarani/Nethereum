@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
@@ -16,9 +17,9 @@ namespace Nethereum.Besu.RPC.EEA
         {
         }
 
-        public Task<string> SendRequestAsync(string signedTransaction, object id = null)
+        public Task<string> SendRequestAsync(string signedTransaction, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, signedTransaction);
+            return base.SendRequestAsync(id, cancellationToken, signedTransaction);
         }
 
         public RpcRequest BuildRequest(string signedTransaction, object id = null)
