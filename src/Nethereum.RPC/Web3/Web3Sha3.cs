@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
  
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
@@ -31,9 +32,11 @@ namespace Nethereum.RPC.Web3
         {
         }
 
-        public Task<string> SendRequestAsync(HexUTF8String valueToConvertHexUtf8, object id = null)
+        public Task<string> SendRequestAsync(HexUTF8String valueToConvertHexUtf8,
+                                             object id = null,
+                                             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, valueToConvertHexUtf8);
+            return base.SendRequestAsync(id, cancellationToken, valueToConvertHexUtf8);
         }
 
         public RpcRequest BuildRequest(HexUTF8String valueToConvert, object id = null)

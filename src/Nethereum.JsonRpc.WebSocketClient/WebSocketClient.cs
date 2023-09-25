@@ -156,7 +156,7 @@ namespace Nethereum.JsonRpc.WebSocketClient
             return memoryStream;
         }
 
-        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null)
+        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var logger = new RpcLogger(_log);
             try
@@ -168,8 +168,10 @@ namespace Nethereum.JsonRpc.WebSocketClient
                 var cancellationTokenSource = new CancellationTokenSource();
                 cancellationTokenSource.CancelAfter(ConnectionTimeout);
 
+                var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cancellationTokenSource.Token); 
+
                 var webSocket = await GetClientWebSocketAsync().ConfigureAwait(false);
-                await webSocket.SendAsync(requestBytes, WebSocketMessageType.Text, true, cancellationTokenSource.Token)
+                await webSocket.SendAsync(requestBytes, WebSocketMessageType.Text, true, linkedCts.Token)
                     .ConfigureAwait(false);
 
                 using (var memoryData = await ReceiveFullResponseAsync(webSocket).ConfigureAwait(false))

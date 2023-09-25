@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
@@ -8,7 +9,7 @@ namespace Nethereum.RPC.Eth.Blocks
     public interface IEthGetBlockTransactionCountByNumber
     {
         RpcRequest BuildRequest(BlockParameter block, object id = null);
-        Task<HexBigInteger> SendRequestAsync(object id = null);
-        Task<HexBigInteger> SendRequestAsync(BlockParameter block, object id = null);
+        Task<HexBigInteger> SendRequestAsync(object id = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HexBigInteger> SendRequestAsync(BlockParameter block, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

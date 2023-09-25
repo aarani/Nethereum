@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
@@ -6,7 +7,10 @@ namespace Nethereum.RPC.UnitTests.InterceptorTests
 {
     public class OverridingInterceptorMock:RequestInterceptor
     {
-        public override async Task<object> InterceptSendRequestAsync<T>(Func<RpcRequest, string, Task<T>> interceptedSendRequestAsync, RpcRequest request, string route = null)
+        public override async Task<object> InterceptSendRequestAsync<T>(Func<RpcRequest, string, CancellationToken, Task<T>> interceptedSendRequestAsync,
+                                                                        RpcRequest request,
+                                                                        string route = null,
+                                                                        CancellationToken cancellationToken = default(CancellationToken))
         {
             if (request.Method == "eth_accounts")
             {
@@ -17,11 +21,14 @@ namespace Nethereum.RPC.UnitTests.InterceptorTests
             {
                 return "the code";
             }
-            return await interceptedSendRequestAsync(request, route).ConfigureAwait(false);
+            return await interceptedSendRequestAsync(request, route,  cancellationToken).ConfigureAwait(false);
         }
 
 
-        public override async Task<object> InterceptSendRequestAsync<T>(Func<string, string, object[], Task<T>> interceptedSendRequestAsync, string method, string route = null,
+        public override async Task<object> InterceptSendRequestAsync<T>(Func<string, string, CancellationToken, object[], Task<T>> interceptedSendRequestAsync,
+            string method,
+            string route = null,
+            CancellationToken cancellationToken = default(CancellationToken),
             params object[] paramList)
         {
             if (method == "eth_accounts")
@@ -34,7 +41,7 @@ namespace Nethereum.RPC.UnitTests.InterceptorTests
                 return "the code";
             }
 
-            return await interceptedSendRequestAsync(method, route, paramList).ConfigureAwait(false);
+            return await interceptedSendRequestAsync(method, route, paramList, cancellationToken).ConfigureAwait(false);
         }
     }
 }

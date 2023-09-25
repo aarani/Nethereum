@@ -8,11 +8,23 @@ namespace Nethereum.Contracts.ContractHandlers
 {
     public interface IContractTransactionHandler<TContractMessage> where TContractMessage : FunctionMessage, new()
     {
-        Task<TransactionInput> CreateTransactionInputEstimatingGasAsync(string contractAddress, TContractMessage functionMessage = null);
-        Task<HexBigInteger> EstimateGasAsync(string contractAddress, TContractMessage functionMessage = null);     
+        Task<TransactionInput> CreateTransactionInputEstimatingGasAsync(string contractAddress,
+                                                                        TContractMessage functionMessage = null,
+                                                                        CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<HexBigInteger> EstimateGasAsync(string contractAddress,
+                                             TContractMessage functionMessage = null,
+                                             CancellationToken cancellationToken = default(CancellationToken));
+
         Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractAddress, TContractMessage functionMessage = null, CancellationTokenSource tokenSource = null);
         Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractAddress, TContractMessage functionMessage, CancellationToken cancellationToken);
-        Task<string> SendRequestAsync(string contractAddress, TContractMessage functionMessage = null);
-        Task<string> SignTransactionAsync(string contractAddress, TContractMessage functionMessage = null);
+
+        Task<string> SendRequestAsync(string contractAddress,
+                                      TContractMessage functionMessage = null,
+                                      CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<string> SignTransactionAsync(string contractAddress,
+                                          TContractMessage functionMessage = null,
+                                          CancellationToken cancellationToken = default(CancellationToken));
     }
 }

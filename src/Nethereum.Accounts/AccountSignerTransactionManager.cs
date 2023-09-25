@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.Hex.HexTypes;
@@ -56,14 +57,16 @@ namespace Nethereum.Web3.Accounts
         public override BigInteger DefaultGas { get; set; } = SignedLegacyTransaction.DEFAULT_GAS_LIMIT;
 
 
-        public async override Task<string> SendTransactionAsync(TransactionInput transactionInput)
+        public async override Task<string> SendTransactionAsync(TransactionInput transactionInput,
+                                                                CancellationToken cancellationToken = default(CancellationToken))
         {
             if (transactionInput == null) throw new ArgumentNullException(nameof(transactionInput));
             await EnsureChainIdAndChainFeatureIsSetAsync().ConfigureAwait(false);
             return await SignAndSendTransactionAsync(transactionInput).ConfigureAwait(false);
         }
 
-        public async override Task<string> SignTransactionAsync(TransactionInput transaction)
+        public async override Task<string> SignTransactionAsync(TransactionInput transaction,
+                                                                CancellationToken cancellationToken = default(CancellationToken))
         {
             await EnsureChainIdAndChainFeatureIsSetAsync().ConfigureAwait(false);
             return await SignTransactionRetrievingNextNonceAsync(transaction).ConfigureAwait(false);
@@ -77,7 +80,8 @@ namespace Nethereum.Web3.Accounts
             return _transactionSigner.SignTransaction((Account) Account, transaction, ChainId);
         }
 
-        protected async Task<string> SignTransactionRetrievingNextNonceAsync(TransactionInput transaction)
+        protected async Task<string> SignTransactionRetrievingNextNonceAsync(TransactionInput transaction,
+                                                                             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
             if (!transaction.From.IsTheSameAddress(Account.Address))
@@ -86,12 +90,13 @@ namespace Nethereum.Web3.Accounts
             var nonce = await GetNonceAsync(transaction).ConfigureAwait(false);
             transaction.Nonce = nonce;
 
-            await SetTransactionFeesOrPricingAsync(transaction).ConfigureAwait(false);
+            await SetTransactionFeesOrPricingAsync(transaction, cancellationToken).ConfigureAwait(false);
 
             return SignTransaction(transaction);
         }
 
-        public async Task<HexBigInteger> GetNonceAsync(TransactionInput transaction)
+        public async Task<HexBigInteger> GetNonceAsync(TransactionInput transaction,
+                                                       CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client == null) throw new NullReferenceException("Client not configured");
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
@@ -101,13 +106,14 @@ namespace Nethereum.Web3.Accounts
                 if (Account.NonceService == null)
                     Account.NonceService = new InMemoryNonceService(Account.Address, Client);
                 Account.NonceService.Client = Client;
-                nonce = await Account.NonceService.GetNextNonceAsync().ConfigureAwait(false);
+                nonce = await Account.NonceService.GetNextNonceAsync(cancellationToken).ConfigureAwait(false);
             }
 
             return nonce;
         }
 
-        private async Task<string> SignAndSendTransactionAsync(TransactionInput transaction)
+        private async Task<string> SignAndSendTransactionAsync(TransactionInput transaction,
+                                                               CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client == null) throw new NullReferenceException("Client not configured");
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
@@ -116,7 +122,8 @@ namespace Nethereum.Web3.Accounts
 
             var ethSendTransaction = new EthSendRawTransaction(Client);
             var signedTransaction = await SignTransactionRetrievingNextNonceAsync(transaction).ConfigureAwait(false);
-            return await ethSendTransaction.SendRequestAsync(signedTransaction.EnsureHexPrefix()).ConfigureAwait(false);
+            return await ethSendTransaction.SendRequestAsync(signedTransaction.EnsureHexPrefix(), null, cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }

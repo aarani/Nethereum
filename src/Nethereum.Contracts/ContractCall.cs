@@ -20,12 +20,12 @@ namespace Nethereum.Contracts
         }
 
 #if !DOTNET35
-        public async Task<string> CallAsync(CallInput callInput, BlockParameter block = null)
+        public async Task<string> CallAsync(CallInput callInput, BlockParameter block = null, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
                 if (block == null) block = _defaulBlock;
-                return await _ethCall.SendRequestAsync(callInput, block).ConfigureAwait(false);
+                return await _ethCall.SendRequestAsync(callInput, block, cancellationToken).ConfigureAwait(false);
             }
             catch (RpcResponseException rpcException)
             {

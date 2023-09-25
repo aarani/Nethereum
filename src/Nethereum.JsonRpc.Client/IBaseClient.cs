@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.JsonRpc.Client
@@ -7,7 +8,7 @@ namespace Nethereum.JsonRpc.Client
 #if !DOTNET35
         RequestInterceptor OverridingRequestInterceptor { get; set; }
 #endif
-        Task SendRequestAsync(RpcRequest request, string route = null);
-        Task SendRequestAsync(string method, string route = null, params object[] paramList);
+        Task SendRequestAsync(RpcRequest request, string route = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task SendRequestAsync(string method, string route = null, CancellationToken cancellationToken = default(CancellationToken), params object[] paramList);
     }
 }

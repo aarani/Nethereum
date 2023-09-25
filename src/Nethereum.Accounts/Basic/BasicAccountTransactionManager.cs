@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
@@ -54,7 +55,7 @@ namespace Nethereum.Web3.Accounts.Basic
         }
 
 
-        public override async Task<string> SendTransactionAsync(TransactionInput transactionInput)
+        public override async Task<string> SendTransactionAsync(TransactionInput transactionInput, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client == null) throw new NullReferenceException("Client not configured");
             if (transactionInput == null) throw new ArgumentNullException(nameof(transactionInput));
@@ -66,18 +67,18 @@ namespace Nethereum.Web3.Accounts.Basic
             var nonce = await GetNonceAsync(transactionInput).ConfigureAwait(false);
             if (nonce != null) transactionInput.Nonce = nonce;
             var ethSendTransaction = new EthSendTransaction(Client);
-            return await ethSendTransaction.SendRequestAsync(transactionInput)
+            return await ethSendTransaction.SendRequestAsync(transactionInput, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public override Task<string> SendTransactionAsync(string from, string to, HexBigInteger amount)
+        public override Task<string> SendTransactionAsync(string from, string to, HexBigInteger amount, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!from.IsTheSameAddress(Account.Address)) throw new Exception("Invalid account used");
             var transactionInput = new TransactionInput(null, to, from, null, null, amount);
-            return SendTransactionAsync(transactionInput);
+            return SendTransactionAsync(transactionInput, cancellationToken);
         }
 
-        public override Task<string> SignTransactionAsync(TransactionInput transaction)
+        public override Task<string> SignTransactionAsync(TransactionInput transaction, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new InvalidOperationException("Basic accounts cannot sign offline transactions");
         }

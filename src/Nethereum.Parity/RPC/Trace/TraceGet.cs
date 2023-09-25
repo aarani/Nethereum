@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace Nethereum.Parity.RPC.Trace
 {
@@ -14,9 +15,9 @@ namespace Nethereum.Parity.RPC.Trace
         {
         }
 
-        public Task<JObject> SendRequestAsync(string transactionHash, HexBigInteger[] index, object id = null)
+        public Task<JObject> SendRequestAsync(string transactionHash, HexBigInteger[] index, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, transactionHash, index);
+            return base.SendRequestAsync(id, transactionHash, index, cancellationToken);
         }
 
         public RpcRequest BuildRequest(string transactionHash, HexBigInteger[] index, object id = null)

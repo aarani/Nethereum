@@ -7,11 +7,19 @@ namespace Nethereum.Contracts.CQS
 {
     public interface IContractDeploymentTransactionHandler<TContractDeploymentMessage> where TContractDeploymentMessage : ContractDeploymentMessage, new()
     {
-        Task<TransactionInput> CreateTransactionInputEstimatingGasAsync(TContractDeploymentMessage deploymentMessage = null);
-        Task<HexBigInteger> EstimateGasAsync(TContractDeploymentMessage contractDeploymentMessage);
+        Task<TransactionInput> CreateTransactionInputEstimatingGasAsync(TContractDeploymentMessage deploymentMessage = null,
+                                                                         CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<HexBigInteger> EstimateGasAsync(TContractDeploymentMessage contractDeploymentMessage,
+                                             CancellationToken cancellationToken = default(CancellationToken));
+
         Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(TContractDeploymentMessage contractDeploymentMessage = null, CancellationTokenSource tokenSource = null);
         Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(TContractDeploymentMessage contractDeploymentMessage, CancellationToken cancellationToken);
-        Task<string> SendRequestAsync(TContractDeploymentMessage contractDeploymentMessage = null);
-        Task<string> SignTransactionAsync(TContractDeploymentMessage contractDeploymentMessage);
+
+        Task<string> SendRequestAsync(TContractDeploymentMessage contractDeploymentMessage = null,
+                                     CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<string> SignTransactionAsync(TContractDeploymentMessage contractDeploymentMessage,
+                                          CancellationToken cancellationToken = default(CancellationToken));
     }
 }

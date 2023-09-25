@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Sockets;
@@ -101,7 +102,7 @@ namespace Nethereum.JsonRpc.IpcClient
             return memoryStream;
         }
 
-        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null)
+        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var logger = new RpcLogger(_log);
             try

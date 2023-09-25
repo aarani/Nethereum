@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Geth.RPC.Debug.DTOs;
 using Nethereum.Hex.HexTypes;
@@ -21,9 +22,9 @@ namespace Nethereum.Geth.RPC.Debug
             return base.BuildRequest(id, new HexBigInteger(blockNumber), options);
         }
 
-        public Task<JArray> SendRequestAsync(ulong blockNumber, TraceTransactionOptions options, object id = null)
+        public Task<JArray> SendRequestAsync(ulong blockNumber, TraceTransactionOptions options, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, new HexBigInteger(blockNumber), options);
+            return base.SendRequestAsync(id, new HexBigInteger(blockNumber), options, cancellationToken);
         }
     }
 }

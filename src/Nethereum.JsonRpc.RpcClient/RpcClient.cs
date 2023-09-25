@@ -105,7 +105,7 @@ namespace Nethereum.JsonRpc.Client
         }
 
 
-        protected override async Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests)
+        protected override async Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests, CancellationToken cancellationToken = default(CancellationToken))
         {
             var logger = new RpcLogger(_log);
             try
@@ -118,7 +118,9 @@ namespace Nethereum.JsonRpc.Client
 
                 logger.LogRequest(rpcRequestJson);
 
-                var httpResponseMessage = await httpClient.PostAsync(String.Empty, httpContent, cancellationTokenSource.Token).ConfigureAwait(false);
+                var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cancellationTokenSource.Token);
+
+                var httpResponseMessage = await httpClient.PostAsync(String.Empty, httpContent, linkedCts.Token).ConfigureAwait(false);
                 httpResponseMessage.EnsureSuccessStatusCode();
 
                 var stream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
@@ -145,7 +147,7 @@ namespace Nethereum.JsonRpc.Client
             }
         }
 
-        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null)
+        protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage request, string route = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var logger = new RpcLogger(_log);
             try
@@ -158,7 +160,9 @@ namespace Nethereum.JsonRpc.Client
 
                 logger.LogRequest(rpcRequestJson);
 
-                var httpResponseMessage = await httpClient.PostAsync(route, httpContent, cancellationTokenSource.Token).ConfigureAwait(false);
+                var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cancellationTokenSource.Token);
+
+                var httpResponseMessage = await httpClient.PostAsync(route, httpContent, linkedCts.Token).ConfigureAwait(false);
                 httpResponseMessage.EnsureSuccessStatusCode();
 
                 var stream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);

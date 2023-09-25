@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.TransactionManagers;
 
@@ -14,13 +15,14 @@ namespace Nethereum.Contracts.DeploymentHandlers
         }
 
 
-        public Task<HexBigInteger> EstimateGasAsync(TContractDeploymentMessage deploymentMessage = null)
+        public Task<HexBigInteger> EstimateGasAsync(TContractDeploymentMessage deploymentMessage = null,
+                                                    CancellationToken cancellationToken = default(CancellationToken))
         {
             if(deploymentMessage == null) deploymentMessage = new TContractDeploymentMessage();
             var callInput = DeploymentMessageEncodingService.CreateCallInput(deploymentMessage);
             if (TransactionManager.EstimateOrSetDefaultGasIfNotSet)
             {
-                return TransactionManager.EstimateGasAsync(callInput);
+                return TransactionManager.EstimateGasAsync(callInput, cancellationToken);
             }
 
             return null;

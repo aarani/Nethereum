@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
@@ -45,9 +46,9 @@ namespace Nethereum.RPC.Eth
         }
 
 #if !DOTNET35
-        public new async Task<SyncingOutput> SendRequestAsync(object id = null)
+        public new async Task<SyncingOutput> SendRequestAsync(object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var response = await base.SendRequestAsync(id).ConfigureAwait(false);
+            var response = await base.SendRequestAsync(id, cancellationToken).ConfigureAwait(false);
             return ConvertResponseToSyncingOutput(response);
         }
 

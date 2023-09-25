@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
@@ -8,6 +9,6 @@ namespace Nethereum.RPC.Eth.Filters
     public interface IEthGetFilterChangesForEthNewFilter
     {
         RpcRequest BuildRequest(HexBigInteger filterId, object id = null);
-        Task<FilterLog[]> SendRequestAsync(HexBigInteger filterId, object id = null);
+        Task<FilterLog[]> SendRequestAsync(HexBigInteger filterId, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }
