@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -71,7 +72,7 @@ namespace Nethereum.Signer.IntegrationTests
 
             var receipt = await
                 web3.Eth.DeployContract.SendRequestAndWaitForReceiptAsync(abi, contractByteCode, senderAddress,
-                    new HexBigInteger(900000), null, 7).ConfigureAwait(false);
+                    new HexBigInteger(900000), CancellationToken.None, 7).ConfigureAwait(false);
             var contractAddress = receipt.ContractAddress;
             var contract = web3.Eth.GetContract(abi, contractAddress);
             var multiplyFunction = contract.GetFunction("multiply");

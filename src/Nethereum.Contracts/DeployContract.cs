@@ -1,4 +1,4 @@
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding;
 using Nethereum.Hex.HexTypes;
@@ -357,7 +357,7 @@ namespace Nethereum.Contracts
 
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string abi, string contractByteCode,
-        string from, HexBigInteger gas, CancellationTokenSource receiptRequestCancellationToken = null,
+        string from, HexBigInteger gas, CancellationToken receiptRequestCancellationToken = default(CancellationToken),
         params object[] values)
         {
             var transaction =
@@ -368,7 +368,7 @@ namespace Nethereum.Contracts
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string abi, string contractByteCode,
             string from, HexBigInteger gas,
-            HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null,
+            HexBigInteger value, CancellationToken receiptRequestCancellationToken = default(CancellationToken),
             params object[] values)
         {
             var transaction =
@@ -379,7 +379,7 @@ namespace Nethereum.Contracts
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string abi, string contractByteCode,
             string from, HexBigInteger gas, HexBigInteger gasPrice,
-            HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null,
+            HexBigInteger value, CancellationToken receiptRequestCancellationToken = default(CancellationToken),
             params object[] values)
         {
             var transaction =
@@ -390,7 +390,7 @@ namespace Nethereum.Contracts
         }
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string abi, string contractByteCode,
-            string from, CancellationTokenSource receiptRequestCancellationToken = null,
+            string from, CancellationToken receiptRequestCancellationToken = default(CancellationToken),
             params object[] values)
         {
             var transaction = _deployContractTransactionBuilder.BuildTransaction(abi, contractByteCode, from, values);
@@ -399,7 +399,7 @@ namespace Nethereum.Contracts
         }
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractByteCode, string from,
-            HexBigInteger gas, CancellationTokenSource receiptRequestCancellationToken = null)
+            HexBigInteger gas, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             _deployContractTransactionBuilder.EnsureByteCodeDoesNotContainPlaceholders(contractByteCode);
             return DeployContractAndWaitForReceiptAsync(
@@ -408,7 +408,7 @@ namespace Nethereum.Contracts
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractByteCode, string from,
             HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value,
-            CancellationTokenSource receiptRequestCancellationToken = null)
+            CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             _deployContractTransactionBuilder.EnsureByteCodeDoesNotContainPlaceholders(contractByteCode);
             return DeployContractAndWaitForReceiptAsync(
@@ -417,7 +417,7 @@ namespace Nethereum.Contracts
         }
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractByteCode, string from,
-            HexBigInteger gas, HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null)
+            HexBigInteger gas, HexBigInteger value, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             _deployContractTransactionBuilder.EnsureByteCodeDoesNotContainPlaceholders(contractByteCode);
             return DeployContractAndWaitForReceiptAsync(
@@ -425,7 +425,7 @@ namespace Nethereum.Contracts
         }
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractByteCode, string from,
-            CancellationTokenSource receiptRequestCancellationToken = null)
+            CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             _deployContractTransactionBuilder.EnsureByteCodeDoesNotContainPlaceholders(contractByteCode);
             return DeployContractAndWaitForReceiptAsync(
@@ -434,7 +434,7 @@ namespace Nethereum.Contracts
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode,
             string from,
-            TConstructorParams inputParams, CancellationTokenSource receiptRequestCancellationToken = null)
+            TConstructorParams inputParams, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             var transaction = _deployContractTransactionBuilder.BuildTransaction(contractByteCode, from, inputParams);
             return DeployContractAndWaitForReceiptAsync(transaction,
@@ -444,7 +444,7 @@ namespace Nethereum.Contracts
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode,
             string from,
             HexBigInteger gas, TConstructorParams inputParams,
-            CancellationTokenSource receiptRequestCancellationToken = null)
+            CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             var transaction =
                 _deployContractTransactionBuilder.BuildTransaction(contractByteCode, from, gas, inputParams);
@@ -455,7 +455,7 @@ namespace Nethereum.Contracts
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode,
             string from,
             HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value, TConstructorParams inputParams,
-           CancellationTokenSource receiptRequestCancellationToken = null)
+            CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             var transaction =
                 _deployContractTransactionBuilder.BuildTransaction(contractByteCode, from, gas, gasPrice, value,
@@ -467,7 +467,7 @@ namespace Nethereum.Contracts
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode,
             string from,
             HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value, HexBigInteger nonce, TConstructorParams inputParams,
-           CancellationTokenSource receiptRequestCancellationToken = null)
+            CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             var transaction =
                 _deployContractTransactionBuilder.BuildTransaction(contractByteCode, from, gas, gasPrice, value, nonce,

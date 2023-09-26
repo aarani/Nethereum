@@ -39,7 +39,7 @@ namespace Nethereum.Contracts.IntegrationTests.EncodingInputOutput
             var web3 = _ethereumClientIntegrationFixture.GetWeb3();
 
             var receipt = await web3.Eth.DeployContract.SendRequestAndWaitForReceiptAsync(byteCode, senderAddress,
-                new HexBigInteger(900000), null, null, null);
+                new HexBigInteger(900000), null, null, CancellationToken.None);
 
             var contract = web3.Eth.GetContract(abi, receipt.ContractAddress);
             var addChargeFunction = contract.GetFunction("addCharge");
@@ -49,7 +49,8 @@ namespace Nethereum.Contracts.IntegrationTests.EncodingInputOutput
             tx = await addChargeFunction.SendTransactionAsync(senderAddress, gas, null, 30);
             var pollingService = (TransactionReceiptPollingService) web3.TransactionManager.TransactionReceiptService;
             //CI is too slow
-            receipt = await pollingService.PollForReceiptAsync(tx, new CancellationTokenSource(30000).Token);
+            var cancellationTokenSource = new CancellationTokenSource(30000);
+            receipt = await pollingService.PollForReceiptAsync(tx, cancellationTokenSource.Token);
 
             var chargers = contract.GetFunction("getChargers");
 

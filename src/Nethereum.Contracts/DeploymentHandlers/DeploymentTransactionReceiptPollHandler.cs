@@ -29,7 +29,7 @@ namespace Nethereum.Contracts.DeploymentHandlers
         }
 
         public async Task<TransactionReceipt> SendTransactionAsync(TContractDeploymentMessage deploymentMessage,
-           CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (deploymentMessage == null) deploymentMessage = new TContractDeploymentMessage();
             var transactionHash = await _deploymentTransactionHandler.SendTransactionAsync(deploymentMessage)
@@ -39,11 +39,9 @@ namespace Nethereum.Contracts.DeploymentHandlers
         }
 
         public Task<TransactionReceipt> SendTransactionAsync(TContractDeploymentMessage deploymentMessage = null,
-          CancellationTokenSource cancellationTokenSource = null)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return cancellationTokenSource == null
-                ? SendTransactionAsync(deploymentMessage, CancellationToken.None)
-                : SendTransactionAsync(deploymentMessage, cancellationTokenSource.Token);
+            return SendTransactionAsync(deploymentMessage, cancellationToken);
         }
     }
 #endif

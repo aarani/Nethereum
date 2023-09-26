@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Hex.HexTypes;
@@ -55,10 +56,10 @@ namespace Nethereum.Contracts.IntegrationTests.FiltersEvents
             var storeDocumentFunction = contract.GetFunction("storeDocument");
 
             var receipt1 = await storeDocumentFunction.SendTransactionAndWaitForReceiptAsync(account.Address,
-                new HexBigInteger(900000), null, null, "k1", "doc1", "Document 1").ConfigureAwait(false);
+                new HexBigInteger(900000), null, CancellationToken.None, "k1", "doc1", "Document 1").ConfigureAwait(false);
             Assert.Equal(1, receipt1.Status?.Value);
             var receipt2 = await storeDocumentFunction.SendTransactionAndWaitForReceiptAsync(account.Address,
-                new HexBigInteger(900000), null, null, "k2", "doc2", "Document 2").ConfigureAwait(false);
+                new HexBigInteger(900000), null, CancellationToken.None, "k2", "doc2", "Document 2").ConfigureAwait(false);
             Assert.Equal(1, receipt2.Status?.Value);
 
             var documentsFunction = contract.GetFunction("documents");
@@ -100,7 +101,7 @@ namespace Nethereum.Contracts.IntegrationTests.FiltersEvents
                     smartContractByteCode,
                     accountAddresss,
                     new HexBigInteger(900000),
-                    null,
+                    CancellationToken.None,
                     multiplier).ConfigureAwait(false);
 
             var contractAddress = receipt.ContractAddress;
@@ -114,9 +115,9 @@ namespace Nethereum.Contracts.IntegrationTests.FiltersEvents
             var estimatedGas = await multiplyFunction.EstimateGasAsync(7).ConfigureAwait(false);
 
             var receipt1 = await multiplyFunction.SendTransactionAndWaitForReceiptAsync(accountAddresss,
-                new HexBigInteger(estimatedGas.Value), null, null, 5).ConfigureAwait(false);
+                new HexBigInteger(estimatedGas.Value), null, CancellationToken.None, 5).ConfigureAwait(false);
             var receipt2 = await multiplyFunction.SendTransactionAndWaitForReceiptAsync(accountAddresss,
-                new HexBigInteger(estimatedGas.Value), null, null, 7).ConfigureAwait(false);
+                new HexBigInteger(estimatedGas.Value), null, CancellationToken.None, 7).ConfigureAwait(false);
 
             Assert.Equal(1, receipt1.Status.Value);
             Assert.Equal(1, receipt2.Status.Value);

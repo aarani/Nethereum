@@ -32,11 +32,9 @@ namespace Nethereum.Contracts.TransactionHandlers
             return await TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<TransactionReceipt> SendTransactionAsync(string contractAddress, TFunctionMessage functionMessage = null, CancellationTokenSource cancellationTokenSource = null)
+        public Task<TransactionReceipt> SendTransactionAsync(string contractAddress, TFunctionMessage functionMessage = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return cancellationTokenSource == null
-               ? SendTransactionAsync(contractAddress, functionMessage, CancellationToken.None)
-               : SendTransactionAsync(contractAddress, functionMessage, cancellationTokenSource.Token);
+            return SendTransactionAsync(contractAddress, functionMessage, cancellationToken);
         }
     }
 #endif

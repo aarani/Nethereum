@@ -242,34 +242,34 @@ namespace Nethereum.Contracts
         }
 
         public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
-           CancellationTokenSource receiptRequestCancellationTokenSource = null)
+           CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(functionInput, from),
-                receiptRequestCancellationTokenSource);
+                receiptRequestCancellationToken);
         }
 
         public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
             HexBigInteger gas,
-            HexBigInteger value, CancellationTokenSource receiptRequestCancellationTokenSource = null)
+            HexBigInteger value, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(functionInput, from, gas, value),
-                receiptRequestCancellationTokenSource);
+                receiptRequestCancellationToken);
         }
 
         public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
             HexBigInteger gas, HexBigInteger gasPrice,
-            HexBigInteger value, CancellationTokenSource receiptRequestCancellationTokenSource = null)
+            HexBigInteger value, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             return base.SendTransactionAndWaitForReceiptAsync(
-                CreateTransactionInput(functionInput, from, gas, gasPrice, value), receiptRequestCancellationTokenSource);
+                CreateTransactionInput(functionInput, from, gas, gasPrice, value), receiptRequestCancellationToken);
         }
 
         public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput,
-            TransactionInput input, CancellationTokenSource receiptRequestCancellationTokenSource = null)
+            TransactionInput input, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             var encodedInput = GetData(functionInput);
             input.Data = encodedInput;
-            return base.SendTransactionAndWaitForReceiptAsync(input, receiptRequestCancellationTokenSource);
+            return base.SendTransactionAndWaitForReceiptAsync(input, receiptRequestCancellationToken);
         }
 #endif
     }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Threading;
+using System.Collections.Generic;
 using Nethereum.Hex.HexTypes;
 using Nethereum.XUnitEthereumClients;
 using Xunit; 
@@ -110,7 +112,7 @@ function initTestArrayExternally(bytes1[50] array)
 
             var functionInit = contract.GetFunction("initTestArrayExternally");
             receipt = await functionInit.SendTransactionAndWaitForReceiptAsync(senderAddress, new HexBigInteger(900000),
-                null, null, listByteArray);
+                null, CancellationToken.None, listByteArray);
 
             result = await function.CallAsync<List<byte>>();
 

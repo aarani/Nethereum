@@ -16,9 +16,9 @@ namespace Nethereum.ENS
 {
     public partial class DefaultReverseResolverService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, DefaultReverseResolverDeployment defaultReverseResolverDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, DefaultReverseResolverDeployment defaultReverseResolverDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<DefaultReverseResolverDeployment>().SendRequestAndWaitForReceiptAsync(defaultReverseResolverDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<DefaultReverseResolverDeployment>().SendRequestAndWaitForReceiptAsync(defaultReverseResolverDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Nethereum.Web3.Web3 web3, DefaultReverseResolverDeployment defaultReverseResolverDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.ENS
             return web3.Eth.GetContractDeploymentHandler<DefaultReverseResolverDeployment>().SendRequestAsync(defaultReverseResolverDeployment);
         }
 
-        public static async Task<DefaultReverseResolverService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, DefaultReverseResolverDeployment defaultReverseResolverDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<DefaultReverseResolverService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, DefaultReverseResolverDeployment defaultReverseResolverDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, defaultReverseResolverDeployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, defaultReverseResolverDeployment, cancellationToken).ConfigureAwait(false);
             return new DefaultReverseResolverService(web3, receipt.ContractAddress);
         }
 
@@ -72,7 +72,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(setNameFunction);
         }
 
-        public Task<TransactionReceipt> SetNameRequestAndWaitForReceiptAsync(SetNameFunction setNameFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SetNameRequestAndWaitForReceiptAsync(SetNameFunction setNameFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(setNameFunction, cancellationToken);
         }
@@ -86,7 +86,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(setNameFunction);
         }
 
-        public Task<TransactionReceipt> SetNameRequestAndWaitForReceiptAsync(byte[] node, string name, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SetNameRequestAndWaitForReceiptAsync(byte[] node, string name, CancellationToken cancellationToken = default(CancellationToken))
         {
             var setNameFunction = new SetNameFunction();
                 setNameFunction.Node = node;

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding;
@@ -52,7 +52,7 @@ namespace Nethereum.Contracts
    
 
         protected Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TransactionInput transactionInput,
-            CancellationTokenSource cancellationTokenSource = null)
+            CancellationToken receiptRequestCancellationToken = default(CancellationToken))
         {
             return cancellationTokenSource == null
                 ? SendTransactionAndWaitForReceiptAsync(transactionInput, CancellationToken.None)
