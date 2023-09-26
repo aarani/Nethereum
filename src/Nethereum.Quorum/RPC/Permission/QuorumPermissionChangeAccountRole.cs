@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Permission
@@ -19,7 +20,7 @@ namespace Nethereum.Quorum.RPC.Permission
     ///</Summary>
     public interface IQuorumPermissionChangeAccountRole
     {
-        Task<string> SendRequestAsync(string acctId, string orgId, string roleId, object id = null);
+        Task<string> SendRequestAsync(string acctId, string orgId, string roleId, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string acctId, string orgId, string roleId, object id = null);
     }
 
@@ -40,9 +41,9 @@ namespace Nethereum.Quorum.RPC.Permission
     {
         public QuorumPermissionChangeAccountRole(IClient client) : base(client,ApiMethods.quorumPermission_changeAccountRole.ToString()) { }
 
-        public Task<string> SendRequestAsync(string acctId, string orgId, string roleId, object id = null)
+        public Task<string> SendRequestAsync(string acctId, string orgId, string roleId, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, acctId, orgId, roleId);
+            return base.SendRequestAsync(id, cancellationToken, acctId, orgId, roleId);
         }
         public RpcRequest BuildRequest(string acctId, string orgId, string roleId, object id = null)
         {

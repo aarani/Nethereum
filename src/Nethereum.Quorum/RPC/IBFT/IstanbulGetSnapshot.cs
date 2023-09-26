@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.IBFT
@@ -17,7 +18,7 @@ namespace Nethereum.Quorum.RPC.IBFT
     ///</Summary>
     public interface IIstanbulGetSnapshot
     {
-        Task<JObject> SendRequestAsync(BlockParameter blockNumber, object id = null);
+        Task<JObject> SendRequestAsync(BlockParameter blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(BlockParameter blockNumber, object id = null);
     }
 
@@ -34,9 +35,9 @@ namespace Nethereum.Quorum.RPC.IBFT
     {
         public IstanbulGetSnapshot(IClient client) : base(client,ApiMethods.istanbul_getSnapshot.ToString()) { }
 
-        public Task<JObject> SendRequestAsync(BlockParameter blockNumber, object id = null)
+        public Task<JObject> SendRequestAsync(BlockParameter blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, blockNumber.GetRPCParamAsNumber());
+            return base.SendRequestAsync(id, cancellationToken, blockNumber.GetRPCParamAsNumber());
         }
         public RpcRequest BuildRequest(BlockParameter blockNumber, object id = null)
         {

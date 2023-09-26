@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Raft
@@ -15,7 +16,7 @@ namespace Nethereum.Quorum.RPC.Raft
     ///</Summary>
     public interface IRaftAddPeer
     {
-        Task<string> SendRequestAsync(string enodeId, object id = null);
+        Task<string> SendRequestAsync(string enodeId, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string enodeId, object id = null);
     }
 
@@ -32,9 +33,9 @@ namespace Nethereum.Quorum.RPC.Raft
     {
             public RaftAddPeer(IClient client) : base(client,ApiMethods.raft_addPeer.ToString()) { }
 
-            public Task<string> SendRequestAsync(string enodeId, object id = null)
+            public Task<string> SendRequestAsync(string enodeId, object id = null, CancellationToken cancellationToken = default(CancellationToken))
             {
-                return base.SendRequestAsync(id, enodeId);
+                return base.SendRequestAsync(id, cancellationToken, enodeId);
             }
             public RpcRequest BuildRequest(string enodeId, object id = null)
             {

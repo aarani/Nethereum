@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Permission
@@ -21,7 +22,7 @@ namespace Nethereum.Quorum.RPC.Permission
     ///</Summary>
     public interface IQuorumPermissionUpdateOrgStatus
     {
-        Task<string> SendRequestAsync(string orgId, int action, object id = null);
+        Task<string> SendRequestAsync(string orgId, int action, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string orgId, int action, object id = null);
     }
 
@@ -44,9 +45,9 @@ namespace Nethereum.Quorum.RPC.Permission
     {
         public QuorumPermissionUpdateOrgStatus(IClient client) : base(client,ApiMethods.quorumPermission_updateOrgStatus.ToString()) { }
 
-        public Task<string> SendRequestAsync(string orgId, int action, object id = null)
+        public Task<string> SendRequestAsync(string orgId, int action, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, orgId, action);
+            return base.SendRequestAsync(id, cancellationToken, orgId, action);
         }
         public RpcRequest BuildRequest(string orgId, int action, object id = null)
         {

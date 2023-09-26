@@ -25,7 +25,7 @@ namespace Nethereum.Quorum.RPC.IBFT
     ///</Summary>
     public interface IIstanbulGetSignersFromBlockByHash
     {
-        Task<IstanbulSignersFromBlock> SendRequestAsync(string blockHash, object id = null);
+        Task<IstanbulSignersFromBlock> SendRequestAsync(string blockHash, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string blockHash, object id = null);
     }
 

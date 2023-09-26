@@ -51,9 +51,9 @@ namespace Nethereum.Quorum.RPC.Privacy
         {
             return base.SendRequestAsync(id, cancellationToken, signedTransaction, privateData);
         }
-        public RpcRequest BuildRequest(string signedTransaction, PrivateData privateData, object id = null, CancellationToken cancellationToken = default(CancellationToken))
+        public RpcRequest BuildRequest(string signedTransaction, PrivateData privateData, object id = null)
         {
-            return base.BuildRequest(id, cancellationToken, signedTransaction, privateData);
+            return base.BuildRequest(id, signedTransaction, privateData);
         }
     }
 

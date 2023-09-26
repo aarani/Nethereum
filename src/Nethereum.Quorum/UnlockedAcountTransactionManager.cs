@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
@@ -30,12 +31,12 @@ namespace Nethereum.Quorum
             this.DefaultGasPrice = 0;
         }
 
-        public override Task<string> SendTransactionAsync(TransactionInput transactionInput)
+        public override Task<string> SendTransactionAsync(TransactionInput transactionInput, CancellationToken cancellationToken = default(CancellationToken))
         {
             transactionInput.From = Account.Address;
             if(transactionInput.Gas == null) transactionInput.Gas = new HexBigInteger(0);
             transactionInput.Gas = new HexBigInteger(transactionInput.Gas.Value + DefaultGasIncrement);
-            return base.SendTransactionAsync(transactionInput);
+            return base.SendTransactionAsync(transactionInput, cancellationToken);
         }
     }
 }

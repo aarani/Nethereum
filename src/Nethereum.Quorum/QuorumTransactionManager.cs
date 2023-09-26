@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.Hex.HexTypes;
@@ -52,14 +53,14 @@ namespace Nethereum.Quorum
         public override BigInteger DefaultGas { get; set; } = LegacyTransaction.DEFAULT_GAS_LIMIT;
 
 
-        public override async Task<string> SendTransactionAsync(TransactionInput transactionInput)
+        public override async Task<string> SendTransactionAsync(TransactionInput transactionInput, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (transactionInput == null) throw new ArgumentNullException(nameof(transactionInput));
             await EnsureChainIdAndChainFeatureIsSetAsync().ConfigureAwait(false);
             return await SignAndSendTransactionAsync(transactionInput).ConfigureAwait(false);
         }
 
-        public async override Task<string> SignTransactionAsync(TransactionInput transaction)
+        public async override Task<string> SignTransactionAsync(TransactionInput transaction, CancellationToken cancellationToken = default(CancellationToken))
         {
             await EnsureChainIdAndChainFeatureIsSetAsync().ConfigureAwait(false);
             return await SignTransactionRetrievingNextNonceAsync(transaction).ConfigureAwait(false);

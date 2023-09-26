@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using Nethereum.Quorum.RPC.DTOs;
+using System.Threading;
 
 namespace Nethereum.Quorum.RPC.ContractExtensions
 {
@@ -22,7 +23,7 @@ namespace Nethereum.Quorum.RPC.ContractExtensions
     ///</Summary>
     public interface IQuorumExtensionExtendContract
     {
-        Task<string> SendRequestAsync(string toExtend, string recipientAddress, PrivateTransactionInput txArgs, object id = null);
+        Task<string> SendRequestAsync(string toExtend, string recipientAddress, PrivateTransactionInput txArgs, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string toExtend, string recipientAddress, PrivateTransactionInput txArgs, object id = null);
     }
 
@@ -45,9 +46,9 @@ namespace Nethereum.Quorum.RPC.ContractExtensions
     {
         public QuorumExtensionExtendContract(IClient client) : base(client,ApiMethods.quorumExtension_extendContract.ToString()) { }
 
-        public Task<string> SendRequestAsync(string toExtend, string recipientAddress, PrivateTransactionInput txArgs, object id = null)
+        public Task<string> SendRequestAsync(string toExtend, string recipientAddress, PrivateTransactionInput txArgs, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, toExtend, recipientAddress, txArgs);
+            return base.SendRequestAsync(id, cancellationToken, toExtend, recipientAddress, txArgs);
         }
         public RpcRequest BuildRequest(string toExtend, string recipientAddress, PrivateTransactionInput txArgs, object id = null)
         {

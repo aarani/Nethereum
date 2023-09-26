@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Permission
@@ -17,7 +18,7 @@ namespace Nethereum.Quorum.RPC.Permission
     ///</Summary>
     public interface IQuorumPermissionRecoverBlackListedAccount
     {
-        Task<string> SendRequestAsync(string orgId, string acctId, object id = null);
+        Task<string> SendRequestAsync(string orgId, string acctId, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string orgId, string acctId, object id = null);
     }
 
@@ -36,9 +37,9 @@ namespace Nethereum.Quorum.RPC.Permission
     {
         public QuorumPermissionRecoverBlackListedAccount(IClient client) : base(client,ApiMethods.quorumPermission_recoverBlackListedAccount.ToString()) { }
 
-        public Task<string> SendRequestAsync(string orgId, string acctId, object id = null)
+        public Task<string> SendRequestAsync(string orgId, string acctId, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, orgId, acctId);
+            return base.SendRequestAsync(id, cancellationToken, orgId, acctId);
         }
         public RpcRequest BuildRequest(string orgId, string acctId, object id = null)
         {

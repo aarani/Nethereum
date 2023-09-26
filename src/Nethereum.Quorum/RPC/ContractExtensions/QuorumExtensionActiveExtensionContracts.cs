@@ -1,4 +1,5 @@
 
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Infrastructure;
@@ -29,7 +30,7 @@ namespace Nethereum.Quorum.RPC.ContractExtensions
     ///</Summary>
     public interface IQuorumExtensionActiveExtensionContracts
     {
-        Task<JArray> SendRequestAsync(object id);
+        Task<JArray> SendRequestAsync(object id, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(object id = null);
     }
 

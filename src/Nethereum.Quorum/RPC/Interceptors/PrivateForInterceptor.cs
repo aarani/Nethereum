@@ -62,15 +62,14 @@ namespace Nethereum.Quorum.RPC.Interceptors
                     var privateTransaction =
                         new PrivateTransactionInput(transaction, _privateFor.ToArray(), _privateFrom);
                     paramList[0] = privateTransaction;
-                    return await interceptedSendRequestAsync(method, route, paramList, cancellationToken).ConfigureAwait(false);
+                    return await interceptedSendRequestAsync(method, route, cancellationToken, paramList).ConfigureAwait(false);
                 }
 
                 if (method == "eth_sendRawTransaction")
                 {
                     var rawTrasaction = paramList[0];
-                    return await interceptedSendRequestAsync("eth_sendRawPrivateTransaction", route,
-                            new object[] {rawTrasaction, new PrivateRawTransaction(_privateFor.ToArray())},
-                            cancellationToken)
+                    return await interceptedSendRequestAsync("eth_sendRawPrivateTransaction", route, cancellationToken,
+                            new object[] {rawTrasaction, new PrivateRawTransaction(_privateFor.ToArray())})
                         .ConfigureAwait(false);
                 }
             }
