@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.IBFT
@@ -23,7 +24,7 @@ namespace Nethereum.Quorum.RPC.IBFT
     ///</Summary>
     public interface IIstanbulStatus
     {
-        Task<IstanbulStatus> SendRequestAsync(long startBlockNumber, long endBlockNumber, object id = null);
+        Task<IstanbulStatus> SendRequestAsync(long startBlockNumber, long endBlockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(long startBlockNumber, long endBlockNumber, object id = null);
     }
 
@@ -48,9 +49,9 @@ namespace Nethereum.Quorum.RPC.IBFT
     {
         public IstanbulStatus(IClient client) : base(client,ApiMethods.istanbul_status.ToString()) { }
 
-        public Task<IstanbulStatus> SendRequestAsync(long startBlockNumber, long endBlockNumber, object id = null)
+        public Task<IstanbulStatus> SendRequestAsync(long startBlockNumber, long endBlockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, startBlockNumber, endBlockNumber);
+            return base.SendRequestAsync(id, cancellationToken, startBlockNumber, endBlockNumber);
         }
         public RpcRequest BuildRequest(long startBlockNumber, long endBlockNumber, object id = null)
         {

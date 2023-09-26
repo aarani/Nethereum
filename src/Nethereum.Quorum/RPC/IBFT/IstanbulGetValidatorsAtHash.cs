@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.IBFT
@@ -15,7 +16,7 @@ namespace Nethereum.Quorum.RPC.IBFT
     ///</Summary>
     public interface IIstanbulGetValidatorsAtHash
     {
-        Task<string[]> SendRequestAsync(string blockHash, object id = null);
+        Task<string[]> SendRequestAsync(string blockHash, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string blockHash, object id = null);
     }
 
@@ -32,9 +33,9 @@ namespace Nethereum.Quorum.RPC.IBFT
     {
         public IstanbulGetValidatorsAtHash(IClient client) : base(client,ApiMethods.istanbul_getValidatorsAtHash.ToString()) { }
 
-        public Task<string[]> SendRequestAsync(string blockHash, object id = null)
+        public Task<string[]> SendRequestAsync(string blockHash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, blockHash);
+            return base.SendRequestAsync(id, cancellationToken, blockHash);
         }
         public RpcRequest BuildRequest(string blockHash, object id = null)
         {

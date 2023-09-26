@@ -52,7 +52,7 @@ namespace Nethereum.JsonRpc.Client
                                                        string route = null,
                                                        CancellationToken cancellationToken = default(CancellationToken))
         {
-            var response = await SendAsync(reqMsg, route).ConfigureAwait(false);
+            var response = await SendAsync(reqMsg, route, cancellationToken).ConfigureAwait(false);
             HandleRpcError(response, reqMsg.Method);
             try
             {
@@ -69,7 +69,7 @@ namespace Nethereum.JsonRpc.Client
             var reqMsg = new RpcRequestMessage(request.Id,
                                                request.Method,
                                                request.RawParameters);
-            return SendInnerRequestAsync<T>(reqMsg, route);
+            return SendInnerRequestAsync<T>(reqMsg, route, cancellationToken);
         }
 
         protected virtual Task<T> SendInnerRequestAsync<T>(string method, string route = null,

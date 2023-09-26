@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
+using System.Threading;
 
 namespace Nethereum.RPC.Extensions.DevTools.Evm
 {
@@ -13,9 +14,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Evm
     {
         public EvmRevert(IClient client) : base(client,ApiMethods.evm_revert.ToString()) { }
 
-        public Task<bool> SendRequestAsync(string snapshotId, object id = null)
+        public Task<bool> SendRequestAsync(string snapshotId, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, snapshotId);
+            return base.SendRequestAsync(id, cancellationToken, snapshotId);
         }
         public RpcRequest BuildRequest(string snapshotId, object id = null)
         {

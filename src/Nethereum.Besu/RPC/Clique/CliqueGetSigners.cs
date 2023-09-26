@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
@@ -6,7 +7,7 @@ namespace Nethereum.Besu.RPC.Clique
 {
     public interface ICliqueGetSigners
     {
-        Task<string[]> SendRequestAsync(BlockParameter blockParameter, object id = null);
+        Task<string[]> SendRequestAsync(BlockParameter blockParameter, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(BlockParameter blockParameter, object id = null);
     }
 
@@ -19,9 +20,9 @@ namespace Nethereum.Besu.RPC.Clique
         {
         }
 
-        public Task<string[]> SendRequestAsync(BlockParameter blockParameter, object id = null)
+        public Task<string[]> SendRequestAsync(BlockParameter blockParameter, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, blockParameter);
+            return base.SendRequestAsync(id, cancellationToken, blockParameter);
         }
 
         public RpcRequest BuildRequest(BlockParameter blockParameter, object id = null)

@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
+using System.Threading;
 
 namespace Nethereum.Parity.RPC.Admin
 {
@@ -22,8 +23,8 @@ namespace Nethereum.Parity.RPC.Admin
     /// Array - Req
     public interface IParityListStorageKeys
     {
-        Task<string[]> SendRequestAsync(string address, int quantity, string hash, object id = null);
-        Task<string[]> SendRequestAsync(string address, int quantity, string hash, BlockParameter blockNumber, object id = null);
+        Task<string[]> SendRequestAsync(string address, int quantity, string hash, object id = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<string[]> SendRequestAsync(string address, int quantity, string hash, BlockParameter blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string address, int quantity, string hash, object id = null);
         RpcRequest BuildRequest(string address, int quantity, string hash, BlockParameter blockNumber, object id = null);
     }
@@ -48,18 +49,18 @@ namespace Nethereum.Parity.RPC.Admin
     {
         public ParityListStorageKeys(IClient client) : base(client,ApiMethods.parity_listStorageKeys.ToString()) { }
 
-        public Task<string[]> SendRequestAsync(string address, int quantity, string hash, object id = null)
+        public Task<string[]> SendRequestAsync(string address, int quantity, string hash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, quantity, hash);
+            return base.SendRequestAsync(id, cancellationToken, address, quantity, hash);
         }
         public RpcRequest BuildRequest(string address, int quantity, string hash, object id = null)
         {
             return base.BuildRequest(id, address, quantity, hash);
         }
 
-        public Task<string[]> SendRequestAsync(string address, int quantity, string hash, BlockParameter blockNumber, object id = null)
+        public Task<string[]> SendRequestAsync(string address, int quantity, string hash, BlockParameter blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, quantity, hash, blockNumber.GetRPCParamAsNumber());
+            return base.SendRequestAsync(id, cancellationToken, address, quantity, hash, blockNumber.GetRPCParamAsNumber());
         }
         public RpcRequest BuildRequest(string address, int quantity, string hash, BlockParameter blockNumber, object id = null)
         {

@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Hardhat
@@ -13,9 +14,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Hardhat
         public HardhatSetCode(IClient client, ApiMethods apiMethod) : base(client, apiMethod.ToString()) { }
         public HardhatSetCode(IClient client) : base(client,ApiMethods.hardhat_setCode.ToString()) { }
 
-        public Task SendRequestAsync(string address, string code, object id = null)
+        public Task SendRequestAsync(string address, string code, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, code);
+            return base.SendRequestAsync(id, cancellationToken, address, code);
         }
         public RpcRequest BuildRequest(string address, string code, object id = null)
         {

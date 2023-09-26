@@ -1,6 +1,7 @@
 
 using Nethereum.JsonRpc.Client;
 using Nethereum.Quorum.RPC.DTOs;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.IBFT
@@ -24,7 +25,7 @@ namespace Nethereum.Quorum.RPC.IBFT
 ///</Summary>
     public interface IIstanbulGetSignersFromBlock
     {
-        Task<IstanbulSignersFromBlock> SendRequestAsync(long number, object id = null);
+        Task<IstanbulSignersFromBlock> SendRequestAsync(long number, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(long number, object id = null);
     }
 
@@ -49,9 +50,9 @@ namespace Nethereum.Quorum.RPC.IBFT
     {
         public IstanbulGetSignersFromBlock(IClient client) : base(client,ApiMethods.istanbul_getSignersFromBlock.ToString()) { }
 
-        public Task<IstanbulSignersFromBlock> SendRequestAsync(long number, object id = null)
+        public Task<IstanbulSignersFromBlock> SendRequestAsync(long number, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, number);
+            return base.SendRequestAsync(id, cancellationToken, number);
         }
         public RpcRequest BuildRequest(long number, object id = null)
         {

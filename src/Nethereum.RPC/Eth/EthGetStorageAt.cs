@@ -56,7 +56,7 @@ namespace Nethereum.RPC.Eth
             if (address == null) throw new ArgumentNullException(nameof(address));
             if (position == null) throw new ArgumentNullException(nameof(position));
             if (block == null) block = DefaultBlock;
-            return base.SendRequestAsync(id, address.EnsureHexPrefix(), position, block, cancellationToken);
+            return base.SendRequestAsync(id, cancellationToken, address.EnsureHexPrefix(), position, block);
         }
 
         public Task<string> SendRequestAsync(string address,

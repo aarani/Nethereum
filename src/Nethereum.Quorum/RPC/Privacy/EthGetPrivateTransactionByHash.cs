@@ -1,6 +1,7 @@
 
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Privacy
@@ -15,7 +16,7 @@ namespace Nethereum.Quorum.RPC.Privacy
     ///</Summary>
     public interface IEthGetPrivateTransactionByHash
     {
-        Task<Transaction> SendRequestAsync(string privacyMarkerTransactionHash, object id = null);
+        Task<Transaction> SendRequestAsync(string privacyMarkerTransactionHash, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string privacyMarkerTransactionHash, object id = null);
     }
 
@@ -31,9 +32,9 @@ namespace Nethereum.Quorum.RPC.Privacy
     {
         public EthGetPrivateTransactionByHash(IClient client) : base(client,ApiMethods.eth_getPrivateTransactionByHash.ToString()) { }
 
-        public Task<Transaction> SendRequestAsync(string privacyMarkerTransactionHash, object id = null)
+        public Task<Transaction> SendRequestAsync(string privacyMarkerTransactionHash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, privacyMarkerTransactionHash);
+            return base.SendRequestAsync(id, cancellationToken, privacyMarkerTransactionHash);
         }
         public RpcRequest BuildRequest(string privacyMarkerTransactionHash, object id = null)
         {

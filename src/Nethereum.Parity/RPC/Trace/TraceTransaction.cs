@@ -16,7 +16,7 @@ namespace Nethereum.Parity.RPC.Trace
 
         public Task<JArray> SendRequestAsync(string transactionHash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, transactionHash, cancellationToken);
+            return base.SendRequestAsync(id, cancellationToken, transactionHash);
         }
 
         public RpcRequest BuildRequest(string transactionHash, object id = null)

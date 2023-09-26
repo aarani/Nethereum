@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.IBFT
@@ -17,7 +18,7 @@ namespace Nethereum.Quorum.RPC.IBFT
     ///</Summary>
     public interface IIstanbulPropose
     {
-        Task<string> SendRequestAsync(string address, bool auth, object id = null);
+        Task<string> SendRequestAsync(string address, bool auth, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string address, bool auth, object id = null);
     }
 
@@ -36,9 +37,9 @@ namespace Nethereum.Quorum.RPC.IBFT
     {
         public IstanbulPropose(IClient client) : base(client,ApiMethods.istanbul_propose.ToString()) { }
 
-        public Task<string> SendRequestAsync(string address, bool auth, object id = null)
+        public Task<string> SendRequestAsync(string address, bool auth, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, auth);
+            return base.SendRequestAsync(id, cancellationToken, address, auth);
         }
         public RpcRequest BuildRequest(string address, bool auth, object id = null)
         {

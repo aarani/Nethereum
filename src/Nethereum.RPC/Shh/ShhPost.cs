@@ -1,6 +1,7 @@
 ﻿using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Shh.DTOs;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Shh
@@ -18,11 +19,11 @@ namespace Nethereum.RPC.Shh
             return base.BuildRequest(id, input);
         }
 
-        public Task<string> SendRequestAsync(MessageInput input, object id = null)
+        public Task<string> SendRequestAsync(MessageInput input, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (input == null) throw new ArgumentNullException(nameof(input));
             if (string.IsNullOrEmpty(input.PubKey) && string.IsNullOrEmpty(input.SymKeyID)) throw new ArgumentNullException($"{nameof(input.SymKeyID)} Or {nameof(input.PubKey)}");
-            return base.SendRequestAsync(id, input);
+            return base.SendRequestAsync(id, cancellationToken, input);
         }
     }
 }

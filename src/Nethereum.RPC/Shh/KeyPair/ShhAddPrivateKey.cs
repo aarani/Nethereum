@@ -4,6 +4,7 @@ using Nethereum.RPC.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Shh.KeyPair
@@ -20,10 +21,10 @@ namespace Nethereum.RPC.Shh.KeyPair
             return base.BuildRequest(id, privateKey.EnsureHexPrefix());
         }
 
-        public Task<string> SendRequestAsync(string privateKey, object id = null)
+        public Task<string> SendRequestAsync(string privateKey, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(privateKey)) throw new ArgumentNullException(nameof(privateKey));
-            return base.SendRequestAsync(id, privateKey.EnsureHexPrefix());
+            return base.SendRequestAsync(id, cancellationToken, privateKey.EnsureHexPrefix());
         }
     }
 }

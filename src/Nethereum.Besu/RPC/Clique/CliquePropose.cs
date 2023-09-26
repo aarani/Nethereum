@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
@@ -12,9 +13,9 @@ namespace Nethereum.Besu.RPC.Clique
         {
         }
 
-        public Task<bool> SendRequestAsync(string address, bool addSigner, object id = null)
+        public Task<bool> SendRequestAsync(string address, bool addSigner, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, addSigner);
+            return base.SendRequestAsync(id, cancellationToken, address, addSigner);
         }
 
         public RpcRequest BuildRequest(string address, bool addSigner, object id = null)

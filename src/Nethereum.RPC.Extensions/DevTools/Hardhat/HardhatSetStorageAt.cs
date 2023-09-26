@@ -3,6 +3,7 @@ using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
 using Nethereum.Util;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Hardhat
@@ -16,9 +17,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Hardhat
         public HardhatSetStorageAt(IClient client, ApiMethods apiMethod) : base(client, apiMethod.ToString()) { }
         public HardhatSetStorageAt(IClient client) : base(client,ApiMethods.hardhat_setStorageAt.ToString()) { }
 
-        public Task SendRequestAsync(string address, HexBigInteger position, byte[] value, object id = null)
+        public Task SendRequestAsync(string address, HexBigInteger position, byte[] value, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, position, value.PadTo32Bytes().ToHex());
+            return base.SendRequestAsync(id, cancellationToken, address, position, value.PadTo32Bytes().ToHex());
         }
         public RpcRequest BuildRequest(string address, HexBigInteger position, byte[] value, object id = null)
         {

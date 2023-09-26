@@ -1,6 +1,7 @@
 
 using Nethereum.JsonRpc.Client;
 using Nethereum.Quorum.RPC.DTOs;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Privacy
@@ -29,7 +30,7 @@ namespace Nethereum.Quorum.RPC.Privacy
     ///</Summary>
     public interface IEthDistributePrivateTransaction
     {
-        Task<string> SendRequestAsync(string signedTxn, PrivateData privateData, object id = null);
+        Task<string> SendRequestAsync(string signedTxn, PrivateData privateData, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string signedTxn, PrivateData privateData, object id = null);
     }
 
@@ -58,9 +59,9 @@ namespace Nethereum.Quorum.RPC.Privacy
     {
         public EthDistributePrivateTransaction(IClient client) : base(client,ApiMethods.eth_distributePrivateTransaction.ToString()) { }
 
-        public Task<string> SendRequestAsync(string signedTxn, PrivateData privateData, object id = null)
+        public Task<string> SendRequestAsync(string signedTxn, PrivateData privateData, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, signedTxn, privateData);
+            return base.SendRequestAsync(id, cancellationToken, signedTxn, privateData);
         }
         public RpcRequest BuildRequest(string signedTxn, PrivateData privateData, object id = null)
         {

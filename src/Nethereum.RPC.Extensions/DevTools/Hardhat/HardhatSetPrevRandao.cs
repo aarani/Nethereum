@@ -3,6 +3,7 @@ using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.JsonRpc.Client;
 using Nethereum.Util;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Hardhat
@@ -16,10 +17,10 @@ namespace Nethereum.RPC.Extensions.DevTools.Hardhat
         public HardhatSetPrevRandao(IClient client, ApiMethods apiMethod) : base(client, apiMethod.ToString()) { }
         public HardhatSetPrevRandao(IClient client) : base(client,ApiMethods.hardhat_setPrevRandao.ToString()) { }
 
-        public Task SendRequestAsync(BigInteger prevRandao, object id = null)
+        public Task SendRequestAsync(BigInteger prevRandao, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var ranDaoBytes = prevRandao.ConvertToByteArray(false).PadTo32Bytes();
-            return base.SendRequestAsync(id, ranDaoBytes.ToHex());
+            return base.SendRequestAsync(id, cancellationToken, ranDaoBytes.ToHex());
         }
         public RpcRequest BuildRequest(BigInteger prevRandao, object id = null)
         {

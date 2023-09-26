@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Newtonsoft.Json.Linq;
@@ -16,9 +17,9 @@ namespace Nethereum.Besu.RPC.Debug
         }
 
         public Task<JObject> SendRequestAsync(string blockHash, int txIndex, string contractAddress,
-            string startKeyHash, int limitStorageEntries, object id = null)
+            string startKeyHash, int limitStorageEntries, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, blockHash, txIndex, contractAddress, startKeyHash,
+            return base.SendRequestAsync(id, cancellationToken, blockHash, txIndex, contractAddress, startKeyHash,
                 limitStorageEntries);
         }
 

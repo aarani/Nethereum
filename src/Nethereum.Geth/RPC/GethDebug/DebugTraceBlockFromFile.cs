@@ -22,7 +22,7 @@ namespace Nethereum.Geth.RPC.Debug
 
         public Task<JArray> SendRequestAsync(string filePath, TraceTransactionOptions options, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, filePath, options, cancellationToken);
+            return base.SendRequestAsync(id, cancellationToken, filePath, options);
         }
     }
 }

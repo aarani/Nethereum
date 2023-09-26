@@ -25,9 +25,9 @@ namespace Nethereum.Geth.RPC.Admin
             return base.BuildRequest(id, host, port, cors, api, vHosts);
         }
 
-        public Task<bool> SendRequestAsync(string host, int port, string cors, string api, string vHosts, object id = null)
+        public Task<bool> SendRequestAsync(string host, int port, string cors, string api, string vHosts, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, host, port, cors, api, vHosts);
+            return base.SendRequestAsync(id, cancellationToken, host, port, cors, api, vHosts);
         }
 
         public RpcRequest BuildRequest(string host, int port, string cors, string api, object id = null)

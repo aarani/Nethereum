@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Raft
@@ -15,7 +16,7 @@ namespace Nethereum.Quorum.RPC.Raft
     ///</Summary>
     public interface IRaftRemovePeer
     {
-        Task<string> SendRequestAsync(string raftId, object id = null);
+        Task<string> SendRequestAsync(string raftId, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string raftId, object id = null);
     }
 
@@ -32,9 +33,9 @@ namespace Nethereum.Quorum.RPC.Raft
     {
             public RaftRemovePeer(IClient client) : base(client,ApiMethods.raft_removePeer.ToString()) { }
 
-            public Task<string> SendRequestAsync(string raftId, object id = null)
+            public Task<string> SendRequestAsync(string raftId, object id = null, CancellationToken cancellationToken = default(CancellationToken))
             {
-                return base.SendRequestAsync(id, raftId);
+                return base.SendRequestAsync(id, cancellationToken, raftId);
             }
             public RpcRequest BuildRequest(string raftId, object id = null)
             {

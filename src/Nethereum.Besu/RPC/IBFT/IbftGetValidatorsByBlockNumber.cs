@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
@@ -14,9 +15,9 @@ namespace Nethereum.Besu.RPC.IBFT
         {
         }
 
-        public Task<string[]> SendRequestAsync(BlockParameter block, object id = null)
+        public Task<string[]> SendRequestAsync(BlockParameter block, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, block);
+            return base.SendRequestAsync(id, cancellationToken, block);
         }
 
         public RpcRequest BuildRequest(BlockParameter block, object id = null)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Infrastructure
@@ -18,10 +19,10 @@ namespace Nethereum.RPC.Infrastructure
             return base.BuildRequest(id, str);
         }
 
-        public Task<T> SendRequestAsync(string str, object id = null)
+        public Task<T> SendRequestAsync(string str, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(str)) throw new ArgumentNullException(nameof(str));
-            return base.SendRequestAsync(id, str);
+            return base.SendRequestAsync(id, cancellationToken, str);
         }
     }
 }

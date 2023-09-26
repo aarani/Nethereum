@@ -1,4 +1,5 @@
 ﻿using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.AccountSigning
@@ -10,6 +11,6 @@ namespace Nethereum.RPC.AccountSigning
 
     public interface ISignTypedDataV4
     {
-        Task<string> SendRequestAsync(string jsonMessage, object id = null);
+        Task<string> SendRequestAsync(string jsonMessage, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

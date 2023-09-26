@@ -24,7 +24,7 @@ namespace Nethereum.Geth.RPC.Debug
 
         public Task<JArray> SendRequestAsync(ulong blockNumber, TraceTransactionOptions options, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, new HexBigInteger(blockNumber), options, cancellationToken);
+            return base.SendRequestAsync(id, cancellationToken, new HexBigInteger(blockNumber), options);
         }
     }
 }

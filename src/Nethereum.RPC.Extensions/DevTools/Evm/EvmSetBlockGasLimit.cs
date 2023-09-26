@@ -1,5 +1,6 @@
 ﻿using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Evm
@@ -11,9 +12,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Evm
     {
         public EvmSetBlockGasLimit(IClient client) : base(client, ApiMethods.evm_setBlockGasLimit.ToString()) { }
 
-        public Task<string> SendRequestAsync(HexBigInteger blockGasLimit, object id = null)
+        public Task<string> SendRequestAsync(HexBigInteger blockGasLimit, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, blockGasLimit);
+            return base.SendRequestAsync(id, cancellationToken, blockGasLimit);
         }
         public RpcRequest BuildRequest(HexBigInteger blockGasLimit, object id = null)
         {

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
 namespace Nethereum.Geth.RPC.Debug
@@ -6,6 +7,6 @@ namespace Nethereum.Geth.RPC.Debug
     public interface IDebugVerbosity
     {
         RpcRequest BuildRequest(int level, object id = null);
-        Task<object> SendRequestAsync(int level, object id = null);
+        Task<object> SendRequestAsync(int level, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

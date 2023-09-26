@@ -5,6 +5,7 @@ using Nethereum.RPC.AccountSigning;
 using Nethereum.Signer;
 using Nethereum.Signer.Crypto;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Accounts.AccountMessageSigning
@@ -20,12 +21,12 @@ namespace Nethereum.Accounts.AccountMessageSigning
             _ethereumMessageSigner = new EthereumMessageSigner();
         }
 
-        public Task<string> SendRequestAsync(byte[] value, object id = null)
+        public Task<string> SendRequestAsync(byte[] value, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
            return Task.FromResult(_ethereumMessageSigner.Sign(value, _ethECKey));
         }
 
-        public Task<string> SendRequestAsync(HexUTF8String utf8Hex, object id = null)
+        public Task<string> SendRequestAsync(HexUTF8String utf8Hex, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.FromResult(_ethereumMessageSigner.Sign(utf8Hex.HexValue.HexToByteArray(), _ethECKey));
         }

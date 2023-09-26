@@ -100,7 +100,7 @@ namespace Nethereum.JsonRpc.IpcClient
             throw new NotImplementedException();
         }
 
-        protected override Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests)
+        protected override Task<RpcResponseMessage[]> SendAsync(RpcRequestMessage[] requests, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }

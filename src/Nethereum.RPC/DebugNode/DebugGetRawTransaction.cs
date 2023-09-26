@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
@@ -15,10 +16,10 @@ namespace Nethereum.RPC.DebugNode
         {
         }
 
-        public Task<string> SendRequestAsync(string transactionHash, object id = null)
+        public Task<string> SendRequestAsync(string transactionHash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (transactionHash == null) throw new ArgumentNullException(nameof(transactionHash));
-            return base.SendRequestAsync(id, transactionHash);
+            return base.SendRequestAsync(id, cancellationToken, transactionHash);
         }
 
 

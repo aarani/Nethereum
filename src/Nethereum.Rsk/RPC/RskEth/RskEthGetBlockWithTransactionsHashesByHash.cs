@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.JsonRpc.Client;
@@ -16,10 +17,10 @@ namespace Nethereum.Rsk.RPC.RskEth
         {
         }
 
-        public Task<RskBlockWithTransactionHashes> SendRequestAsync(string blockHash, object id = null)
+        public Task<RskBlockWithTransactionHashes> SendRequestAsync(string blockHash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (blockHash == null) throw new ArgumentNullException(nameof(blockHash));
-            return base.SendRequestAsync(id, blockHash.EnsureHexPrefix(), false);
+            return base.SendRequestAsync(id, cancellationToken, blockHash.EnsureHexPrefix(), false);
         }
 
         public RpcRequest BuildRequest(string blockHash, object id = null)

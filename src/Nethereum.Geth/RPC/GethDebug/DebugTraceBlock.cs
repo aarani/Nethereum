@@ -23,7 +23,7 @@ namespace Nethereum.Geth.RPC.Debug
 
         public Task<JArray> SendRequestAsync(string blockRlpHex, TraceTransactionOptions options, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, blockRlpHex, options, cancellationToken);
+            return base.SendRequestAsync(id, cancellationToken, blockRlpHex, options);
         }
     }
 }

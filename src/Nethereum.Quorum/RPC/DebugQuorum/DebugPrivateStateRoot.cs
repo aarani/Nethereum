@@ -2,6 +2,7 @@
 using Nethereum.JsonRpc.Client;
 using System.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
+using System.Threading;
 
 namespace Nethereum.Quorum.RPC.Debug
 {
@@ -16,7 +17,7 @@ namespace Nethereum.Quorum.RPC.Debug
     ///</Summary>
     public interface IDebugPrivateStateRoot
     {
-        Task<string> SendRequestAsync(BlockParameter blockNumber, object id = null);
+        Task<string> SendRequestAsync(BlockParameter blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(BlockParameter blockNumber, object id = null);
     }
 
@@ -33,9 +34,9 @@ namespace Nethereum.Quorum.RPC.Debug
     {
         public DebugPrivateStateRoot(IClient client) : base(client,ApiMethods.debug_privateStateRoot.ToString()) { }
 
-        public Task<string> SendRequestAsync(BlockParameter blockNumber, object id = null)
+        public Task<string> SendRequestAsync(BlockParameter blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, blockNumber.GetRPCParamAsNumber());
+            return base.SendRequestAsync(id, cancellationToken, blockNumber.GetRPCParamAsNumber());
         }
         public RpcRequest BuildRequest(BlockParameter blockNumber, object id = null)
         {

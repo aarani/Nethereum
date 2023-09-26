@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.Privacy
@@ -15,7 +16,7 @@ namespace Nethereum.Quorum.RPC.Privacy
     ///</Summary>
     public interface IEthGetQuorumPayload
     {
-        Task<string> SendRequestAsync(string idHash, object id = null);
+        Task<string> SendRequestAsync(string idHash, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string idHash, object id = null);
     }
 
@@ -32,9 +33,9 @@ namespace Nethereum.Quorum.RPC.Privacy
     {
         public EthGetQuorumPayload(IClient client) : base(client,ApiMethods.eth_getQuorumPayload.ToString()) { }
 
-        public Task<string> SendRequestAsync(string idHash, object id = null)
+        public Task<string> SendRequestAsync(string idHash, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, idHash);
+            return base.SendRequestAsync(id, cancellationToken, idHash);
         }
         public RpcRequest BuildRequest(string idHash, object id = null)
         {

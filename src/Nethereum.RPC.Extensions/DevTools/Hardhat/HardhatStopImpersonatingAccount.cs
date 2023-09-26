@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Hardhat
@@ -13,9 +14,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Hardhat
         public HardhatStopImpersonatingAccount(IClient client, ApiMethods apiMethod) : base(client, apiMethod.ToString()) { }
         public HardhatStopImpersonatingAccount(IClient client) : base(client,ApiMethods.hardhat_stopImpersonatingAccount.ToString()) { }
 
-        public Task SendRequestAsync(string address, object id = null)
+        public Task SendRequestAsync(string address, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address);
+            return base.SendRequestAsync(id, cancellationToken, address);
         }
         public RpcRequest BuildRequest(string address, object id = null)
         {

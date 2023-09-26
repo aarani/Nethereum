@@ -1,6 +1,7 @@
 
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Hardhat
@@ -14,9 +15,9 @@ namespace Nethereum.RPC.Extensions.DevTools.Hardhat
         public HardhatSetBalance(IClient client, ApiMethods apiMethod) : base(client, apiMethod.ToString()) { }
         public HardhatSetBalance(IClient client) : base(client,ApiMethods.hardhat_setBalance.ToString()) { }
 
-        public Task<string> SendRequestAsync(string address, HexBigInteger balance, object id = null)
+        public Task<string> SendRequestAsync(string address, HexBigInteger balance, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address, balance);
+            return base.SendRequestAsync(id, cancellationToken, address, balance);
         }
         public RpcRequest BuildRequest(string address, HexBigInteger balance, object id = null)
         {

@@ -1,6 +1,7 @@
 ﻿using Nethereum.JsonRpc.Client;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.HostWallet
@@ -16,10 +17,10 @@ namespace Nethereum.RPC.HostWallet
 
         }
 
-        public Task<JObject> SendRequestAsync(string[] methods, object id = null)
+        public Task<JObject> SendRequestAsync(string[] methods, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var dictionary = ConvertToDictionary(methods);
-            return base.SendRequestAsync(id, dictionary);
+            return base.SendRequestAsync(id, cancellationToken, dictionary);
         }
 
         private static Dictionary<string, object> ConvertToDictionary(string[] methods)

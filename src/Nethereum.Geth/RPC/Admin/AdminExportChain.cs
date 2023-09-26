@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
@@ -20,10 +21,10 @@ namespace Nethereum.Geth.RPC.Admin
             return base.BuildRequest(id, file);
         }
 
-        public Task<bool> SendRequestAsync(string file, object id = null)
+        public Task<bool> SendRequestAsync(string file, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (file == null) throw new ArgumentNullException(nameof(file));
-            return base.SendRequestAsync(id, file);
+            return base.SendRequestAsync(id, cancellationToken, file);
         }
 
         public RpcRequest BuildRequest(string file, long first, object id = null)
@@ -32,10 +33,10 @@ namespace Nethereum.Geth.RPC.Admin
             return base.BuildRequest(id, file, first);
         }
 
-        public Task<bool> SendRequestAsync(string file, long first, object id = null)
+        public Task<bool> SendRequestAsync(string file, long first, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (file == null) throw new ArgumentNullException(nameof(file));
-            return base.SendRequestAsync(id, file, first);
+            return base.SendRequestAsync(id, cancellationToken, file, first);
         }
 
         public RpcRequest BuildRequest(string file, long first, long last, object id = null)
@@ -44,10 +45,10 @@ namespace Nethereum.Geth.RPC.Admin
             return base.BuildRequest(id, file, first, last);
         }
 
-        public Task<bool> SendRequestAsync(string file, long first, long last, object id = null)
+        public Task<bool> SendRequestAsync(string file, long first, long last, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (file == null) throw new ArgumentNullException(nameof(file));
-            return base.SendRequestAsync(id, file, first, last);
+            return base.SendRequestAsync(id, cancellationToken, file, first, last);
         }
     }
 }

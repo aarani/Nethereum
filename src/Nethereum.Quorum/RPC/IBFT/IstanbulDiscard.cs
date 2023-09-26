@@ -1,5 +1,6 @@
 
 using Nethereum.JsonRpc.Client;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.Quorum.RPC.IBFT
@@ -15,7 +16,7 @@ namespace Nethereum.Quorum.RPC.IBFT
 ///</Summary>
     public interface IIstanbulDiscard
     {
-        Task<string> SendRequestAsync(string address, object id = null);
+        Task<string> SendRequestAsync(string address, object id = null, CancellationToken cancellationToken = default(CancellationToken));
         RpcRequest BuildRequest(string address, object id = null);
     }
 
@@ -32,9 +33,9 @@ namespace Nethereum.Quorum.RPC.IBFT
     {
         public IstanbulDiscard(IClient client) : base(client,ApiMethods.istanbul_discard.ToString()) { }
 
-        public Task<string> SendRequestAsync(string address, object id = null)
+        public Task<string> SendRequestAsync(string address, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SendRequestAsync(id, address);
+            return base.SendRequestAsync(id, cancellationToken, address);
         }
         public RpcRequest BuildRequest(string address, object id = null)
         {

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Nethereum.Util;
 using Nethereum.Hex.HexConvertors.Extensions;
+using System.Threading;
 
 namespace Nethereum.RPC.DebugNode
 {
@@ -19,20 +20,20 @@ namespace Nethereum.RPC.DebugNode
         {
         }
 
-        public Task<DebugStorageAtResult> SendRequestAsync(string blockHash, int transactionIndex, string address, string startKeyHex, int limit, object id = null)
+        public Task<DebugStorageAtResult> SendRequestAsync(string blockHash, int transactionIndex, string address, string startKeyHex, int limit, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (blockHash == null) throw new ArgumentNullException(nameof(blockHash));
             if (address == null) throw new ArgumentNullException(nameof(address));
 
-            return base.SendRequestAsync(id, blockHash, transactionIndex, address, startKeyHex, limit);
+            return base.SendRequestAsync(id, cancellationToken, blockHash, transactionIndex, address, startKeyHex, limit);
         }
 
-        public Task<DebugStorageAtResult> SendRequestAsync(string blockHash, int transactionIndex, string address, BigInteger startKey, int limit, object id = null)
+        public Task<DebugStorageAtResult> SendRequestAsync(string blockHash, int transactionIndex, string address, BigInteger startKey, int limit, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (blockHash == null) throw new ArgumentNullException(nameof(blockHash));
             if (address == null) throw new ArgumentNullException(nameof(address));
             var startKeyHex = startKey.ConvertToByteArray(false).PadTo32Bytes().ToHex(true);
-            return SendRequestAsync(id, blockHash, transactionIndex, address, startKeyHex, limit);
+            return SendRequestAsync(id, cancellationToken, blockHash, transactionIndex, address, startKeyHex, limit);
         }
 
 

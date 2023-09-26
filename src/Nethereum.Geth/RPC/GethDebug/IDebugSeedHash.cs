@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 
 namespace Nethereum.Geth.RPC.Debug
@@ -6,6 +7,6 @@ namespace Nethereum.Geth.RPC.Debug
     public interface IDebugSeedHash
     {
         RpcRequest BuildRequest(ulong blockNumber, object id = null);
-        Task<string> SendRequestAsync(ulong blockNumber, object id = null);
+        Task<string> SendRequestAsync(ulong blockNumber, object id = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

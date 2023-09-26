@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
@@ -26,7 +27,7 @@ namespace Nethereum.RPC.Eth.Transactions
         /// <param name="rewardPercentiles">A monotonically increasing list of percentile values to sample from each block's effective priority fees per gas in ascending order, weighted by gas used.
         /// Floating point value between 0 and 100.</param>
         /// <returns></returns>
-        public Task<FeeHistoryResult> SendRequestAsync(HexBigInteger blockCount, BlockParameter highestBlockNumber, decimal[] rewardPercentiles = null, object id = null)
+        public Task<FeeHistoryResult> SendRequestAsync(HexBigInteger blockCount, BlockParameter highestBlockNumber, decimal[] rewardPercentiles = null, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             ValidateBlockCountRange(blockCount);
             if (highestBlockNumber == null) throw new ArgumentNullException(nameof(highestBlockNumber));
@@ -36,22 +37,22 @@ namespace Nethereum.RPC.Eth.Transactions
             {
                 if (rewardPercentiles != null)
                 {
-                    return base.SendRequestAsync(id, blockCount, highestBlockNumber, rewardPercentiles);
+                    return base.SendRequestAsync(id, cancellationToken, blockCount, highestBlockNumber, rewardPercentiles);
                 }
                 else
                 {
-                    return base.SendRequestAsync(id, blockCount, highestBlockNumber, new double[] { });
+                    return base.SendRequestAsync(id, cancellationToken, blockCount, highestBlockNumber, new double[] { });
                 }
             }
             else
             {
                 if (rewardPercentiles != null)
                 {
-                    return base.SendRequestAsync(id, blockCount.Value, highestBlockNumber, rewardPercentiles);
+                    return base.SendRequestAsync(id, cancellationToken, blockCount.Value, highestBlockNumber, rewardPercentiles);
                 }
                 else
                 {
-                    return base.SendRequestAsync(id, blockCount.Value, highestBlockNumber, new double[] { });
+                    return base.SendRequestAsync(id, cancellationToken, blockCount.Value, highestBlockNumber, new double[] { });
                 }
             }
         }

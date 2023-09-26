@@ -2,6 +2,7 @@
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.Extensions.DevTools.Hardhat
@@ -18,16 +19,16 @@ namespace Nethereum.RPC.Extensions.DevTools.Hardhat
         public HardhatMine(IClient client, ApiMethods apiMethod) : base(client, apiMethod.ToString()) { }
         public HardhatMine(IClient client) : base(client,ApiMethods.hardhat_mine.ToString()) { }
 
-        public Task SendRequestAsync(HexBigInteger blocks, HexBigInteger interval = null, object id = null)
+        public Task SendRequestAsync(HexBigInteger blocks, HexBigInteger interval = null, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if(interval == null) interval = new HexBigInteger(1);
-            return base.SendRequestAsync(id, blocks, interval);
+            return base.SendRequestAsync(id, cancellationToken, blocks, interval);
         }
 
-        public Task SendRequestAsync(int blocks = 1, HexBigInteger interval = null, object id = null)
+        public Task SendRequestAsync(int blocks = 1, HexBigInteger interval = null, object id = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (interval == null) interval = new HexBigInteger(1);
-            return base.SendRequestAsync(id, new HexBigInteger(blocks), interval);
+            return base.SendRequestAsync(id, cancellationToken, new HexBigInteger(blocks), interval);
         }
 
         public RpcRequest BuildRequest(HexBigInteger blocks, HexBigInteger interval = null, object id = null)
