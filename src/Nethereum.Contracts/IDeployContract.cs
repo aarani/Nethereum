@@ -30,20 +30,6 @@ namespace Nethereum.Contracts
         Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode, string from, HexBigInteger gas, TConstructorParams inputParams,CancellationToken receiptRequestCancellationToken);
         Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode, string from, TConstructorParams inputParams,CancellationToken receiptRequestCancellationToken);
 
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractByteCode, string from, CancellationTokenSource receiptRequestCancellationToken = null);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractByteCode, string from, HexBigInteger gas, CancellationTokenSource receiptRequestCancellationToken = null);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractByteCode, string from, HexBigInteger gas, HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractByteCode, string from, HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string abi, string contractByteCode, string from, CancellationTokenSource receiptRequestCancellationToken = null, params object[] values);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string abi, string contractByteCode, string from, HexBigInteger gas, CancellationTokenSource receiptRequestCancellationToken = null, params object[] values);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string abi, string contractByteCode, string from, HexBigInteger gas, HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null, params object[] values);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string abi, string contractByteCode, string from, HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value, CancellationTokenSource receiptRequestCancellationToken = null, params object[] values);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode, string from, HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value, HexBigInteger nonce, TConstructorParams inputParams, CancellationTokenSource receiptRequestCancellationToken = null);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode, string from, HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value, TConstructorParams inputParams, CancellationTokenSource receiptRequestCancellationToken = null);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode, string from, HexBigInteger gas, TConstructorParams inputParams, CancellationTokenSource receiptRequestCancellationToken = null);
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TConstructorParams>(string contractByteCode, string from, TConstructorParams inputParams, CancellationTokenSource receiptRequestCancellationToken = null);
-
-
         Task<string> SendRequestAsync(string contractByteCode, string from);
         Task<string> SendRequestAsync(string contractByteCode, string from, HexBigInteger gas);
         Task<string> SendRequestAsync(string contractByteCode, string from, HexBigInteger gas, HexBigInteger value);
