@@ -206,4 +206,8 @@ EXIT /B %ERRORLEVEL%
 dotnet restore %projectName% /property:ReleaseSuffix=%releaseSuffix% /property:TargetNet35=%targetNet35%
 dotnet build %projectName% -c Release /property:TargetNet35=%targetNet35% /property:ReleaseSuffix=%releaseSuffix%
 dotnet pack %projectName% -c Release --include-symbols -p:SymbolPackageFormat=snupkg /property:TargetNet35=%targetNet35% /property:ReleaseSuffix=%releaseSuffix%
-EXIT /B 0
+IF %ERRORLEVEL% EQU 0 (
+    EXIT /B 0
+) ELSE (
+    EXIT %ERRORLEVEL%
+)
