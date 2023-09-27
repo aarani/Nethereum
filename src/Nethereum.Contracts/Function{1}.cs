@@ -240,37 +240,6 @@ namespace Nethereum.Contracts
             input.Data = encodedInput;
             return base.SendTransactionAndWaitForReceiptAsync(input, receiptRequestCancellationToken);
         }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
-           CancellationToken receiptRequestCancellationToken = default(CancellationToken))
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(functionInput, from),
-                receiptRequestCancellationToken);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
-            HexBigInteger gas,
-            HexBigInteger value, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(CreateTransactionInput(functionInput, from, gas, value),
-                receiptRequestCancellationToken);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput, string from,
-            HexBigInteger gas, HexBigInteger gasPrice,
-            HexBigInteger value, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
-        {
-            return base.SendTransactionAndWaitForReceiptAsync(
-                CreateTransactionInput(functionInput, from, gas, gasPrice, value), receiptRequestCancellationToken);
-        }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(TFunctionInput functionInput,
-            TransactionInput input, CancellationToken receiptRequestCancellationToken = default(CancellationToken))
-        {
-            var encodedInput = GetData(functionInput);
-            input.Data = encodedInput;
-            return base.SendTransactionAndWaitForReceiptAsync(input, receiptRequestCancellationToken);
-        }
 #endif
     }
 }
