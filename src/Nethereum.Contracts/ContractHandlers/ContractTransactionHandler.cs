@@ -35,13 +35,7 @@ namespace Nethereum.Contracts.ContractHandlers
                                                            functionMessage,
                                                            cancellationToken);
         }
-
-        public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(
-            string contractAddress, TContractMessage functionMessage = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return _receiptPollHandler.SendTransactionAsync(contractAddress, functionMessage, cancellationToken);
-        }
-
+        
         public Task<TransactionReceipt> SendTransactionAndWaitForReceiptAsync(
             string contractAddress, TContractMessage functionMessage, CancellationToken cancellationToken)
         {
@@ -52,14 +46,7 @@ namespace Nethereum.Contracts.ContractHandlers
         {
             return SendTransactionAndWaitForReceiptAsync(contractAddress, functionMessage, cancellationToken);
         }
-
-        [Obsolete("Use " + nameof(SendTransactionAndWaitForReceiptAsync) + " instead")]
-        public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(
-            string contractAddress, TContractMessage functionMessage = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return SendTransactionAndWaitForReceiptAsync(contractAddress, functionMessage, cancellationToken);
-        }
-
+        
         public Task<string> SendTransactionAsync(string contractAddress,
                                                  TContractMessage functionMessage = null,
                                                  CancellationToken cancellationToken = default(CancellationToken))

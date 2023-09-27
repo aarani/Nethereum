@@ -13,7 +13,6 @@ namespace Nethereum.Contracts.CQS
         Task<HexBigInteger> EstimateGasAsync(TContractDeploymentMessage contractDeploymentMessage,
                                              CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(TContractDeploymentMessage contractDeploymentMessage = null, CancellationToken token = default(CancellationToken));
         Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(TContractDeploymentMessage contractDeploymentMessage, CancellationToken cancellationToken);
 
         Task<string> SendRequestAsync(TContractDeploymentMessage contractDeploymentMessage = null,

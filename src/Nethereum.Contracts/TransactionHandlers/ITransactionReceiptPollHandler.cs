@@ -6,7 +6,6 @@ namespace Nethereum.Contracts.TransactionHandlers
 {
     public interface ITransactionReceiptPollHandler<TFunctionMessage> where TFunctionMessage : FunctionMessage, new()
     {
-        Task<TransactionReceipt> SendTransactionAsync(string contractAddress, TFunctionMessage functionMessage = null, CancellationToken cancellationToken = default(CancellationToken));
         Task<TransactionReceipt> SendTransactionAsync(string contractAddress, TFunctionMessage functionMessage, CancellationToken cancellationToken);
     }
 }

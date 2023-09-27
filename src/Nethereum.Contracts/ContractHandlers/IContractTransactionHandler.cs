@@ -16,7 +16,6 @@ namespace Nethereum.Contracts.ContractHandlers
                                              TContractMessage functionMessage = null,
                                              CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractAddress, TContractMessage functionMessage = null, CancellationToken token = default(CancellationToken));
         Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractAddress, TContractMessage functionMessage, CancellationToken cancellationToken);
 
         Task<string> SendRequestAsync(string contractAddress,
