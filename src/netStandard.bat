@@ -134,5 +134,10 @@ EXIT /B %ERRORLEVEL%
 rem dotnet clean /property:ReleaseSuffix=%releaseSuffix% /property:TargetNetStandard=true /property:TargetNet35=false /property:TargetUnityAOT=false
 rem  dotnet restore /property:ReleaseSuffix=%releaseSuffix% /property:TargetNetStandard=true /property:TargetNet35=false /property:TargetUnityAOT=false
 dotnet build  -c Release /property:ReleaseSuffix=%releaseSuffix% /property:TargetNetStandard=true /property:TargetNet35=false /property:TargetUnityAOT=false
-xcopy bin\Release\netstandard2.0\*.dll "..\compiledlibraries\netStandard" /s /y
-EXIT /B %ERRORLEVEL%
+IF %ERRORLEVEL% EQU 0 (
+    xcopy bin\Release\netstandard2.0\*.dll "..\compiledlibraries\netStandard" /s /y
+    EXIT /B 0
+)
+ELSE (
+    EXIT /B %ERRORLEVEL%
+)
