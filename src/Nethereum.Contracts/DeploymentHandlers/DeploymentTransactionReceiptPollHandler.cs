@@ -37,12 +37,6 @@ namespace Nethereum.Contracts.DeploymentHandlers
             return await TransactionManager.TransactionReceiptService
                 .PollForReceiptAsync(transactionHash, cancellationToken).ConfigureAwait(false);
         }
-
-        public Task<TransactionReceipt> SendTransactionAsync(TContractDeploymentMessage deploymentMessage = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return SendTransactionAsync(deploymentMessage, cancellationToken);
-        }
     }
 #endif
 }

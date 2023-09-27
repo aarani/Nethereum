@@ -28,15 +28,9 @@ namespace Nethereum.Contracts.ContractHandlers
         }
 
         public Task<string> SignTransactionAsync(TContractDeploymentMessage contractDeploymentMessage,
-                                                 CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             return _transactionSigner.SignTransactionAsync(contractDeploymentMessage, cancellationToken);
-        }
-
-        public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(
-            TContractDeploymentMessage contractDeploymentMessage = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return _receiptPollHandler.SendTransactionAsync(contractDeploymentMessage, cancellationToken);
         }
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(
