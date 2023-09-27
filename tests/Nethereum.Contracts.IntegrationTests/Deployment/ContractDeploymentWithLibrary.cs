@@ -2,6 +2,7 @@ using Nethereum.ABI.FunctionEncoding;
 using Nethereum.Hex.HexTypes;
 using Nethereum.XUnitEthereumClients;
 using System;
+using System.Threading;
 using Xunit; 
  // ReSharper disable ConsiderUsingConfigureAwait  
  // ReSharper disable AsyncConverter.ConfigureAwaitHighlighting
@@ -35,7 +36,7 @@ namespace Nethereum.Contracts.IntegrationTests.Deployment
             var web3 = _ethereumClientIntegrationFixture.GetWeb3();
             var ex = Assert.ThrowsAsync<Exception>(() => web3.Eth.DeployContract.SendRequestAndWaitForReceiptAsync(
                 contractByteCode,
-                senderAddress, new HexBigInteger(900000), null, null, null)).Result;
+                senderAddress, new HexBigInteger(900000), null, null, null, CancellationToken.None)).Result;
             Assert.Contains($"The byte code contains library address placeholders (prefix: '__$', suffix: '$__').",
                 ex.Message);
         }
@@ -49,7 +50,7 @@ namespace Nethereum.Contracts.IntegrationTests.Deployment
             var senderAddress = EthereumClientIntegrationFixture.AccountAddress;
             var web3 = _ethereumClientIntegrationFixture.GetWeb3();
             var libraryReceipt = await web3.Eth.DeployContract.SendRequestAndWaitForReceiptAsync(libraryByteCode,
-                senderAddress, new HexBigInteger(900000), null, null, null);
+                senderAddress, new HexBigInteger(900000), null, null, null, CancellationToken.None);
             Assert.Equal(libraryReceipt.Status, new HexBigInteger(1));
 
 
@@ -75,7 +76,7 @@ namespace Nethereum.Contracts.IntegrationTests.Deployment
             // Deploy linked contract
             var contractReceipt = await web3.Eth.DeployContract.SendRequestAndWaitForReceiptAsync(
                 contractByteCodeLinked,
-                senderAddress, new HexBigInteger(900000), null, null, null);
+                senderAddress, new HexBigInteger(900000), null, null, null, CancellationToken.None);
             Assert.Equal(contractReceipt.Status, new HexBigInteger(1));
 
 
@@ -98,7 +99,7 @@ namespace Nethereum.Contracts.IntegrationTests.Deployment
             var web3 = _ethereumClientIntegrationFixture.GetWeb3();
             var libraryStringReceipt = await web3.Eth.DeployContract.SendRequestAndWaitForReceiptAsync(
                 libraryStringByteCode,
-                senderAddress, new HexBigInteger(900000), null, null, null);
+                senderAddress, new HexBigInteger(900000), null, null, null, CancellationToken.None);
             Assert.Equal(libraryStringReceipt.Status, new HexBigInteger(1));
 
 
@@ -107,7 +108,7 @@ namespace Nethereum.Contracts.IntegrationTests.Deployment
                 "60fb610025600b82828239805160001a60731461001857fe5b30600052607381538281f3fe730000000000000000000000000000000000000000301460806040526004361060335760003560e01c8063a3818cc7146038575b600080fd5b603e60b0565b6040805160208082528351818301528351919283929083019185019080838360005b8381101560765781810151838201526020016060565b50505050905090810190601f16801560a25780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b6040805180820190915260028152600160f11b611a190260208201529056fea165627a7a72305820191fb42017e758207aade3acec8c241f235802905440b2e3475463e0a99ccf960029";
             var libraryOtherReceipt = await web3.Eth.DeployContract.SendRequestAndWaitForReceiptAsync(
                 libraryOtherByteCode,
-                senderAddress, new HexBigInteger(900000), null, null, null);
+                senderAddress, new HexBigInteger(900000), null, null, null, CancellationToken.None);
             Assert.Equal(libraryOtherReceipt.Status, new HexBigInteger(1));
 
 
@@ -133,7 +134,7 @@ namespace Nethereum.Contracts.IntegrationTests.Deployment
             // Deploy linked contract
             var contractReceipt = await web3.Eth.DeployContract.SendRequestAndWaitForReceiptAsync(
                 contractByteCodeLinked,
-                senderAddress, new HexBigInteger(900000), null, null, null);
+                senderAddress, new HexBigInteger(900000), null, null, null, CancellationToken.None);
             Assert.Equal(contractReceipt.Status, new HexBigInteger(1));
 
 

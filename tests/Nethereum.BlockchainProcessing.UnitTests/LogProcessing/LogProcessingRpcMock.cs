@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.BlockchainProcessing.UnitTests.LogProcessing
@@ -22,7 +23,7 @@ namespace Nethereum.BlockchainProcessing.UnitTests.LogProcessing
 
         public LogProcessingRpcMock(Web3Mock web3Mock):base(web3Mock)
         {
-            web3Mock.GetLogsMock.Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null))
+            web3Mock.GetLogsMock.Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null, CancellationToken.None))
                 .Returns<NewFilterInput, object>((filter, id) => {
 
                     GetLogsFiltersInvoked.Add(filter);

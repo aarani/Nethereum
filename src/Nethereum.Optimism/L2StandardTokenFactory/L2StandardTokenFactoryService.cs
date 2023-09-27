@@ -16,9 +16,9 @@ namespace Nethereum.Optimism.L2StandardTokenFactory
 {
     public partial class L2StandardTokenFactoryService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, L2StandardTokenFactoryDeployment l2StandardTokenFactoryDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, L2StandardTokenFactoryDeployment l2StandardTokenFactoryDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<L2StandardTokenFactoryDeployment>().SendRequestAndWaitForReceiptAsync(l2StandardTokenFactoryDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<L2StandardTokenFactoryDeployment>().SendRequestAndWaitForReceiptAsync(l2StandardTokenFactoryDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Web3.Web3 web3, L2StandardTokenFactoryDeployment l2StandardTokenFactoryDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.Optimism.L2StandardTokenFactory
             return web3.Eth.GetContractDeploymentHandler<L2StandardTokenFactoryDeployment>().SendRequestAsync(l2StandardTokenFactoryDeployment);
         }
 
-        public static async Task<L2StandardTokenFactoryService> DeployContractAndGetServiceAsync(Web3.Web3 web3, L2StandardTokenFactoryDeployment l2StandardTokenFactoryDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<L2StandardTokenFactoryService> DeployContractAndGetServiceAsync(Web3.Web3 web3, L2StandardTokenFactoryDeployment l2StandardTokenFactoryDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, l2StandardTokenFactoryDeployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, l2StandardTokenFactoryDeployment, cancellationToken).ConfigureAwait(false);
             return new L2StandardTokenFactoryService(web3, receipt.ContractAddress);
         }
 
@@ -47,7 +47,7 @@ namespace Nethereum.Optimism.L2StandardTokenFactory
             return ContractHandler.SendRequestAsync(createStandardL2TokenFunction);
         }
 
-        public Task<TransactionReceipt> CreateStandardL2TokenRequestAndWaitForReceiptAsync(CreateStandardL2TokenFunction createStandardL2TokenFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> CreateStandardL2TokenRequestAndWaitForReceiptAsync(CreateStandardL2TokenFunction createStandardL2TokenFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(createStandardL2TokenFunction, cancellationToken);
         }
@@ -62,7 +62,7 @@ namespace Nethereum.Optimism.L2StandardTokenFactory
             return ContractHandler.SendRequestAsync(createStandardL2TokenFunction);
         }
 
-        public Task<TransactionReceipt> CreateStandardL2TokenRequestAndWaitForReceiptAsync(string l1Token, string name, string symbol, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> CreateStandardL2TokenRequestAndWaitForReceiptAsync(string l1Token, string name, string symbol, CancellationToken cancellationToken = default(CancellationToken))
         {
             var createStandardL2TokenFunction = new CreateStandardL2TokenFunction();
             createStandardL2TokenFunction.L1Token = l1Token;

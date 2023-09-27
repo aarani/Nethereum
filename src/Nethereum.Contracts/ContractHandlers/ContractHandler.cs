@@ -44,7 +44,7 @@ namespace Nethereum.Contracts.ContractHandlers
 #if !DOTNET35
 
         public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync<TEthereumContractFunctionMessage>(
-            TEthereumContractFunctionMessage transactionMessage, CancellationToken cancellationToken)
+            TEthereumContractFunctionMessage transactionMessage = null, CancellationToken cancellationToken = default(CancellationToken))
             where TEthereumContractFunctionMessage : FunctionMessage, new()
         {
             if (transactionMessage == null) transactionMessage = new TEthereumContractFunctionMessage();

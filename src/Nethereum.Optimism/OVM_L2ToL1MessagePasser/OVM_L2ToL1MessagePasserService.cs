@@ -16,9 +16,9 @@ namespace Nethereum.Optimism.OVM_L2ToL1MessagePasser
 {
     public partial class OVM_L2ToL1MessagePasserService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, OVM_L2ToL1MessagePasserDeployment oVM_L2ToL1MessagePasserDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, OVM_L2ToL1MessagePasserDeployment oVM_L2ToL1MessagePasserDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<OVM_L2ToL1MessagePasserDeployment>().SendRequestAndWaitForReceiptAsync(oVM_L2ToL1MessagePasserDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<OVM_L2ToL1MessagePasserDeployment>().SendRequestAndWaitForReceiptAsync(oVM_L2ToL1MessagePasserDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Web3.Web3 web3, OVM_L2ToL1MessagePasserDeployment oVM_L2ToL1MessagePasserDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.Optimism.OVM_L2ToL1MessagePasser
             return web3.Eth.GetContractDeploymentHandler<OVM_L2ToL1MessagePasserDeployment>().SendRequestAsync(oVM_L2ToL1MessagePasserDeployment);
         }
 
-        public static async Task<OVM_L2ToL1MessagePasserService> DeployContractAndGetServiceAsync(Web3.Web3 web3, OVM_L2ToL1MessagePasserDeployment oVM_L2ToL1MessagePasserDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<OVM_L2ToL1MessagePasserService> DeployContractAndGetServiceAsync(Web3.Web3 web3, OVM_L2ToL1MessagePasserDeployment oVM_L2ToL1MessagePasserDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, oVM_L2ToL1MessagePasserDeployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, oVM_L2ToL1MessagePasserDeployment, cancellationToken).ConfigureAwait(false);
             return new OVM_L2ToL1MessagePasserService(web3, receipt.ContractAddress);
         }
 
@@ -47,7 +47,7 @@ namespace Nethereum.Optimism.OVM_L2ToL1MessagePasser
             return ContractHandler.SendRequestAsync(passMessageToL1Function);
         }
 
-        public Task<TransactionReceipt> PassMessageToL1RequestAndWaitForReceiptAsync(PassMessageToL1Function passMessageToL1Function, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> PassMessageToL1RequestAndWaitForReceiptAsync(PassMessageToL1Function passMessageToL1Function, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(passMessageToL1Function, cancellationToken);
         }
@@ -60,7 +60,7 @@ namespace Nethereum.Optimism.OVM_L2ToL1MessagePasser
             return ContractHandler.SendRequestAsync(passMessageToL1Function);
         }
 
-        public Task<TransactionReceipt> PassMessageToL1RequestAndWaitForReceiptAsync(byte[] message, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> PassMessageToL1RequestAndWaitForReceiptAsync(byte[] message, CancellationToken cancellationToken = default(CancellationToken))
         {
             var passMessageToL1Function = new PassMessageToL1Function();
             passMessageToL1Function.Message = message;

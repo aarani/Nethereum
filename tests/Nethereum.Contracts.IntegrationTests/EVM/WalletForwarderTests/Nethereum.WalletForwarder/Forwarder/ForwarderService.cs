@@ -16,9 +16,9 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
 {
     public partial class ForwarderService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, ForwarderDeployment forwarderDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, ForwarderDeployment forwarderDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<ForwarderDeployment>().SendRequestAndWaitForReceiptAsync(forwarderDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<ForwarderDeployment>().SendRequestAndWaitForReceiptAsync(forwarderDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Nethereum.Web3.Web3 web3, ForwarderDeployment forwarderDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
             return web3.Eth.GetContractDeploymentHandler<ForwarderDeployment>().SendRequestAsync(forwarderDeployment);
         }
 
-        public static async Task<ForwarderService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, ForwarderDeployment forwarderDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<ForwarderService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, ForwarderDeployment forwarderDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, forwarderDeployment, cancellationTokenSource);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, forwarderDeployment, cancellationToken);
             return new ForwarderService(web3, receipt.ContractAddress);
         }
 
@@ -47,7 +47,7 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
              return ContractHandler.SendRequestAsync(changeDestinationFunction);
         }
 
-        public Task<TransactionReceipt> ChangeDestinationRequestAndWaitForReceiptAsync(ChangeDestinationFunction changeDestinationFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ChangeDestinationRequestAndWaitForReceiptAsync(ChangeDestinationFunction changeDestinationFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(changeDestinationFunction, cancellationToken);
         }
@@ -60,7 +60,7 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
              return ContractHandler.SendRequestAsync(changeDestinationFunction);
         }
 
-        public Task<TransactionReceipt> ChangeDestinationRequestAndWaitForReceiptAsync(string newDestination, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> ChangeDestinationRequestAndWaitForReceiptAsync(string newDestination, CancellationToken cancellationToken = default(CancellationToken))
         {
             var changeDestinationFunction = new ChangeDestinationFunction();
                 changeDestinationFunction.NewDestination = newDestination;
@@ -89,12 +89,12 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
              return ContractHandler.SendRequestAsync<FlushFunction>();
         }
 
-        public Task<TransactionReceipt> FlushRequestAndWaitForReceiptAsync(FlushFunction flushFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FlushRequestAndWaitForReceiptAsync(FlushFunction flushFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(flushFunction, cancellationToken);
         }
 
-        public Task<TransactionReceipt> FlushRequestAndWaitForReceiptAsync(CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FlushRequestAndWaitForReceiptAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync<FlushFunction>(null, cancellationToken);
         }
@@ -104,7 +104,7 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
              return ContractHandler.SendRequestAsync(flushTokensFunction);
         }
 
-        public Task<TransactionReceipt> FlushTokensRequestAndWaitForReceiptAsync(FlushTokensFunction flushTokensFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FlushTokensRequestAndWaitForReceiptAsync(FlushTokensFunction flushTokensFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(flushTokensFunction, cancellationToken);
         }
@@ -117,7 +117,7 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
              return ContractHandler.SendRequestAsync(flushTokensFunction);
         }
 
-        public Task<TransactionReceipt> FlushTokensRequestAndWaitForReceiptAsync(string tokenContractAddress, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FlushTokensRequestAndWaitForReceiptAsync(string tokenContractAddress, CancellationToken cancellationToken = default(CancellationToken))
         {
             var flushTokensFunction = new FlushTokensFunction();
                 flushTokensFunction.TokenContractAddress = tokenContractAddress;
@@ -130,7 +130,7 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
              return ContractHandler.SendRequestAsync(initFunction);
         }
 
-        public Task<TransactionReceipt> InitRequestAndWaitForReceiptAsync(InitFunction initFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> InitRequestAndWaitForReceiptAsync(InitFunction initFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(initFunction, cancellationToken);
         }
@@ -143,7 +143,7 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
              return ContractHandler.SendRequestAsync(initFunction);
         }
 
-        public Task<TransactionReceipt> InitRequestAndWaitForReceiptAsync(string newDestination, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> InitRequestAndWaitForReceiptAsync(string newDestination, CancellationToken cancellationToken = default(CancellationToken))
         {
             var initFunction = new InitFunction();
                 initFunction.NewDestination = newDestination;
@@ -161,12 +161,12 @@ namespace Nethereum.WalletForwarder.Contracts.Forwarder
              return ContractHandler.SendRequestAsync<WithdrawFunction>();
         }
 
-        public Task<TransactionReceipt> WithdrawRequestAndWaitForReceiptAsync(WithdrawFunction withdrawFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> WithdrawRequestAndWaitForReceiptAsync(WithdrawFunction withdrawFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(withdrawFunction, cancellationToken);
         }
 
-        public Task<TransactionReceipt> WithdrawRequestAndWaitForReceiptAsync(CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> WithdrawRequestAndWaitForReceiptAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync<WithdrawFunction>(null, cancellationToken);
         }

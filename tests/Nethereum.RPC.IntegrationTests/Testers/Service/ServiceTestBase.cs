@@ -2,6 +2,7 @@
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.Blocks;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nethereum.RPC.IntegrationTests.Testers.Service
@@ -12,7 +13,7 @@ namespace Nethereum.RPC.IntegrationTests.Testers.Service
 
         protected void SetupBlockNumberMock(BigInteger currentBlockNumber)
         {
-            _blockNumberMock.Setup(b => b.SendRequestAsync(null))
+            _blockNumberMock.Setup(b => b.SendRequestAsync(null, CancellationToken.None))
                 .Returns(() =>
                 {
                     return Task.FromResult(currentBlockNumber.ToHexBigInteger());

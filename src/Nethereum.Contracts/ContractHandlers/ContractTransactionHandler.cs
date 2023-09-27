@@ -42,7 +42,7 @@ namespace Nethereum.Contracts.ContractHandlers
             return _receiptPollHandler.SendTransactionAsync(contractAddress, functionMessage, cancellationToken);
         }
 
-        public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractAddress, TContractMessage functionMessage, CancellationToken cancellationToken)
+        public Task<TransactionReceipt> SendRequestAndWaitForReceiptAsync(string contractAddress, TContractMessage functionMessage, CancellationToken cancellationToken = default(CancellationToken))
         {
             return SendTransactionAndWaitForReceiptAsync(contractAddress, functionMessage, cancellationToken);
         }

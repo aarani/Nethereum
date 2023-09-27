@@ -16,9 +16,9 @@ namespace Nethereum.ENS
 {
     public partial class StablePriceOracleService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, StablePriceOracleDeployment stablePriceOracleDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, StablePriceOracleDeployment stablePriceOracleDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<StablePriceOracleDeployment>().SendRequestAndWaitForReceiptAsync(stablePriceOracleDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<StablePriceOracleDeployment>().SendRequestAndWaitForReceiptAsync(stablePriceOracleDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Nethereum.Web3.Web3 web3, StablePriceOracleDeployment stablePriceOracleDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.ENS
             return web3.Eth.GetContractDeploymentHandler<StablePriceOracleDeployment>().SendRequestAsync(stablePriceOracleDeployment);
         }
 
-        public static async Task<StablePriceOracleService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, StablePriceOracleDeployment stablePriceOracleDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<StablePriceOracleService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, StablePriceOracleDeployment stablePriceOracleDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, stablePriceOracleDeployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, stablePriceOracleDeployment, cancellationToken).ConfigureAwait(false);
             return new StablePriceOracleService(web3, receipt.ContractAddress);
         }
 
@@ -82,12 +82,12 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync<RenounceOwnershipFunction>();
         }
 
-        public Task<TransactionReceipt> RenounceOwnershipRequestAndWaitForReceiptAsync(RenounceOwnershipFunction renounceOwnershipFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> RenounceOwnershipRequestAndWaitForReceiptAsync(RenounceOwnershipFunction renounceOwnershipFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(renounceOwnershipFunction, cancellationToken);
         }
 
-        public Task<TransactionReceipt> RenounceOwnershipRequestAndWaitForReceiptAsync(CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> RenounceOwnershipRequestAndWaitForReceiptAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync<RenounceOwnershipFunction>(null, cancellationToken);
         }
@@ -97,7 +97,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(setPricesFunction);
         }
 
-        public Task<TransactionReceipt> SetPricesRequestAndWaitForReceiptAsync(SetPricesFunction setPricesFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SetPricesRequestAndWaitForReceiptAsync(SetPricesFunction setPricesFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(setPricesFunction, cancellationToken);
         }
@@ -110,7 +110,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(setPricesFunction);
         }
 
-        public Task<TransactionReceipt> SetPricesRequestAndWaitForReceiptAsync(List<BigInteger> rentPrices, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SetPricesRequestAndWaitForReceiptAsync(List<BigInteger> rentPrices, CancellationToken cancellationToken = default(CancellationToken))
         {
             var setPricesFunction = new SetPricesFunction();
                 setPricesFunction.RentPrices = rentPrices;
@@ -123,7 +123,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(setOracleFunction);
         }
 
-        public Task<TransactionReceipt> SetOracleRequestAndWaitForReceiptAsync(SetOracleFunction setOracleFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SetOracleRequestAndWaitForReceiptAsync(SetOracleFunction setOracleFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(setOracleFunction, cancellationToken);
         }
@@ -136,7 +136,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(setOracleFunction);
         }
 
-        public Task<TransactionReceipt> SetOracleRequestAndWaitForReceiptAsync(string usdOracle, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SetOracleRequestAndWaitForReceiptAsync(string usdOracle, CancellationToken cancellationToken = default(CancellationToken))
         {
             var setOracleFunction = new SetOracleFunction();
                 setOracleFunction.UsdOracle = usdOracle;
@@ -171,7 +171,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(transferOwnershipFunction);
         }
 
-        public Task<TransactionReceipt> TransferOwnershipRequestAndWaitForReceiptAsync(TransferOwnershipFunction transferOwnershipFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferOwnershipRequestAndWaitForReceiptAsync(TransferOwnershipFunction transferOwnershipFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(transferOwnershipFunction, cancellationToken);
         }
@@ -184,7 +184,7 @@ namespace Nethereum.ENS
              return ContractHandler.SendRequestAsync(transferOwnershipFunction);
         }
 
-        public Task<TransactionReceipt> TransferOwnershipRequestAndWaitForReceiptAsync(string newOwner, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferOwnershipRequestAndWaitForReceiptAsync(string newOwner, CancellationToken cancellationToken = default(CancellationToken))
         {
             var transferOwnershipFunction = new TransferOwnershipFunction();
                 transferOwnershipFunction.NewOwner = newOwner;

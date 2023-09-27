@@ -16,9 +16,9 @@ namespace Nethereum.Optimism.L2CrossDomainMessenger
 {
     public partial class L2CrossDomainMessengerService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, L2CrossDomainMessengerDeployment l2CrossDomainMessengerDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, L2CrossDomainMessengerDeployment l2CrossDomainMessengerDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<L2CrossDomainMessengerDeployment>().SendRequestAndWaitForReceiptAsync(l2CrossDomainMessengerDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<L2CrossDomainMessengerDeployment>().SendRequestAndWaitForReceiptAsync(l2CrossDomainMessengerDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Web3.Web3 web3, L2CrossDomainMessengerDeployment l2CrossDomainMessengerDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.Optimism.L2CrossDomainMessenger
             return web3.Eth.GetContractDeploymentHandler<L2CrossDomainMessengerDeployment>().SendRequestAsync(l2CrossDomainMessengerDeployment);
         }
 
-        public static async Task<L2CrossDomainMessengerService> DeployContractAndGetServiceAsync(Web3.Web3 web3, L2CrossDomainMessengerDeployment l2CrossDomainMessengerDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<L2CrossDomainMessengerService> DeployContractAndGetServiceAsync(Web3.Web3 web3, L2CrossDomainMessengerDeployment l2CrossDomainMessengerDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, l2CrossDomainMessengerDeployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, l2CrossDomainMessengerDeployment, cancellationToken).ConfigureAwait(false);
             return new L2CrossDomainMessengerService(web3, receipt.ContractAddress);
         }
 
@@ -69,7 +69,7 @@ namespace Nethereum.Optimism.L2CrossDomainMessenger
             return ContractHandler.SendRequestAsync(relayMessageFunction);
         }
 
-        public Task<TransactionReceipt> RelayMessageRequestAndWaitForReceiptAsync(RelayMessageFunction relayMessageFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> RelayMessageRequestAndWaitForReceiptAsync(RelayMessageFunction relayMessageFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(relayMessageFunction, cancellationToken);
         }
@@ -85,7 +85,7 @@ namespace Nethereum.Optimism.L2CrossDomainMessenger
             return ContractHandler.SendRequestAsync(relayMessageFunction);
         }
 
-        public Task<TransactionReceipt> RelayMessageRequestAndWaitForReceiptAsync(string target, string sender, byte[] message, BigInteger messageNonce, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> RelayMessageRequestAndWaitForReceiptAsync(string target, string sender, byte[] message, BigInteger messageNonce, CancellationToken cancellationToken = default(CancellationToken))
         {
             var relayMessageFunction = new RelayMessageFunction();
             relayMessageFunction.Target = target;
@@ -115,7 +115,7 @@ namespace Nethereum.Optimism.L2CrossDomainMessenger
             return ContractHandler.SendRequestAsync(sendMessageFunction);
         }
 
-        public Task<TransactionReceipt> SendMessageRequestAndWaitForReceiptAsync(SendMessageFunction sendMessageFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SendMessageRequestAndWaitForReceiptAsync(SendMessageFunction sendMessageFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(sendMessageFunction, cancellationToken);
         }
@@ -130,7 +130,7 @@ namespace Nethereum.Optimism.L2CrossDomainMessenger
             return ContractHandler.SendRequestAsync(sendMessageFunction);
         }
 
-        public Task<TransactionReceipt> SendMessageRequestAndWaitForReceiptAsync(string target, byte[] message, uint gasLimit, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SendMessageRequestAndWaitForReceiptAsync(string target, byte[] message, uint gasLimit, CancellationToken cancellationToken = default(CancellationToken))
         {
             var sendMessageFunction = new SendMessageFunction();
             sendMessageFunction.Target = target;

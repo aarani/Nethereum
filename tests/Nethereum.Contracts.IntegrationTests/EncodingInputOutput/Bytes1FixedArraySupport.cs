@@ -74,7 +74,7 @@ function initTestArrayExternally(bytes1[50] array)
 
             var functionInit = contract.GetFunction("initTestArrayExternally");
             receipt = await functionInit.SendTransactionAndWaitForReceiptAsync(senderAddress, new HexBigInteger(900000),
-                null, null, listByteArray);
+                null, null, CancellationToken.None, listByteArray);
 
             result = await function.CallAsync<List<byte>>();
 

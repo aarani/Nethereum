@@ -1,4 +1,5 @@
 ﻿using System.Reactive;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Reactive.Testing;
 using Moq;
@@ -32,11 +33,11 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
             var filterId = new HexBigInteger(1337);
 
             filterService
-                .Setup(x => x.NewPendingTransactionFilter.SendRequestAsync(null))
+                .Setup(x => x.NewPendingTransactionFilter.SendRequestAsync(null, CancellationToken.None))
                 .Returns(Task.FromResult(filterId));
 
             filterService
-                .Setup(x => x.UninstallFilter.SendRequestAsync(filterId, null))
+                .Setup(x => x.UninstallFilter.SendRequestAsync(filterId, null, CancellationToken.None))
                 .Returns(Task.FromResult(true));
 
             // Setup incoming pending transactions.
@@ -62,7 +63,7 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 }
             };
 
-            filterService.SetupSequence(x => x.GetFilterChangesForBlockOrTransaction.SendRequestAsync(filterId, null))
+            filterService.SetupSequence(x => x.GetFilterChangesForBlockOrTransaction.SendRequestAsync(filterId, null, CancellationToken.None))
                 .Returns(Task.FromResult(new[]
                 {
                     expectedTransactions[0][0].TransactionHash
@@ -72,11 +73,11 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                     expectedTransactions[1][0].TransactionHash, expectedTransactions[1][1].TransactionHash
                 }));
 
-            transactionService.Setup(x => x.GetTransactionByHash.SendRequestAsync(expectedTransactions[0][0].TransactionHash, null))
+            transactionService.Setup(x => x.GetTransactionByHash.SendRequestAsync(expectedTransactions[0][0].TransactionHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedTransactions[0][0]));
-            transactionService.Setup(x => x.GetTransactionByHash.SendRequestAsync(expectedTransactions[1][0].TransactionHash, null))
+            transactionService.Setup(x => x.GetTransactionByHash.SendRequestAsync(expectedTransactions[1][0].TransactionHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedTransactions[1][0]));
-            transactionService.Setup(x => x.GetTransactionByHash.SendRequestAsync(expectedTransactions[1][1].TransactionHash, null))
+            transactionService.Setup(x => x.GetTransactionByHash.SendRequestAsync(expectedTransactions[1][1].TransactionHash, null, CancellationToken.None))
                 .Returns(Task.FromResult(expectedTransactions[1][1]));
 
             // Record incoming data.
@@ -87,8 +88,8 @@ namespace Nethereum.RPC.Reactive.UnitTests.Polling
                 OnNext(200 + Subscribed, expectedTransactions[1][0]),
                 OnNext(200 + Subscribed, expectedTransactions[1][1]));
 
-            filterService.Verify(x => x.NewPendingTransactionFilter.SendRequestAsync(null), Times.Once);
-            filterService.Verify(x => x.UninstallFilter.SendRequestAsync(filterId, null), Times.Once);
+            filterService.Verify(x => x.NewPendingTransactionFilter.SendRequestAsync(null, CancellationToken.None), Times.Once);
+            filterService.Verify(x => x.UninstallFilter.SendRequestAsync(filterId, null, CancellationToken.None), Times.Once);
         }
     }
 }

@@ -16,9 +16,9 @@ namespace Nethereum.WalletForwarder.Contracts.ForwarderFactory
 {
     public partial class ForwarderFactoryService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, ForwarderFactoryDeployment forwarderFactoryDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Nethereum.Web3.Web3 web3, ForwarderFactoryDeployment forwarderFactoryDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<ForwarderFactoryDeployment>().SendRequestAndWaitForReceiptAsync(forwarderFactoryDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<ForwarderFactoryDeployment>().SendRequestAndWaitForReceiptAsync(forwarderFactoryDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Nethereum.Web3.Web3 web3, ForwarderFactoryDeployment forwarderFactoryDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.WalletForwarder.Contracts.ForwarderFactory
             return web3.Eth.GetContractDeploymentHandler<ForwarderFactoryDeployment>().SendRequestAsync(forwarderFactoryDeployment);
         }
 
-        public static async Task<ForwarderFactoryService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, ForwarderFactoryDeployment forwarderFactoryDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<ForwarderFactoryService> DeployContractAndGetServiceAsync(Nethereum.Web3.Web3 web3, ForwarderFactoryDeployment forwarderFactoryDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, forwarderFactoryDeployment, cancellationTokenSource);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, forwarderFactoryDeployment, cancellationToken);
             return new ForwarderFactoryService(web3, receipt.ContractAddress);
         }
 
@@ -47,7 +47,7 @@ namespace Nethereum.WalletForwarder.Contracts.ForwarderFactory
              return ContractHandler.SendRequestAsync(cloneForwarderFunction);
         }
 
-        public Task<TransactionReceipt> CloneForwarderRequestAndWaitForReceiptAsync(CloneForwarderFunction cloneForwarderFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> CloneForwarderRequestAndWaitForReceiptAsync(CloneForwarderFunction cloneForwarderFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(cloneForwarderFunction, cancellationToken);
         }
@@ -61,7 +61,7 @@ namespace Nethereum.WalletForwarder.Contracts.ForwarderFactory
              return ContractHandler.SendRequestAsync(cloneForwarderFunction);
         }
 
-        public Task<TransactionReceipt> CloneForwarderRequestAndWaitForReceiptAsync(string forwarder, BigInteger salt, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> CloneForwarderRequestAndWaitForReceiptAsync(string forwarder, BigInteger salt, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cloneForwarderFunction = new CloneForwarderFunction();
                 cloneForwarderFunction.Forwarder = forwarder;
@@ -75,7 +75,7 @@ namespace Nethereum.WalletForwarder.Contracts.ForwarderFactory
              return ContractHandler.SendRequestAsync(flushEtherFunction);
         }
 
-        public Task<TransactionReceipt> FlushEtherRequestAndWaitForReceiptAsync(FlushEtherFunction flushEtherFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FlushEtherRequestAndWaitForReceiptAsync(FlushEtherFunction flushEtherFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(flushEtherFunction, cancellationToken);
         }
@@ -88,7 +88,7 @@ namespace Nethereum.WalletForwarder.Contracts.ForwarderFactory
              return ContractHandler.SendRequestAsync(flushEtherFunction);
         }
 
-        public Task<TransactionReceipt> FlushEtherRequestAndWaitForReceiptAsync(List<string> forwarders, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FlushEtherRequestAndWaitForReceiptAsync(List<string> forwarders, CancellationToken cancellationToken = default(CancellationToken))
         {
             var flushEtherFunction = new FlushEtherFunction();
                 flushEtherFunction.Forwarders = forwarders;
@@ -101,7 +101,7 @@ namespace Nethereum.WalletForwarder.Contracts.ForwarderFactory
              return ContractHandler.SendRequestAsync(flushTokensFunction);
         }
 
-        public Task<TransactionReceipt> FlushTokensRequestAndWaitForReceiptAsync(FlushTokensFunction flushTokensFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FlushTokensRequestAndWaitForReceiptAsync(FlushTokensFunction flushTokensFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
              return ContractHandler.SendRequestAndWaitForReceiptAsync(flushTokensFunction, cancellationToken);
         }
@@ -115,7 +115,7 @@ namespace Nethereum.WalletForwarder.Contracts.ForwarderFactory
              return ContractHandler.SendRequestAsync(flushTokensFunction);
         }
 
-        public Task<TransactionReceipt> FlushTokensRequestAndWaitForReceiptAsync(List<string> forwarders, string tokenAddres, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> FlushTokensRequestAndWaitForReceiptAsync(List<string> forwarders, string tokenAddres, CancellationToken cancellationToken = default(CancellationToken))
         {
             var flushTokensFunction = new FlushTokensFunction();
                 flushTokensFunction.Forwarders = forwarders;

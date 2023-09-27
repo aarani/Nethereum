@@ -37,7 +37,7 @@ namespace Nethereum.BlockchainProcessing.UnitTests.LogProcessing
             var logsRetrieved = new List<FilterLog>();
 
             _web3Mock.GetLogsMock
-                .Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null))
+                .Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null, CancellationToken.None))
                 .Returns<NewFilterInput, object>((filter, id) =>
                 {
                     var logs = new[] { new FilterLog() };
@@ -63,7 +63,7 @@ namespace Nethereum.BlockchainProcessing.UnitTests.LogProcessing
             var logsRetrieved = new List<FilterLog>();
 
             _web3Mock.GetLogsMock
-                .Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null))
+                .Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null, CancellationToken.None))
                 .Returns<NewFilterInput, object>((filter, id) =>
                 {
                     if(filter.NumberOfBlocksInBlockParameters() > 5) throw new Exception("fake too many records exception");
@@ -93,7 +93,7 @@ namespace Nethereum.BlockchainProcessing.UnitTests.LogProcessing
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
             _web3Mock.GetLogsMock
-                .Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null))
+                .Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null, CancellationToken.None))
                 .Returns<NewFilterInput, object>((filter, id) =>
                 {
                     var logs = new[] { new FilterLog() };
@@ -121,7 +121,7 @@ namespace Nethereum.BlockchainProcessing.UnitTests.LogProcessing
             var calls = 0;
             //set up to throw every time
             _web3Mock.GetLogsMock
-                .Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null))
+                .Setup(s => s.SendRequestAsync(It.IsAny<NewFilterInput>(), null, CancellationToken.None))
                 .Callback(() => calls++)
                 .ThrowsAsync(retrievalException);
 

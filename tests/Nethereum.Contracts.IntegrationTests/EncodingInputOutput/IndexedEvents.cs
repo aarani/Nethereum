@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Hex.HexTypes;
 using Nethereum.XUnitEthereumClients;
@@ -62,7 +63,7 @@ namespace Nethereum.Contracts.IntegrationTests.EncodingInputOutput
 
             var function = contract.GetFunction("sendEvent");
             receipt = await function.SendTransactionAndWaitForReceiptAsync(senderAddress, new HexBigInteger(900000),
-                null, null).ConfigureAwait(false);
+                null, null, CancellationToken.None).ConfigureAwait(false);
 
 
             var eventLog = contract.GetEvent("Event");
@@ -87,7 +88,7 @@ namespace Nethereum.Contracts.IntegrationTests.EncodingInputOutput
 
             var function = contract.GetFunction("sendEvent");
             receipt = await function.SendTransactionAndWaitForReceiptAsync(senderAddress, new HexBigInteger(900000),
-                null, null).ConfigureAwait(false);
+                null, null, CancellationToken.None).ConfigureAwait(false);
 
             var events = receipt.Logs.DecodeAllEvents<EventEventDTO>();
 

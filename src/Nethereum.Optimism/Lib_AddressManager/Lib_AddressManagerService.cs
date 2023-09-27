@@ -16,9 +16,9 @@ namespace Nethereum.Optimism.Lib_AddressManager
 {
     public partial class Lib_AddressManagerService
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, Lib_AddressManagerDeployment lib_AddressManagerDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3.Web3 web3, Lib_AddressManagerDeployment lib_AddressManagerDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return web3.Eth.GetContractDeploymentHandler<Lib_AddressManagerDeployment>().SendRequestAndWaitForReceiptAsync(lib_AddressManagerDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<Lib_AddressManagerDeployment>().SendRequestAndWaitForReceiptAsync(lib_AddressManagerDeployment, cancellationToken);
         }
 
         public static Task<string> DeployContractAsync(Web3.Web3 web3, Lib_AddressManagerDeployment lib_AddressManagerDeployment)
@@ -26,9 +26,9 @@ namespace Nethereum.Optimism.Lib_AddressManager
             return web3.Eth.GetContractDeploymentHandler<Lib_AddressManagerDeployment>().SendRequestAsync(lib_AddressManagerDeployment);
         }
 
-        public static async Task<Lib_AddressManagerService> DeployContractAndGetServiceAsync(Web3.Web3 web3, Lib_AddressManagerDeployment lib_AddressManagerDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<Lib_AddressManagerService> DeployContractAndGetServiceAsync(Web3.Web3 web3, Lib_AddressManagerDeployment lib_AddressManagerDeployment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, lib_AddressManagerDeployment, cancellationTokenSource).ConfigureAwait(false);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, lib_AddressManagerDeployment, cancellationToken).ConfigureAwait(false);
             return new Lib_AddressManagerService(web3, receipt.ContractAddress);
         }
 
@@ -77,12 +77,12 @@ namespace Nethereum.Optimism.Lib_AddressManager
             return ContractHandler.SendRequestAsync<RenounceOwnershipFunction>();
         }
 
-        public Task<TransactionReceipt> RenounceOwnershipRequestAndWaitForReceiptAsync(RenounceOwnershipFunction renounceOwnershipFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> RenounceOwnershipRequestAndWaitForReceiptAsync(RenounceOwnershipFunction renounceOwnershipFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(renounceOwnershipFunction, cancellationToken);
         }
 
-        public Task<TransactionReceipt> RenounceOwnershipRequestAndWaitForReceiptAsync(CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> RenounceOwnershipRequestAndWaitForReceiptAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync<RenounceOwnershipFunction>(null, cancellationToken);
         }
@@ -92,7 +92,7 @@ namespace Nethereum.Optimism.Lib_AddressManager
             return ContractHandler.SendRequestAsync(setAddressFunction);
         }
 
-        public Task<TransactionReceipt> SetAddressRequestAndWaitForReceiptAsync(SetAddressFunction setAddressFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SetAddressRequestAndWaitForReceiptAsync(SetAddressFunction setAddressFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(setAddressFunction, cancellationToken);
         }
@@ -106,7 +106,7 @@ namespace Nethereum.Optimism.Lib_AddressManager
             return ContractHandler.SendRequestAsync(setAddressFunction);
         }
 
-        public Task<TransactionReceipt> SetAddressRequestAndWaitForReceiptAsync(string name, string address, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SetAddressRequestAndWaitForReceiptAsync(string name, string address, CancellationToken cancellationToken = default(CancellationToken))
         {
             var setAddressFunction = new SetAddressFunction();
             setAddressFunction.Name = name;
@@ -120,7 +120,7 @@ namespace Nethereum.Optimism.Lib_AddressManager
             return ContractHandler.SendRequestAsync(transferOwnershipFunction);
         }
 
-        public Task<TransactionReceipt> TransferOwnershipRequestAndWaitForReceiptAsync(TransferOwnershipFunction transferOwnershipFunction, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferOwnershipRequestAndWaitForReceiptAsync(TransferOwnershipFunction transferOwnershipFunction, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ContractHandler.SendRequestAndWaitForReceiptAsync(transferOwnershipFunction, cancellationToken);
         }
@@ -133,7 +133,7 @@ namespace Nethereum.Optimism.Lib_AddressManager
             return ContractHandler.SendRequestAsync(transferOwnershipFunction);
         }
 
-        public Task<TransactionReceipt> TransferOwnershipRequestAndWaitForReceiptAsync(string newOwner, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> TransferOwnershipRequestAndWaitForReceiptAsync(string newOwner, CancellationToken cancellationToken = default(CancellationToken))
         {
             var transferOwnershipFunction = new TransferOwnershipFunction();
             transferOwnershipFunction.NewOwner = newOwner;
