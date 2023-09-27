@@ -137,7 +137,6 @@ dotnet build  -c Release /property:ReleaseSuffix=%releaseSuffix% /property:Targe
 IF %ERRORLEVEL% EQU 0 (
     xcopy bin\Release\netstandard2.0\*.dll "..\compiledlibraries\netStandard" /s /y
     EXIT /B 0
-)
-ELSE (
-    EXIT /B %ERRORLEVEL%
+) ELSE (
+    EXIT %ERRORLEVEL%
 )
