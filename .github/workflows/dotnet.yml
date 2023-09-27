@@ -1,0 +1,13 @@
+name: .NET
+on: [ push ]
+
+jobs:
+  build_and_deploy:
+    env:
+      BASE_VERSION: 0.95
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: |
+        dotnet build Nethereum.sln -p:Configuration=Release -p:TargetNet35=false
