@@ -10,4 +10,4 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build
       run: |
-        dotnet build Nethereum.sln -p:Configuration=Release -p:TargetNet35=false
+        dotnet build Nethereum.sln -p:Configuration=Release -p:TargetNet35=false --framework net5.0
