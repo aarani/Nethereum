@@ -193,8 +193,7 @@ cd ..
 
 setlocal
 set DIR=%~dp0
-cd ..
-set OUTPUTDIR=%~dp0\packages
+set OUTPUTDIR=%~dp0\..\packages
 if not exist "%OUTPUTDIR%" (
     mkdir "%OUTPUTDIR%"
 )
