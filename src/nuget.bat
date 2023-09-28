@@ -201,12 +201,21 @@ set OUTPUTDIR=%~dp0\packages
 if not exist "%OUTPUTDIR%" (
     mkdir "%OUTPUTDIR%"
 )
-for /R %DIR% %%a in (*.nupkg) do xcopy "%%a" "%OUTPUTDIR%"
-xcopy *.nupkg packages /s /y
+for /R "%DIR%" %%a in (*.nupkg) do (
+    set "source=%%a"
+    set "destination=%OUTPUTDIR%\%%~nxa"
+    if not "!source!"=="!destination!" (
+        xcopy "%%a" "%OUTPUTDIR%\" /y
+    )
+)
 
-for /R %DIR% %%a in (*.snupkg) do xcopy "%%a" "%OUTPUTDIR%"
-xcopy *.snupkg packages /s /y
-
+for /R "%DIR%" %%a in (*.snupkg) do (
+    set "source=%%a"
+    set "destination=%OUTPUTDIR%\%%~nxa"
+    if not "!source!"=="!destination!" (
+        xcopy "%%a" "%OUTPUTDIR%\" /y
+    )
+)
 EXIT /B %ERRORLEVEL%
 
 :restorepack
