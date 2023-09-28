@@ -201,20 +201,15 @@ set OUTPUTDIR=%~dp0\packages
 if not exist "%OUTPUTDIR%" (
     mkdir "%OUTPUTDIR%"
 )
+
 for /R "%DIR%" %%a in (*.nupkg) do (
-    set "source=%%a"
     set "destination=%OUTPUTDIR%\%%~nxa"
-    if not "!source!"=="!destination!" (
-        xcopy "%%a" "%OUTPUTDIR%\" /y
-    )
+    copy "%%a" "!destination!" /y
 )
 
 for /R "%DIR%" %%a in (*.snupkg) do (
-    set "source=%%a"
     set "destination=%OUTPUTDIR%\%%~nxa"
-    if not "!source!"=="!destination!" (
-        xcopy "%%a" "%OUTPUTDIR%\" /y
-    )
+    copy "%%a" "!destination!" /y
 )
 EXIT /B %ERRORLEVEL%
 
