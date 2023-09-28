@@ -192,25 +192,20 @@ CALL :restorepack
 cd ..
 
 setlocal
-echo "ccccccccccccccccccccccccccccc"
 set DIR=%~dp0
+cd ..
 set OUTPUTDIR=%~dp0\packages
 if not exist "%OUTPUTDIR%" (
     mkdir "%OUTPUTDIR%"
 )
 
 for /R "%DIR%" %%a in (*.nupkg) do (
-    set "destination=%OUTPUTDIR%\%%~nxa"
-    copy "%%a" "!destination!" /y
+    copy "%%a" "%OUTPUTDIR%\%%~nxa" /y
 )
 
 for /R "%DIR%" %%a in (*.snupkg) do (
-    set "destination=%OUTPUTDIR%\%%~nxa"
-    copy "%%a" "!destination!" /y
+    copy "%%a" "%OUTPUTDIR%\%%~nxa" /y
 )
-
-echo "ccccccccccccccccccccccccccccc"
-dir "%OUTPUTDIR%"
 EXIT /B %ERRORLEVEL%
 
 :restorepack
