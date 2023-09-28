@@ -192,6 +192,10 @@ CALL :restorepack
 cd ..
 
 setlocal
+echo "testing this 3"
+cd
+dir
+echo "ccccccccccccccccccccccccccccc"
 set DIR=%~dp0
 set OUTPUTDIR=%~dp0\packages
 for /R %DIR% %%a in (*.nupkg) do xcopy "%%a" "%OUTPUTDIR%"
@@ -206,7 +210,16 @@ EXIT /B %ERRORLEVEL%
 dotnet restore %projectName% /property:ReleaseSuffix=%releaseSuffix% /property:TargetNet35=%targetNet35%
 dotnet build %projectName% -c Release /property:TargetNet35=%targetNet35% /property:ReleaseSuffix=%releaseSuffix%
 dotnet pack %projectName% -c Release --include-symbols -p:SymbolPackageFormat=snupkg /property:TargetNet35=%targetNet35% /property:ReleaseSuffix=%releaseSuffix%
+
+echo "testing this 1"
+cd
+dir
+echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 IF %ERRORLEVEL% EQU 0 (
+    echo "testing this 2"
+    cd
+    dir
+    echo "bbbbbbbbbbbbbbbbbbbbbbbbbbbb"
     EXIT /B 0
 ) ELSE (
     EXIT %ERRORLEVEL%
