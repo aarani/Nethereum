@@ -2,6 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Nethereum</PackageId>
+    <Authors>juanblanco</Authors>
+    <LicenseUrl>https://github.com/nethereum/nethereum/blob/master/LICENSE</LicenseUrl>
+    <PackageProjectUrl>https://github.com/nblockchain/Nethereum</PackageProjectUrl>
+    <IconUrl>https://github.com/nblockchain/Nethereum/blob/master/images/icon.png</IconUrl>
+    <Description>
+        Nethereum unofficial fork that has the following features:
+* Single nuget package targetting only .NetStandard2.0.
+* Stable version from upstream's 3.0 (following SemVer).
+* CancellationToken support (via JsonRpcSharp dependency).
+    </Description>
+    <PackageReleaseNotes>
+        See: https://github.com/nblockchain/Nethereum/commits/master
+    </PackageReleaseNotes>
+    <PackageTags>Nethereum</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup>
