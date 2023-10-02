@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Nethereum</PackageId>
+    <PackageId>Neth.TMP</PackageId>
     <Authors>juanblanco</Authors>
     <LicenseUrl>https://github.com/nethereum/nethereum/blob/master/LICENSE</LicenseUrl>
     <PackageProjectUrl>https://github.com/nblockchain/Nethereum</PackageProjectUrl>
