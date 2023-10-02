@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Nethereum</PackageId>
+    <Authors>juanblanco</Authors>
+    <LicenseUrl>https://github.com/nethereum/nethereum/blob/master/LICENSE</LicenseUrl>
+    <PackageProjectUrl>https://github.com/nblockchain/Nethereum</PackageProjectUrl>
+    <IconUrl>https://github.com/nblockchain/Nethereum/blob/master/images/icon.png</IconUrl>
+    <Description>
+        Nethereum unofficial fork that has the following features:
+* Single nuget package targetting only .NetStandard2.0.
+* Stable version from upstream's 4.0 (following SemVer)
+* with CancellationToken support.
+    </Description>
+    <PackageReleaseNotes>
+        See: https://github.com/nblockchain/Nethereum/commits/master
+    </PackageReleaseNotes>
+    <PackageTags>Nethereum</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nethereum.KeyStore\Nethereum.KeyStore.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.RLP\Nethereum.RLP.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.ABI\Nethereum.ABI.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.Accounts\Nethereum.Accounts.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.Contracts\Nethereum.Contracts.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.Hex\Nethereum.Hex.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.RPC\Nethereum.RPC.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.Signer\Nethereum.Signer.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.StandardTokenEIP20\Nethereum.StandardTokenEIP20.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.Util\Nethereum.Util.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Nethereum.Web3\Nethereum.Web3.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="[11.0.2,14)" />
+      <!-- Nethereum.Contracts -->
+      <PackageReference Include="ADRaffy.ENSNormalize" Version="0.1.5" />
+      <!-- Nethereum.JsonRpc.Client -->
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[6.0.0,8)" />
+      <!-- Netuereum.KeyStore -->
+      <!-- Nethereum.Signer -->
+      <PackageReference Include="Portable.BouncyCastle" Version="[1.8.2,2.0)" />
+  </ItemGroup>
+</Project>
