@@ -35,7 +35,6 @@
       <!-- Nethereum.JsonRpc.Client -->
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[6.0.0,8)" />
       <!-- Netuereum.KeyStore -->
-      <PackageReference Include="Portable.BouncyCastle" Version="[1.8.2,2.0)" />
       <!-- Nethereum.Signer -->
       <PackageReference Include="Portable.BouncyCastle" Version="[1.8.2,2.0)" />
   </ItemGroup>
