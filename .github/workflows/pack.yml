@@ -8,9 +8,12 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v1
-      - name: Package and upload
+      - name: Package
         run: |
-          cd src\Nethereum
+          cd src/Nethereum
           dotnet build Nethereum.csproj -p:Configuration=Release
+      - name: Upload
+        run: |
+          cd src/Nethereum
           git clone https://github.com/nblockchain/fsx
-          fsx\Tools\nugetPush.fsx $env:BASE_VERSION ${{secrets.NUGET_API_KEY}}
+          dotnet fsi fsx/Tools/nugetPush.fsx $BASE_VERSION ${{secrets.NUGET_API_KEY}}
