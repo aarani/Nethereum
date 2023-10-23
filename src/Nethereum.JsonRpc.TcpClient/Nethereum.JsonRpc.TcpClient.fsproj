@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+    <PropertyGroup>
+        <Description>JsonRpc Rpc Client Nethereum provider</Description>
+        <AssemblyTitle>Nethereum.JsonRpc.TcpClient</AssemblyTitle>
+        <VersionPrefix>$(NethereumVersion)</VersionPrefix>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
+        <AssemblyName>Nethereum.JsonRpc.TcpClient</AssemblyName>
+        <PackageId>Nethereum.JsonRpc.TcpClient</PackageId>
+        <PackageTags>Json;RPC;Nethereum</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Nethereum.JsonRpc.Client\Nethereum.JsonRpc.Client.csproj" />
+    </ItemGroup>
+    
+    <PropertyGroup>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\NethereumKey.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\..\NethereumKey.snk" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="System.IO.Pipelines" Version="7.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Include="TcpClient.fs" />
+    </ItemGroup>
+</Project>
