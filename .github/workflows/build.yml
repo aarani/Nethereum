@@ -13,5 +13,4 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build
         run: |
-          cd src/Nethereum.JsonRpc.TcpClient
-          dotnet build Nethereum.JsonRpc.TcpClient.fsproj --property:Configuration=Release
+          dotnet build Nethereum.sln --property:Configuration=Release --framework netstandard2.0
