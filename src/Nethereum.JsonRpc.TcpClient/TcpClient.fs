@@ -14,45 +14,61 @@ open Newtonsoft.Json
 open Nethereum.JsonRpc.Client
 open Nethereum.JsonRpc.Client.RpcMessages
 
-type TimeoutOrResult<'T> =
-    | Timeout
-    | Result of 'T
+type Either<'Val> =
+    | FailureResult
+    | SuccessfulValue of 'Val
 
 type TcpClient(asyncResolveHost: unit->Async<IPAddress>, port, maybeSerializationSettings: JsonSerializerSettings, log: ILogger) =
     inherit ClientBase()
     let minimumBufferSize = 1024
+    let serializationSettings =
+        if isNull maybeSerializationSettings then
+            DefaultJsonSerializerSettingsFactory.BuildDefaultJsonSerializerSettings()
+        else
+            maybeSerializationSettings
 
-    let withTimeout (timeout: TimeSpan) (job: Async<_>) = async {
-        let read = async {
-            let! value = job
-            return value |> Result |> Some
+    let WithTimeout (timeSpan: TimeSpan) (job: Async<'R>) : Async<Option<'R>> =
+        async {
+            let read =
+                async {
+                    let! value = job
+                    return value |> SuccessfulValue |> Some
+                }
+
+            let delay =
+                async {
+                    let total = int timeSpan.TotalMilliseconds
+                    do! Async.Sleep total
+                    return FailureResult |> Some
+                }
+
+            let! dummyOption = Async.Choice [ read; delay ]
+
+            match dummyOption with
+            | Some theResult ->
+                match theResult with
+                | SuccessfulValue r -> return Some r
+                | FailureResult _ -> return None
+            | None ->
+                // none of the jobs passed to Async.Choice returns None
+                return failwith "unreachable"
         }
 
-        let delay = async {
-            do! Async.Sleep timeout
-            return Some Timeout
-        }
 
-        let! result = Async.Choice [read; delay]
-        match result with
-        | Some x -> return x
-        | None -> return Timeout
-    }
-
-    let unwrapTimeout timeoutMsg job = async {
+    let UnwrapTimeoutOption timeoutMsg job = async {
         let! maybeRes = job
         match maybeRes with
-        | Timeout ->
+        | None ->
             return raise <| RpcClientTimeoutException timeoutMsg
-        | Result res ->
+        | Some res ->
             return res
     }
 
-    let rec writeToPipeAsync (writer: PipeWriter) (socket: Socket) = async {
+    let rec WriteToPipeAsync (writer: PipeWriter) (socket: Socket) = async {
         try
             let segment = Array.zeroCreate<byte> minimumBufferSize |> ArraySegment
             let! read = socket.ReceiveAsync(segment, SocketFlags.None)
-                        |> Async.AwaitTask |> withTimeout ClientBase.ConnectionTimeout |> unwrapTimeout "Socket read timed out"
+                        |> Async.AwaitTask |> WithTimeout ClientBase.ConnectionTimeout |> UnwrapTimeoutOption "Socket read timed out"
 
             match read with
             | 0 ->
@@ -66,12 +82,12 @@ type TcpClient(asyncResolveHost: unit->Async<IPAddress>, port, maybeSerializatio
                     return writer.Complete()
                 else
                     cancelToken.ThrowIfCancellationRequested()
-                    return! writeToPipeAsync writer socket
+                    return! WriteToPipeAsync writer socket
         with
         | ex -> return writer.Complete ex
     }
 
-    let rec readFromPipeAsync (reader: PipeReader) (state: StringBuilder * int) = async {
+    let rec ReadFromPipeAsync (reader: PipeReader) (state: StringBuilder * int) = async {
         let! cancelToken = Async.CancellationToken
         let! result = (reader.ReadAsync cancelToken).AsTask() |> Async.AwaitTask
 
@@ -89,39 +105,33 @@ type TcpClient(asyncResolveHost: unit->Async<IPAddress>, port, maybeSerializatio
             return sb.ToString()
         else
             cancelToken.ThrowIfCancellationRequested()
-            return! readFromPipeAsync reader (sb, braces)
+            return! ReadFromPipeAsync reader (sb, braces)
     }
 
     let AsyncRequestImpl (json: string) =
         async {
-            let! endpoint = asyncResolveHost() |> withTimeout ClientBase.ConnectionTimeout |> unwrapTimeout "Name resolution timed out"
+            let! endpoint = asyncResolveHost() |> WithTimeout ClientBase.ConnectionTimeout |> UnwrapTimeoutOption "Name resolution timed out"
 
             let! cancelToken = Async.CancellationToken
             cancelToken.ThrowIfCancellationRequested()
 
             use socket = new Socket(SocketType.Stream, ProtocolType.Tcp)
             let! _connect = socket.ConnectAsync(endpoint, port)
-                           |> Async.AwaitTask |> withTimeout ClientBase.ConnectionTimeout |> unwrapTimeout "Socket connect timed out"
+                           |> Async.AwaitTask |> WithTimeout ClientBase.ConnectionTimeout |> UnwrapTimeoutOption "Socket connect timed out"
 
             cancelToken.ThrowIfCancellationRequested()
 
             let segment = UTF8Encoding.UTF8.GetBytes(json + Environment.NewLine) |> ArraySegment
             let! _send = socket.SendAsync(segment, SocketFlags.None)
-                        |> Async.AwaitTask |> withTimeout ClientBase.ConnectionTimeout |> unwrapTimeout "Socket send timed out"
+                        |> Async.AwaitTask |> WithTimeout ClientBase.ConnectionTimeout |> UnwrapTimeoutOption "Socket send timed out"
 
             cancelToken.ThrowIfCancellationRequested()
 
             let pipe = Pipe()
-            let! _ = writeToPipeAsync pipe.Writer socket |> Async.StartChild
-            return! readFromPipeAsync pipe.Reader (StringBuilder(), 0)
+            let! _ = WriteToPipeAsync pipe.Writer socket |> Async.StartChild
+            return! ReadFromPipeAsync pipe.Reader (StringBuilder(), 0)
         }
 
-    let serializationSettings =
-        if isNull maybeSerializationSettings then
-            DefaultJsonSerializerSettingsFactory.BuildDefaultJsonSerializerSettings()
-        else
-            maybeSerializationSettings
-    
     new(asyncResolveHost: unit->Async<IPAddress>, port) =
         TcpClient(asyncResolveHost, port, null, null)
     new(asyncResolveHost: unit->Async<IPAddress>, port, serializerSettings) =
@@ -161,7 +171,7 @@ type TcpClient(asyncResolveHost: unit->Async<IPAddress>, port, maybeSerializatio
     member self.SendRawAsync (json: string) =
         self.AsyncSendRaw json |> Async.StartAsTask
 
-    override self.SendAsync(request: RpcRequestMessage, _route: string) =
+    member self.AsyncSend (request: RpcRequestMessage, _route: string) =
         async {
             let rpcLogger = RpcLogger log
             
@@ -175,9 +185,12 @@ type TcpClient(asyncResolveHost: unit->Async<IPAddress>, port, maybeSerializatio
             
             return response
         }
+
+    override self.SendAsync(request: RpcRequestMessage, route: string) =
+        self.AsyncSend (request, route)
         |> Async.StartAsTask
 
-    override self.SendAsync(requests: array<RpcRequestMessage>) =
+    member self.AsyncSend (requests: array<RpcRequestMessage>) =
         async {
             let rpcLogger = RpcLogger log
             
@@ -187,4 +200,7 @@ type TcpClient(asyncResolveHost: unit->Async<IPAddress>, port, maybeSerializatio
             let! rawResponse = self.AsyncSendRaw rpcRequestJson
             return JsonConvert.DeserializeObject<array<RpcResponseMessage>>(rawResponse, serializationSettings)
         }
+
+    override self.SendAsync(requests: array<RpcRequestMessage>) =
+        self.AsyncSend requests
         |> Async.StartAsTask
